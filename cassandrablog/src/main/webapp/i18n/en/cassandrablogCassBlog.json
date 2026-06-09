@@ -1,0 +1,43 @@
+{
+  "cassandrablogApp": {
+    "cassandrablogCassBlog": {
+      "home": {
+        "title": "Cass Blogs",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Cass Blog",
+        "createOrEditLabel": "Create or edit a Cass Blog",
+        "notFound": "No Cass Blogs found",
+        "loadMore": "Load More",
+        "loadingMore": "Loading more cass blogs...",
+        "endOfList": "You've reached the end of the list",
+        "search": "Search Cass Blogs",
+        "searchActive": "Search Active",
+        "searchRequired": "Enter partition key values above and click Search to load data",
+        "partitionKeys": "Partition Keys",
+        "clusteringKeys": "Clustering Keys",
+        "optional": "optional",
+        "operator": "Operator",
+        "selectDate": "Select Date",
+        "hour": "Hour",
+        "minute": "Minute",
+        "dateFormat": "Format: 9 Dec 2025",
+        "dateTimeFormat": "Format: 9 Dec 2025, 14:30:00",
+        "searchButton": "Search",
+        "clearSearch": "Clear"
+      },
+      "created": "A new Cass Blog is created with identifier {{ param }}",
+      "updated": "A Cass Blog is updated with identifier {{ param }}",
+      "deleted": "A Cass Blog is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Cass Blog Category '{{ category }}', and Blog Id '{{ blogId }}'?"
+      },
+      "detail": {
+        "title": "Cass Blog"
+      },
+      "category": "Category",
+      "blogId": "Blog Id",
+      "handle": "Handle",
+      "content": "Content"
+    }
+  }
+}

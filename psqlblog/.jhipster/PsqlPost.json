@@ -1,0 +1,52 @@
+{
+  "annotations": {
+    "changelogDate": "20260531021117"
+  },
+  "applications": ["psqlblog"],
+  "clientRootFolder": "psqlblog",
+  "databaseType": "sql",
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "id",
+      "fieldType": "UUID"
+    },
+    {
+      "fieldName": "title",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "content",
+      "fieldType": "TextBlob",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "date",
+      "fieldType": "Instant",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "microserviceName": "psqlblog",
+  "name": "PsqlPost",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityName": "psqlBlog",
+      "otherEntityRelationshipName": "post",
+      "relationshipName": "blog",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityField": "name",
+      "otherEntityName": "psqlTag",
+      "otherEntityRelationshipName": "post",
+      "relationshipName": "tag",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-many"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceImpl"
+}

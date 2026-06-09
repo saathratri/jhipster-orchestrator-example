@@ -1,0 +1,40 @@
+import { CommonModule } from '@angular/common';
+import { Component, inject } from '@angular/core';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+
+import { MaterialModule } from '../../shared/material.module';
+
+@Component({
+  // eslint-disable-next-line @angular-eslint/component-selector
+  selector: 'app-map-number-edit-dialog-component',
+  standalone: true,
+  imports: [MaterialModule, CommonModule, ReactiveFormsModule, MatDialogModule],
+  templateUrl: './map-number-edit-dialog-component.component.html',
+  styleUrls: ['./map-number-edit-dialog-component.component.css'],
+})
+export class MapNumberEditDialogComponent {
+  dialogRef = inject<MatDialogRef<MapNumberEditDialogComponent>>(MatDialogRef);
+  data = inject<{ key: string; value: number }>(MAT_DIALOG_DATA);
+
+  form: FormGroup = new FormGroup({
+    key: new FormControl({ value: this.data.key, disabled: true }), // ✅ Read-only key
+    value: new FormControl(this.data.value, [
+      Validators.required,
+      Validators.pattern(/^-?\d+(\.\d+)?$/), // ✅ Ensure it's a valid number
+    ]),
+  });
+
+  onCancel(): void {
+    this.dialogRef.close();
+  }
+
+  onSave(): void {
+    if (this.form.valid) {
+      const numericValue = parseFloat(this.form.get('value')?.value);
+      if (!isNaN(numericValue)) {
+        this.dialogRef.close(numericValue);
+      }
+    }
+  }
+}

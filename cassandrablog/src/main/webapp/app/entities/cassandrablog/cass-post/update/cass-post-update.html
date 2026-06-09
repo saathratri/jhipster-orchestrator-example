@@ -1,0 +1,190 @@
+<style>
+  .saathratri-pdf-badge-link {
+    text-decoration: none;
+    display: inline-block;
+    cursor: pointer;
+  }
+  .saathratri-pdf-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #e53935;
+    color: white;
+    font-weight: bold;
+    border-radius: 4px;
+    border: 2px solid #1976d2;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition:
+      border-color 0.2s ease,
+      box-shadow 0.2s ease,
+      transform 0.2s ease;
+  }
+  .saathratri-pdf-badge:hover {
+    border-color: #0d47a1;
+    box-shadow: 0 4px 8px rgba(25, 118, 210, 0.4);
+    transform: scale(1.05);
+  }
+  .saathratri-pdf-badge-sm {
+    width: 40px;
+    height: 52px;
+    font-size: 0.6rem;
+  }
+  .saathratri-pdf-badge-lg {
+    width: 60px;
+    height: 78px;
+    font-size: 0.75rem;
+  }
+</style>
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2
+        id="jhi-cass-post-heading"
+        data-cy="CassPostCreateUpdateHeading"
+        jhiTranslate="cassandrablogApp.cassandrablogCassPost.home.createOrEditLabel"
+      >
+        Create or edit a Cass Post
+      </h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        <div formGroupName="compositeId">
+          <div class="mb-3">
+            <mat-form-field appearance="fill" class="full-width">
+              <mat-label jhiTranslate="cassandrablogApp.cassandrablogCassPost.createdDate">Created Date</mat-label>
+              <br />
+              <input
+                matInput
+                [matDatepicker]="createdDatePicker"
+                id="field_createdDate"
+                data-cy="createdDate"
+                formControlName="createdDate"
+              />
+              <mat-datepicker-toggle matSuffix [for]="createdDatePicker"></mat-datepicker-toggle>
+              <mat-datepicker #createdDatePicker></mat-datepicker>
+            </mat-form-field>
+          </div>
+
+          <div class="mb-3">
+            <app-date-time
+              fieldName="addedDateTime"
+              formControlName="addedDateTime"
+              [dateTimeLabel]="'cassandrablogApp.cassandrablogCassPost.addedDateTime' | translate"
+              [labelClass]="'form-label'"
+              [isRequired]="true"
+              (isValid)="onDateTimeValid('compositeId.addedDateTime', $event)"
+              (dirtyStateChange)="updateDirtyState($event)"
+              [isNew]="isNew"
+            >
+            </app-date-time>
+            @if (isNew) {
+              <button type="button" class="btn btn-primary" (click)="generateDateTime('compositeId.addedDateTime')">Generate</button>
+              <button
+                type="button"
+                class="btn btn-danger"
+                (click)="resetDateTime('compositeId.addedDateTime')"
+                [disabled]="!isDateTimeDirty['compositeId.addedDateTime']"
+              >
+                Reset
+              </button>
+            }
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label" for="field_postId" jhiTranslate="cassandrablogApp.cassandrablogCassPost.postId">Post Id</label>
+            <input type="text" class="form-control" name="postId" id="field_postId" data-cy="postId" formControlName="postId" />
+            @if (isNew) {
+              <button type="button" class="btn btn-primary" data-cy="postId-generate" (click)="generateUUID('compositeId.postId')">
+                Generate
+              </button>
+              <button
+                type="button"
+                class="btn btn-danger"
+                data-cy="postId-reset"
+                (click)="reset('compositeId.postId')"
+                [disabled]="isResetDisabled['compositeId.postId']"
+              >
+                Reset
+              </button>
+            }
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_title" jhiTranslate="cassandrablogApp.cassandrablogCassPost.title">Title</label>
+          <input type="text" class="form-control" name="title" id="field_title" data-cy="title" formControlName="title" />
+          @if (editForm.get('title')!.invalid && (editForm.get('title')!.dirty || editForm.get('title')!.touched)) {
+            <div>
+              @if (editForm.get('title')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">This field is required.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_content" jhiTranslate="cassandrablogApp.cassandrablogCassPost.content">Content</label>
+          <input type="text" class="form-control" name="content" id="field_content" data-cy="content" formControlName="content" />
+          @if (editForm.get('content')!.invalid && (editForm.get('content')!.dirty || editForm.get('content')!.touched)) {
+            <div>
+              @if (editForm.get('content')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">This field is required.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <app-date-time
+            fieldName="publishedDateTime"
+            formControlName="publishedDateTime"
+            [dateTimeLabel]="'cassandrablogApp.cassandrablogCassPost.publishedDateTime' | translate"
+            [labelClass]="'form-label'"
+            [isRequired]="false"
+            (isValid)="onDateTimeValid('publishedDateTime', $event)"
+            (dirtyStateChange)="updateDirtyState($event)"
+            [isNew]="isNew"
+          >
+          </app-date-time>
+          <button type="button" class="btn btn-primary" (click)="generateDateTime('publishedDateTime')">Generate</button>
+          <button
+            type="button"
+            class="btn btn-danger"
+            (click)="resetDateTime('publishedDateTime')"
+            [disabled]="!isDateTimeDirty['publishedDateTime']"
+          >
+            Reset
+          </button>
+        </div>
+
+        <div class="mb-3">
+          <mat-form-field appearance="fill" class="full-width">
+            <mat-label jhiTranslate="cassandrablogApp.cassandrablogCassPost.sentDate">Sent Date</mat-label>
+            <br />
+            <input matInput [matDatepicker]="sentDatePicker" id="field_sentDate" data-cy="sentDate" formControlName="sentDate" />
+            <mat-datepicker-toggle matSuffix [for]="sentDatePicker"></mat-datepicker-toggle>
+            <mat-datepicker #sentDatePicker></mat-datepicker>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving || !areAllDateTimeFieldsValid"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

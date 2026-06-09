@@ -1,0 +1,326 @@
+/* *********************************************************
+ * Orchestrator example JDL
+ *
+ * A merge of the two upstream blueprint examples:
+ *   - jhipster-ai-postgresql-example/non-reactive-mf.jdl  (SQL / pgvector)  -> Psql* entities
+ *   - jhipster-cassandra-example/saathratri-apps-cassandra-mf.jdl (Cassandra) -> Cass* entities
+ *
+ * Both upstream examples define Blog/Post/Tag/TajUser/Product/Report with different shapes; JDL
+ * entity names must be globally unique, so the SQL set is prefixed `Psql` and the Cassandra set
+ * `Cass`. A single unified gateway fronts all four microservices (2 SQL + 2 Cassandra).
+ ********************************************************** */
+
+application {
+  config {
+    baseName orchestratorgateway
+    packageName com.saathratri.developer.gateway
+    applicationType gateway
+    authenticationType oauth2
+    buildTool maven
+    clientFramework angularX
+    prodDatabaseType postgresql
+    serviceDiscoveryType eureka
+    testFrameworks [cypress]
+    microfrontends [psqlblog, psqlstore, cassandrablog, cassandrastore]
+    serverPort 8080
+  }
+}
+
+/* ----- SQL / pgvector microservices (from generator-jhipster-ai-postgresql) ----- */
+
+application {
+  config {
+    baseName psqlblog
+    packageName com.saathratri.developer.psql.blog
+    applicationType microservice
+    authenticationType oauth2
+    buildTool maven
+    databaseType sql
+    devDatabaseType postgresql
+    prodDatabaseType postgresql
+    enableHibernateCache false
+    serverPort 8081
+    serviceDiscoveryType eureka
+    clientFramework angularX
+    testFrameworks [cypress]
+  }
+  entities PsqlBlog, PsqlPost, PsqlTag, PsqlTajUser
+}
+
+application {
+  config {
+    baseName psqlstore
+    packageName com.saathratri.developer.psql.store
+    applicationType microservice
+    authenticationType oauth2
+    buildTool maven
+    databaseType sql
+    devDatabaseType postgresql
+    prodDatabaseType postgresql
+    enableHibernateCache false
+    serverPort 8082
+    serviceDiscoveryType eureka
+    clientFramework angularX
+    testFrameworks [cypress]
+  }
+  entities PsqlProduct, PsqlReport
+}
+
+/* ----- Cassandra microservices (from generator-jhipster-cassandra) ----- */
+
+application {
+  config {
+    baseName cassandrablog
+    packageName com.saathratri.developer.cassandra.blog
+    applicationType microservice
+    authenticationType oauth2
+    buildTool maven
+    clientFramework angularX
+    databaseType cassandra
+    devDatabaseType cassandra
+    prodDatabaseType cassandra
+    enableHibernateCache false
+    serverPort 8083
+    serviceDiscoveryType eureka
+    testFrameworks [cypress]
+  }
+  entities CassBlog, CassPost, CassTag, CassTajUser, CassSaathratriEntity, CassSaathratriEntity2, CassSaathratriEntity3, CassSaathratriEntity4, CassAddOnsAvailableByOrganization, CassAddOnsSelectedByOrganization, CassLandingPageByOrganization, CassSetEntityByOrganization
+}
+
+application {
+  config {
+    baseName cassandrastore
+    packageName com.saathratri.developer.cassandra.store
+    applicationType microservice
+    authenticationType oauth2
+    buildTool maven
+    clientFramework angularX
+    databaseType cassandra
+    devDatabaseType cassandra
+    prodDatabaseType cassandra
+    enableHibernateCache false
+    serverPort 8084
+    serviceDiscoveryType eureka
+    testFrameworks [cypress]
+  }
+  entities CassProduct, CassReport
+}
+
+/* *********************************************************
+ * SQL / pgvector entities (prefixed Psql)
+ ********************************************************** */
+
+entity PsqlTajUser {
+  id UUID
+  login String required minlength(7)
+}
+
+entity PsqlBlog {
+  id UUID,
+  @customAnnotation("DISPLAY_IN_GUI_RELATIONSHIP_LINK") @customAnnotation("-") name String required minlength(3)
+  @customAnnotation("DISPLAY_IN_GUI_RELATIONSHIP_LINK") @customAnnotation("-") handle String required minlength(2)
+}
+
+entity PsqlPost {
+  id UUID
+  title String required
+  content TextBlob required
+  date Instant required
+}
+
+// Single-value Primary Key Example with AI Semantic Search (Vector Embeddings):
+entity PsqlTag {
+  id UUID
+  @customAnnotation("DISPLAY_IN_GUI_RELATIONSHIP_LINK") @customAnnotation("") name String maxlength(100) required
+  description String maxlength(255)
+  @customAnnotation("VECTOR") @customAnnotation("1536") nameEmbedding Blob
+  @customAnnotation("VECTOR") @customAnnotation("1536") descriptionEmbedding Blob
+}
+
+entity PsqlProduct {
+  id UUID
+  title String required
+  price BigDecimal required min(0)
+  image ImageBlob
+}
+
+entity PsqlReport {
+  id UUID
+  fileName String maxlength(255) required
+  fileExtension String maxlength(10) required
+  createDate Instant required
+  file AnyBlob required
+  approved Boolean
+}
+
+relationship ManyToOne {
+  PsqlBlog{tajUser(login)} to PsqlTajUser
+  PsqlPost{blog} to PsqlBlog{post}
+  PsqlReport{product} to PsqlProduct
+}
+
+relationship ManyToMany {
+  PsqlPost{tag(name)} to PsqlTag{post}
+}
+
+paginate PsqlPost, PsqlTag, PsqlProduct with pagination
+
+/* *********************************************************
+ * Cassandra entities (prefixed Cass)
+ *
+ * Since there are at most 4 customAnnotations on a field, unused ones are passed as a dummy
+ * @customAnnotation("") so that JHipster parses the JDL and exposes the annotations to the blueprint.
+ ********************************************************** */
+
+// AnyBlob/PDF Example:
+entity CassReport {
+  @Id @customAnnotation("PrimaryKeyType.PARTITIONED") @customAnnotation("CassandraType.Name.UUID") @customAnnotation("") @customAnnotation("") id UUID
+  @customAnnotation("") @customAnnotation("CassandraType.Name.TEXT") @customAnnotation("") @customAnnotation("") fileName String required
+  @customAnnotation("") @customAnnotation("CassandraType.Name.TEXT") @customAnnotation("") @customAnnotation("") fileExtension String required
+  @customAnnotation("") @customAnnotation("CassandraType.Name.BIGINT") @customAnnotation("UTC_DATETIME") @customAnnotation("") createDate Long required
+  @customAnnotation("") @customAnnotation("CassandraType.Name.BLOB") @customAnnotation("any") @customAnnotation("") file AnyBlob required
+  @customAnnotation("") @customAnnotation("CassandraType.Name.BOOLEAN") @customAnnotation("") @customAnnotation("") approved Boolean
+}
+
+// Simple Composite Primary Key Example:
+entity CassBlog {
+  @Id @customAnnotation("PrimaryKeyType.PARTITIONED") @customAnnotation("CassandraType.Name.TEXT") @customAnnotation("") @customAnnotation("0") category String
+  // Do not name composite primary key fields as 'id' as it conflicts with the 'id' field in the JHipster entity.
+  @customAnnotation("PrimaryKeyType.CLUSTERED") @customAnnotation("CassandraType.Name.TIMEUUID") @customAnnotation("") @customAnnotation("1") blogId UUID
+  @customAnnotation("") @customAnnotation("CassandraType.Name.TEXT") @customAnnotation("") @customAnnotation("") handle String required minlength(3)
+  @customAnnotation("") @customAnnotation("CassandraType.Name.TEXT") @customAnnotation("") @customAnnotation("") content String required
+}
+
+// Single-value Primary Key Example:
+entity CassSaathratriEntity {
+  @Id @customAnnotation("PrimaryKeyType.PARTITIONED") @customAnnotation("CassandraType.Name.UUID") @customAnnotation("") entityId UUID
+  @customAnnotation("") @customAnnotation("CassandraType.Name.TEXT") @customAnnotation("") entityName String
+  @customAnnotation("") @customAnnotation("CassandraType.Name.TEXT") @customAnnotation("") entityDescription String
+  @customAnnotation("") @customAnnotation("CassandraType.Name.DECIMAL") @customAnnotation("") entityCost BigDecimal
+  @customAnnotation("") @customAnnotation("CassandraType.Name.UUID") @customAnnotation("") createdId UUID
+  @customAnnotation("") @customAnnotation("CassandraType.Name.TIMEUUID") @customAnnotation("") createdTimeId UUID
+}
+
+// Composite Primary Key Example with TIMEUUID clustered key, multiple partitioned keys, with multiple clustered keys.
+entity CassSaathratriEntity2 {
+  @Id @customAnnotation("PrimaryKeyType.PARTITIONED") @customAnnotation("CassandraType.Name.UUID") @customAnnotation("") entityTypeId UUID
+  @customAnnotation("PrimaryKeyType.PARTITIONED") @customAnnotation("CassandraType.Name.BIGINT") @customAnnotation("") yearOfDateAdded Long
+  @customAnnotation("PrimaryKeyType.CLUSTERED") @customAnnotation("CassandraType.Name.BIGINT") @customAnnotation("UTC_DATE") arrivalDate Long
+  @customAnnotation("PrimaryKeyType.CLUSTERED") @customAnnotation("CassandraType.Name.TIMEUUID") @customAnnotation("") blogId UUID
+  @customAnnotation("") @customAnnotation("CassandraType.Name.TEXT") @customAnnotation("") entityName String
+  @customAnnotation("") @customAnnotation("CassandraType.Name.TEXT") @customAnnotation("") entityDescription String
+  @customAnnotation("") @customAnnotation("CassandraType.Name.DECIMAL") @customAnnotation("") entityCost BigDecimal
+  @customAnnotation("") @customAnnotation("CassandraType.Name.BIGINT") @customAnnotation("UTC_DATE") departureDate Long
+}
+
+entity CassSaathratriEntity3 {
+  @Id @customAnnotation("PrimaryKeyType.PARTITIONED") @customAnnotation("CassandraType.Name.TEXT") @customAnnotation("") entityType String
+  @customAnnotation("PrimaryKeyType.CLUSTERED") @customAnnotation("CassandraType.Name.TIMEUUID") @customAnnotation("") createdTimeId UUID
+  @customAnnotation("") @customAnnotation("CassandraType.Name.TEXT") @customAnnotation("") entityName String
+  @customAnnotation("") @customAnnotation("CassandraType.Name.TEXT") @customAnnotation("") entityDescription String
+  @customAnnotation("") @customAnnotation("CassandraType.Name.DECIMAL") @customAnnotation("") entityCost BigDecimal
+  @customAnnotation("") @customAnnotation("CassandraType.Name.BIGINT") @customAnnotation("UTC_DATE") departureDate Long
+  @customAnnotation("CassandraType.Name.SET") @customAnnotation("CassandraType.Name.TEXT") @customAnnotation("") tags String
+}
+
+entity CassSaathratriEntity4 {
+  @Id @customAnnotation("PrimaryKeyType.PARTITIONED") @customAnnotation("CassandraType.Name.UUID") @customAnnotation("") organizationId UUID
+  @customAnnotation("PrimaryKeyType.CLUSTERED") @customAnnotation("CassandraType.Name.TEXT") @customAnnotation("") attributeKey String
+  @customAnnotation("") @customAnnotation("CassandraType.Name.TEXT") @customAnnotation("") attributeValue String
+}
+
+entity CassAddOnsAvailableByOrganization {
+  @Id @customAnnotation("PrimaryKeyType.PARTITIONED") @customAnnotation("CassandraType.Name.UUID") @customAnnotation("") organizationId UUID
+  @customAnnotation("PrimaryKeyType.PARTITIONED") @customAnnotation("CassandraType.Name.TEXT") @customAnnotation("") entityType String
+  @customAnnotation("PrimaryKeyType.PARTITIONED") @customAnnotation("CassandraType.Name.UUID") @customAnnotation("") entityId UUID
+  @customAnnotation("PrimaryKeyType.CLUSTERED") @customAnnotation("CassandraType.Name.UUID") @customAnnotation("") addOnId UUID
+  @customAnnotation("") @customAnnotation("CassandraType.Name.TEXT") @customAnnotation("") addOnType String
+  @customAnnotation("CassandraType.Name.MAP") @customAnnotation("CassandraType.Name.TEXT") @customAnnotation("") addOnDetailsText String
+  @customAnnotation("CassandraType.Name.MAP") @customAnnotation("CassandraType.Name.DECIMAL") @customAnnotation("") addOnDetailsDecimal BigDecimal
+  @customAnnotation("CassandraType.Name.MAP") @customAnnotation("CassandraType.Name.BOOLEAN") @customAnnotation("") addOnDetailsBoolean Boolean
+  @customAnnotation("CassandraType.Name.MAP") @customAnnotation("CassandraType.Name.BIGINT") @customAnnotation("UTC_DATETIME") addOnDetailsBigInt Long
+}
+
+entity CassAddOnsSelectedByOrganization {
+  @Id @customAnnotation("PrimaryKeyType.PARTITIONED") @customAnnotation("CassandraType.Name.UUID") @customAnnotation("") organizationId UUID
+  @customAnnotation("PrimaryKeyType.CLUSTERED") @customAnnotation("CassandraType.Name.BIGINT") @customAnnotation("UTC_DATE") arrivalDate Long
+  @customAnnotation("PrimaryKeyType.CLUSTERED") @customAnnotation("CassandraType.Name.TEXT") @customAnnotation("") accountNumber String
+  @customAnnotation("PrimaryKeyType.CLUSTERED") @customAnnotation("CassandraType.Name.TIMEUUID") @customAnnotation("") createdTimeId UUID
+  @customAnnotation("") @customAnnotation("CassandraType.Name.BIGINT") @customAnnotation("UTC_DATE") departureDate Long
+  @customAnnotation("") @customAnnotation("CassandraType.Name.UUID") @customAnnotation("") customerId UUID
+  @customAnnotation("") @customAnnotation("CassandraType.Name.TEXT") @customAnnotation("") customerFirstName String
+  @customAnnotation("") @customAnnotation("CassandraType.Name.TEXT") @customAnnotation("") customerLastName String
+  @customAnnotation("") @customAnnotation("CassandraType.Name.TEXT") @customAnnotation("") customerUpdatedEmail String
+  @customAnnotation("") @customAnnotation("CassandraType.Name.TEXT") @customAnnotation("") customerUpdatedPhoneNumber String
+  @customAnnotation("") @customAnnotation("CassandraType.Name.TEXT") @customAnnotation("") customerEstimatedArrivalTime String
+  @customAnnotation("") @customAnnotation("CassandraType.Name.TEXT") @customAnnotation("") tinyUrlShortCode String
+  @customAnnotation("CassandraType.Name.MAP") @customAnnotation("CassandraType.Name.TEXT") @customAnnotation("") addOnDetailsText String
+  @customAnnotation("CassandraType.Name.MAP") @customAnnotation("CassandraType.Name.DECIMAL") @customAnnotation("") addOnDetailsDecimal BigDecimal
+  @customAnnotation("CassandraType.Name.MAP") @customAnnotation("CassandraType.Name.BOOLEAN") @customAnnotation("") addOnDetailsBoolean Boolean
+  @customAnnotation("CassandraType.Name.MAP") @customAnnotation("CassandraType.Name.BIGINT") @customAnnotation("UTC_DATETIME") addOnDetailsBigInt Long
+}
+
+entity CassLandingPageByOrganization {
+  @Id @customAnnotation("PrimaryKeyType.PARTITIONED") @customAnnotation("CassandraType.Name.UUID") @customAnnotation("") organizationId UUID
+  @customAnnotation("CassandraType.Name.MAP") @customAnnotation("CassandraType.Name.TEXT") @customAnnotation("") detailsText String
+  @customAnnotation("CassandraType.Name.MAP") @customAnnotation("CassandraType.Name.DECIMAL") @customAnnotation("") detailsDecimal BigDecimal
+  @customAnnotation("CassandraType.Name.MAP") @customAnnotation("CassandraType.Name.BOOLEAN") @customAnnotation("") detailsBoolean Boolean
+  @customAnnotation("CassandraType.Name.MAP") @customAnnotation("CassandraType.Name.BIGINT") @customAnnotation("UTC_DATETIME") detailsBigInt Long
+}
+
+entity CassSetEntityByOrganization {
+  @Id @customAnnotation("PrimaryKeyType.PARTITIONED") @customAnnotation("CassandraType.Name.UUID") @customAnnotation("") organizationId UUID
+  @customAnnotation("CassandraType.Name.SET") @customAnnotation("CassandraType.Name.TEXT") @customAnnotation("") tags String
+}
+
+// Single-value Primary Key Example:
+entity CassTajUser {
+  // Primary Key field can be named 'id'.  JHipster natively supports single-value primary keys.  This blueprint also supports single-value primary keys.
+  @Id @customAnnotation("PrimaryKeyType.PARTITIONED") @customAnnotation("CassandraType.Name.UUID") @customAnnotation("") @customAnnotation("") id UUID
+  @customAnnotation("") @customAnnotation("CassandraType.Name.TEXT") @customAnnotation("") @customAnnotation("") login String required minlength(6)
+}
+
+// Complex Composite Primary Key Example:
+entity CassPost {
+  @Id @customAnnotation("PrimaryKeyType.PARTITIONED") @customAnnotation("CassandraType.Name.BIGINT") @customAnnotation("UTC_DATE") @customAnnotation("0") createdDate Long
+  // Do not name composite primary key fields as 'id' as it conflicts with the 'id' field in the JHipster entity.
+  @customAnnotation("PrimaryKeyType.CLUSTERED") @customAnnotation("CassandraType.Name.BIGINT") @customAnnotation("UTC_DATETIME") @customAnnotation("1") addedDateTime Long
+  @customAnnotation("PrimaryKeyType.CLUSTERED") @customAnnotation("CassandraType.Name.UUID") @customAnnotation("") @customAnnotation("2") postId UUID
+  @customAnnotation("") @customAnnotation("CassandraType.Name.TEXT") @customAnnotation("") @customAnnotation("") title String required
+  @customAnnotation("") @customAnnotation("CassandraType.Name.TEXT") @customAnnotation("") @customAnnotation("") content String required
+  @customAnnotation("") @customAnnotation("CassandraType.Name.BIGINT") @customAnnotation("UTC_DATETIME") @customAnnotation("") publishedDateTime Long
+  @customAnnotation("") @customAnnotation("CassandraType.Name.BIGINT") @customAnnotation("UTC_DATE") @customAnnotation("") sentDate Long
+}
+
+// Single-value Primary Key Example with AI Semantic Search (Vector Embeddings):
+entity CassTag {
+  // Primary Key field can be named 'id'.  JHipster natively supports single-value primary keys.  This blueprint also supports single-value primary keys.
+  @Id @customAnnotation("PrimaryKeyType.PARTITIONED") @customAnnotation("CassandraType.Name.UUID") @customAnnotation("") @customAnnotation("") id UUID
+  @customAnnotation("") @customAnnotation("CassandraType.Name.TEXT") @customAnnotation("") @customAnnotation("") name String required minlength(2)
+  @customAnnotation("") @customAnnotation("CassandraType.Name.TEXT") @customAnnotation("") @customAnnotation("") description String
+  @customAnnotation("VECTOR") @customAnnotation("1536") @customAnnotation("") @customAnnotation("") nameEmbedding Blob
+  @customAnnotation("VECTOR") @customAnnotation("1536") @customAnnotation("") @customAnnotation("") descriptionEmbedding Blob
+}
+
+// Single-value Primary Key Example:
+entity CassProduct {
+  // Primary Key field can be named 'id'.  JHipster natively supports single-value primary keys.  This blueprint also supports single-value primary keys.
+  @Id @customAnnotation("PrimaryKeyType.PARTITIONED") @customAnnotation("CassandraType.Name.UUID") @customAnnotation("") @customAnnotation("") id UUID
+  @customAnnotation("") @customAnnotation("CassandraType.Name.TEXT") @customAnnotation("") @customAnnotation("") title String required
+  @customAnnotation("") @customAnnotation("CassandraType.Name.DECIMAL") @customAnnotation("") @customAnnotation("") price BigDecimal required min(0)
+  @customAnnotation("") @customAnnotation("CassandraType.Name.BLOB") @customAnnotation("image") @customAnnotation("") image ImageBlob
+  @customAnnotation("") @customAnnotation("CassandraType.Name.BIGINT") @customAnnotation("UTC_DATE") @customAnnotation("") addedDate Long required
+}
+
+deployment {
+  deploymentType docker-compose
+  serviceDiscoveryType eureka
+  appsFolders [orchestratorgateway, psqlblog, psqlstore, cassandrablog, cassandrastore]
+  dockerRepositoryName "amarppatel"
+}
+
+// Use DTO
+dto all with mapstruct
+
+// Set service options to all
+service all with serviceImpl

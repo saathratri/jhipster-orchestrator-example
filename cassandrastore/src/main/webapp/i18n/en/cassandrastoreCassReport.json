@@ -1,0 +1,31 @@
+{
+  "cassandrastoreApp": {
+    "cassandrastoreCassReport": {
+      "home": {
+        "title": "Cass Reports",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Cass Report",
+        "createOrEditLabel": "Create or edit a Cass Report",
+        "notFound": "No Cass Reports found",
+        "loadMore": "Load More",
+        "loadingMore": "Loading more cass reports...",
+        "endOfList": "You've reached the end of the list"
+      },
+      "created": "A new Cass Report is created with identifier {{ param }}",
+      "updated": "A Cass Report is updated with identifier {{ param }}",
+      "deleted": "A Cass Report is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Cass Report {{ id }}?"
+      },
+      "detail": {
+        "title": "Cass Report"
+      },
+      "id": "Id",
+      "fileName": "File Name",
+      "fileExtension": "File Extension",
+      "createDate": "Create Date",
+      "file": "File",
+      "approved": "Approved"
+    }
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "cassandrablogApp": {
+    "cassandrablogCassPost": {
+      "home": {
+        "title": "Cass Posts",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Cass Post",
+        "createOrEditLabel": "Create or edit a Cass Post",
+        "notFound": "No Cass Posts found",
+        "loadMore": "Load More",
+        "loadingMore": "Loading more cass posts...",
+        "endOfList": "You've reached the end of the list",
+        "search": "Search Cass Posts",
+        "searchActive": "Search Active",
+        "searchRequired": "Enter partition key values above and click Search to load data",
+        "partitionKeys": "Partition Keys",
+        "clusteringKeys": "Clustering Keys",
+        "optional": "optional",
+        "operator": "Operator",
+        "selectDate": "Select Date",
+        "hour": "Hour",
+        "minute": "Minute",
+        "dateFormat": "Format: 9 Dec 2025",
+        "dateTimeFormat": "Format: 9 Dec 2025, 14:30:00",
+        "searchButton": "Search",
+        "clearSearch": "Clear"
+      },
+      "created": "A new Cass Post is created with identifier {{ param }}",
+      "updated": "A Cass Post is updated with identifier {{ param }}",
+      "deleted": "A Cass Post is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Cass Post Created Date '{{ createdDate }}', Added Date Time '{{ addedDateTime }}', and Post Id '{{ postId }}'?"
+      },
+      "detail": {
+        "title": "Cass Post"
+      },
+      "createdDate": "Created Date",
+      "addedDateTime": "Added Date Time",
+      "postId": "Post Id",
+      "title": "Title",
+      "content": "Content",
+      "publishedDateTime": "Published Date Time",
+      "sentDate": "Sent Date"
+    }
+  }
+}

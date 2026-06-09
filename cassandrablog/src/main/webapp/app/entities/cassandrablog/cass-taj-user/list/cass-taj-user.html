@@ -1,0 +1,145 @@
+<style>
+  .saathratri-pdf-badge-link {
+    text-decoration: none;
+    display: inline-block;
+    cursor: pointer;
+  }
+  .saathratri-pdf-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #e53935;
+    color: white;
+    font-weight: bold;
+    border-radius: 4px;
+    border: 2px solid #1976d2;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition:
+      border-color 0.2s ease,
+      box-shadow 0.2s ease,
+      transform 0.2s ease;
+  }
+  .saathratri-pdf-badge:hover {
+    border-color: #0d47a1;
+    box-shadow: 0 4px 8px rgba(25, 118, 210, 0.4);
+    transform: scale(1.05);
+  }
+  .saathratri-pdf-badge-sm {
+    width: 40px;
+    height: 52px;
+    font-size: 0.6rem;
+  }
+  .saathratri-pdf-badge-lg {
+    width: 60px;
+    height: 78px;
+    font-size: 0.75rem;
+  }
+</style>
+<div>
+  <h2 id="page-heading" data-cy="CassTajUserHeading">
+    <span jhiTranslate="cassandrablogApp.cassandrablogCassTajUser.home.title">Cass Taj Users</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+        <fa-icon icon="sync" [animation]="isLoading ? 'spin' : undefined"></fa-icon>
+        <span jhiTranslate="cassandrablogApp.cassandrablogCassTajUser.home.refreshListLabel">Refresh list</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-cass-taj-user"
+        [routerLink]="['/cassandrablog/cass-taj-user/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span jhiTranslate="cassandrablogApp.cassandrablogCassTajUser.home.createLabel">Create a new Cass Taj User</span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  @if (cassTajUsers().length === 0) {
+    <div class="alert alert-warning" id="no-result">
+      <span jhiTranslate="cassandrablogApp.cassandrablogCassTajUser.home.notFound">No Cass Taj Users found</span>
+    </div>
+  }
+
+  @if (cassTajUsers().length > 0) {
+    <div class="table-responsive table-entities" id="entities">
+      <table class="table table-striped" aria-describedby="page-heading">
+        <thead>
+          <tr jhiSort [(sortState)]="sortState" (sortChange)="navigateToWithComponentValues($event)">
+            <th scope="col" jhiSortBy="id">
+              <div class="d-flex">
+                <span jhiTranslate="cassandrablogApp.cassandrablogCassTajUser.id">Id</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="login">
+              <div class="d-flex">
+                <span jhiTranslate="cassandrablogApp.cassandrablogCassTajUser.login">Login</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (cassTajUser of cassTajUsers(); track trackId(cassTajUser)) {
+            <tr data-cy="entityTable">
+              <td>
+                <a [routerLink]="['/cassandrablog/cass-taj-user', cassTajUser.id, 'view']">{{ cassTajUser.id }}</a>
+              </td>
+              <td>{{ cassTajUser.login }}</td>
+              <td class="text-end">
+                <div class="btn-group">
+                  <a
+                    [routerLink]="['/cassandrablog/cass-taj-user', cassTajUser.id, 'view']"
+                    class="btn btn-info btn-sm"
+                    data-cy="entityDetailsButton"
+                  >
+                    <fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                  </a>
+                  <a
+                    [routerLink]="['/cassandrablog/cass-taj-user', cassTajUser.id, 'edit']"
+                    class="btn btn-primary btn-sm"
+                    data-cy="entityEditButton"
+                  >
+                    <fa-icon icon="pencil-alt"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                  </a>
+
+                  <button type="submit" (click)="delete(cassTajUser)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                    <fa-icon icon="times"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+      <div class="d-flex justify-content-center mt-3 mb-3">
+        @if (isLoadingMore) {
+          <button class="btn btn-primary" disabled>
+            <fa-icon icon="sync" [animation]="'spin'"></fa-icon>
+            <span jhiTranslate="cassandrablogApp.cassandrablogCassTajUser.home.loadingMore">Loading more cass taj users...</span>
+          </button>
+        }
+        @if (!hasNextPage && cassTajUsers().length > 0 && !isLoadingMore) {
+          <div class="text-muted">
+            <fa-icon icon="check-circle" class="me-2"></fa-icon>
+            <span jhiTranslate="cassandrablogApp.cassandrablogCassTajUser.home.endOfList">You&apos;ve reached the end of the list</span>
+          </div>
+        }
+      </div>
+    </div>
+  }
+</div>

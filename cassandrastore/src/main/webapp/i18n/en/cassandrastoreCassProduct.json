@@ -1,0 +1,30 @@
+{
+  "cassandrastoreApp": {
+    "cassandrastoreCassProduct": {
+      "home": {
+        "title": "Cass Products",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Cass Product",
+        "createOrEditLabel": "Create or edit a Cass Product",
+        "notFound": "No Cass Products found",
+        "loadMore": "Load More",
+        "loadingMore": "Loading more cass products...",
+        "endOfList": "You've reached the end of the list"
+      },
+      "created": "A new Cass Product is created with identifier {{ param }}",
+      "updated": "A Cass Product is updated with identifier {{ param }}",
+      "deleted": "A Cass Product is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Cass Product {{ id }}?"
+      },
+      "detail": {
+        "title": "Cass Product"
+      },
+      "id": "Id",
+      "title": "Title",
+      "price": "Price",
+      "image": "Image",
+      "addedDate": "Added Date"
+    }
+  }
+}

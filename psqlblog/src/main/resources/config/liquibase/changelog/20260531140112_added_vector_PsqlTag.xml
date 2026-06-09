@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <!--
+        Added vector column and index for PsqlTag.
+        This changeset adds pgvector support for semantic search.
+    -->
+    <changeSet id="20260531140112-add-vector-column-nameEmbedding" author="jhipster">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <columnExists tableName="psql_tag" columnName="name_embedding"/>
+            </not>
+        </preConditions>
+        <addColumn tableName="psql_tag">
+            <column name="name_embedding" type="vector(1536)">
+                <constraints nullable="true" />
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="20260531140112-add-vector-index-nameEmbedding" author="jhipster">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <indexExists indexName="idx_psql_tag_name_embedding"/>
+            </not>
+        </preConditions>
+        <sql dbms="postgresql">
+            CREATE INDEX idx_psql_tag_name_embedding
+            ON psql_tag USING ivfflat (name_embedding vector_cosine_ops)
+            WITH (lists = 100);
+        </sql>
+        <rollback>
+            <dropIndex indexName="idx_psql_tag_name_embedding" tableName="psql_tag"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="20260531140112-add-vector-column-descriptionEmbedding" author="jhipster">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <columnExists tableName="psql_tag" columnName="description_embedding"/>
+            </not>
+        </preConditions>
+        <addColumn tableName="psql_tag">
+            <column name="description_embedding" type="vector(1536)">
+                <constraints nullable="true" />
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="20260531140112-add-vector-index-descriptionEmbedding" author="jhipster">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <indexExists indexName="idx_psql_tag_description_embedding"/>
+            </not>
+        </preConditions>
+        <sql dbms="postgresql">
+            CREATE INDEX idx_psql_tag_description_embedding
+            ON psql_tag USING ivfflat (description_embedding vector_cosine_ops)
+            WITH (lists = 100);
+        </sql>
+        <rollback>
+            <dropIndex indexName="idx_psql_tag_description_embedding" tableName="psql_tag"/>
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>

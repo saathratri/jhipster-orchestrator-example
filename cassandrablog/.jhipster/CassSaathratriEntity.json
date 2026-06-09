@@ -1,0 +1,59 @@
+{
+  "annotations": {
+    "changelogDate": "20260531021417"
+  },
+  "applications": ["cassandrablog"],
+  "clientRootFolder": "cassandrablog",
+  "databaseType": "cassandra",
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "entityId",
+      "fieldType": "UUID",
+      "options": {
+        "customAnnotation": ["PrimaryKeyType.PARTITIONED", "CassandraType.Name.UUID", ""],
+        "id": true
+      }
+    },
+    {
+      "fieldName": "entityName",
+      "fieldType": "String",
+      "options": {
+        "customAnnotation": ["", "CassandraType.Name.TEXT"]
+      }
+    },
+    {
+      "fieldName": "entityDescription",
+      "fieldType": "String",
+      "options": {
+        "customAnnotation": ["", "CassandraType.Name.TEXT"]
+      }
+    },
+    {
+      "fieldName": "entityCost",
+      "fieldType": "BigDecimal",
+      "options": {
+        "customAnnotation": ["", "CassandraType.Name.DECIMAL"]
+      }
+    },
+    {
+      "fieldName": "createdId",
+      "fieldType": "UUID",
+      "options": {
+        "customAnnotation": ["", "CassandraType.Name.UUID"]
+      }
+    },
+    {
+      "fieldName": "createdTimeId",
+      "fieldType": "UUID",
+      "options": {
+        "customAnnotation": ["", "CassandraType.Name.TIMEUUID"]
+      }
+    }
+  ],
+  "microserviceName": "cassandrablog",
+  "name": "CassSaathratriEntity",
+  "relationships": [],
+  "searchEngine": "no",
+  "service": "serviceImpl"
+}

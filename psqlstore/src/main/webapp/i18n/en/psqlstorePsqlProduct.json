@@ -1,0 +1,26 @@
+{
+  "psqlstoreApp": {
+    "psqlstorePsqlProduct": {
+      "home": {
+        "title": "Psql Products",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Psql Product",
+        "createOrEditLabel": "Create or edit a Psql Product",
+        "notFound": "No Psql Products found"
+      },
+      "created": "A new Psql Product is created with identifier {{ param }}",
+      "updated": "A Psql Product is updated with identifier {{ param }}",
+      "deleted": "A Psql Product is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Psql Product {{ id }}?"
+      },
+      "detail": {
+        "title": "Psql Product"
+      },
+      "id": "Id",
+      "title": "Title",
+      "price": "Price",
+      "image": "Image"
+    }
+  }
+}

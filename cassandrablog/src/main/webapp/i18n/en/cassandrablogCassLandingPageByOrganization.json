@@ -1,0 +1,30 @@
+{
+  "cassandrablogApp": {
+    "cassandrablogCassLandingPageByOrganization": {
+      "home": {
+        "title": "Cass Landing Page By Organizations",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Cass Landing Page By Organization",
+        "createOrEditLabel": "Create or edit a Cass Landing Page By Organization",
+        "notFound": "No Cass Landing Page By Organizations found",
+        "loadMore": "Load More",
+        "loadingMore": "Loading more cass landing page by organizations...",
+        "endOfList": "You've reached the end of the list"
+      },
+      "created": "A new Cass Landing Page By Organization is created with identifier {{ param }}",
+      "updated": "A Cass Landing Page By Organization is updated with identifier {{ param }}",
+      "deleted": "A Cass Landing Page By Organization is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Cass Landing Page By Organization {{ id }}?"
+      },
+      "detail": {
+        "title": "Cass Landing Page By Organization"
+      },
+      "organizationId": "Organization Id",
+      "detailsText": "Details Text",
+      "detailsDecimal": "Details Decimal",
+      "detailsBoolean": "Details Boolean",
+      "detailsBigInt": "Details Big Int"
+    }
+  }
+}

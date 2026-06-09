@@ -1,0 +1,31 @@
+{
+  "cassandrablogApp": {
+    "cassandrablogCassSaathratriEntity": {
+      "home": {
+        "title": "Cass Saathratri Entities",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Cass Saathratri Entity",
+        "createOrEditLabel": "Create or edit a Cass Saathratri Entity",
+        "notFound": "No Cass Saathratri Entities found",
+        "loadMore": "Load More",
+        "loadingMore": "Loading more cass saathratri entities...",
+        "endOfList": "You've reached the end of the list"
+      },
+      "created": "A new Cass Saathratri Entity is created with identifier {{ param }}",
+      "updated": "A Cass Saathratri Entity is updated with identifier {{ param }}",
+      "deleted": "A Cass Saathratri Entity is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Cass Saathratri Entity {{ id }}?"
+      },
+      "detail": {
+        "title": "Cass Saathratri Entity"
+      },
+      "entityId": "Entity Id",
+      "entityName": "Entity Name",
+      "entityDescription": "Entity Description",
+      "entityCost": "Entity Cost",
+      "createdId": "Created Id",
+      "createdTimeId": "Created Time Id"
+    }
+  }
+}

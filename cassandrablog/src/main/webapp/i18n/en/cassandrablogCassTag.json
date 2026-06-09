@@ -1,0 +1,30 @@
+{
+  "cassandrablogApp": {
+    "cassandrablogCassTag": {
+      "home": {
+        "title": "Cass Tags",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Cass Tag",
+        "createOrEditLabel": "Create or edit a Cass Tag",
+        "notFound": "No Cass Tags found",
+        "loadMore": "Load More",
+        "loadingMore": "Loading more cass tags...",
+        "endOfList": "You've reached the end of the list"
+      },
+      "created": "A new Cass Tag is created with identifier {{ param }}",
+      "updated": "A Cass Tag is updated with identifier {{ param }}",
+      "deleted": "A Cass Tag is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Cass Tag {{ id }}?"
+      },
+      "detail": {
+        "title": "Cass Tag"
+      },
+      "id": "Id",
+      "name": "Name",
+      "description": "Description",
+      "nameEmbedding": "Name Embedding",
+      "descriptionEmbedding": "Description Embedding"
+    }
+  }
+}

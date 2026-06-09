@@ -1,0 +1,40 @@
+@if (cassAddOnsSelectedByOrganization) {
+  <form name="deleteForm" (ngSubmit)="confirmDelete(cassAddOnsSelectedByOrganization)">
+    <div class="modal-header">
+      <h4 class="modal-title" data-cy="cassAddOnsSelectedByOrganizationDeleteDialogHeading" jhiTranslate="entity.delete.title">
+        Confirm delete operation
+      </h4>
+    </div>
+
+    <div class="modal-body">
+      <jhi-alert-error></jhi-alert-error>
+      <p
+        id="jhi-delete-cassAddOnsSelectedByOrganization-heading"
+        jhiTranslate="cassandrablogApp.cassandrablogCassAddOnsSelectedByOrganization.delete.question"
+        [translateValues]="{
+          organizationId: cassAddOnsSelectedByOrganization.compositeId.organizationId,
+          arrivalDate: cassAddOnsSelectedByOrganization.compositeId.arrivalDate | convertFromDayjsToDateLong,
+          accountNumber: cassAddOnsSelectedByOrganization.compositeId.accountNumber,
+          createdTimeId: cassAddOnsSelectedByOrganization.compositeId.createdTimeId,
+        }"
+      >
+        Are you sure you want to delete this CassAddOnsSelectedByOrganization?
+      </p>
+    </div>
+
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="cancel()">
+        <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+      </button>
+
+      <button
+        id="jhi-confirm-delete-cassAddOnsSelectedByOrganization"
+        data-cy="entityConfirmDeleteButton"
+        type="submit"
+        class="btn btn-danger"
+      >
+        <fa-icon icon="times"></fa-icon>&nbsp;<span jhiTranslate="entity.action.delete">Delete</span>
+      </button>
+    </div>
+  </form>
+}

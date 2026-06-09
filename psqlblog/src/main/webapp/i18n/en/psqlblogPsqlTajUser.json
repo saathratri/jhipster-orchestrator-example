@@ -1,0 +1,24 @@
+{
+  "psqlblogApp": {
+    "psqlblogPsqlTajUser": {
+      "home": {
+        "title": "Psql Taj Users",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Psql Taj User",
+        "createOrEditLabel": "Create or edit a Psql Taj User",
+        "notFound": "No Psql Taj Users found"
+      },
+      "created": "A new Psql Taj User is created with identifier {{ param }}",
+      "updated": "A Psql Taj User is updated with identifier {{ param }}",
+      "deleted": "A Psql Taj User is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Psql Taj User {{ id }}?"
+      },
+      "detail": {
+        "title": "Psql Taj User"
+      },
+      "id": "Id",
+      "login": "Login"
+    }
+  }
+}

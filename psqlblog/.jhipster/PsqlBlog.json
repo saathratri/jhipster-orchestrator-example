@@ -1,0 +1,53 @@
+{
+  "annotations": {
+    "changelogDate": "20260531021017"
+  },
+  "applications": ["psqlblog"],
+  "clientRootFolder": "psqlblog",
+  "databaseType": "sql",
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "id",
+      "fieldType": "UUID"
+    },
+    {
+      "fieldName": "name",
+      "fieldType": "String",
+      "fieldValidateRules": ["required", "minlength"],
+      "fieldValidateRulesMinlength": "3",
+      "options": {
+        "customAnnotation": ["DISPLAY_IN_GUI_RELATIONSHIP_LINK", "-"]
+      }
+    },
+    {
+      "fieldName": "handle",
+      "fieldType": "String",
+      "fieldValidateRules": ["required", "minlength"],
+      "fieldValidateRulesMinlength": "2",
+      "options": {
+        "customAnnotation": ["DISPLAY_IN_GUI_RELATIONSHIP_LINK", "-"]
+      }
+    }
+  ],
+  "microserviceName": "psqlblog",
+  "name": "PsqlBlog",
+  "relationships": [
+    {
+      "otherEntityField": "login",
+      "otherEntityName": "psqlTajUser",
+      "relationshipName": "tajUser",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "psqlPost",
+      "otherEntityRelationshipName": "blog",
+      "relationshipName": "post",
+      "relationshipSide": "right",
+      "relationshipType": "one-to-many"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceImpl"
+}

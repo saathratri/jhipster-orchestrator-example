@@ -1,0 +1,104 @@
+<style>
+  .saathratri-pdf-badge-link {
+    text-decoration: none;
+    display: inline-block;
+    cursor: pointer;
+  }
+  .saathratri-pdf-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #e53935;
+    color: white;
+    font-weight: bold;
+    border-radius: 4px;
+    border: 2px solid #1976d2;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition:
+      border-color 0.2s ease,
+      box-shadow 0.2s ease,
+      transform 0.2s ease;
+  }
+  .saathratri-pdf-badge:hover {
+    border-color: #0d47a1;
+    box-shadow: 0 4px 8px rgba(25, 118, 210, 0.4);
+    transform: scale(1.05);
+  }
+  .saathratri-pdf-badge-sm {
+    width: 40px;
+    height: 52px;
+    font-size: 0.6rem;
+  }
+  .saathratri-pdf-badge-lg {
+    width: 60px;
+    height: 78px;
+    font-size: 0.75rem;
+  }
+</style>
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (cassTag(); as cassTagRef) {
+      <div>
+        <h2 data-cy="cassTagDetailsHeading"><span jhiTranslate="cassandrablogApp.cassandrablogCassTag.detail.title">Cass Tag</span></h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span jhiTranslate="cassandrablogApp.cassandrablogCassTag.id">Id</span></dt>
+          <dd>
+            <span>{{ cassTagRef.id }}</span>
+          </dd>
+          <dt><span jhiTranslate="cassandrablogApp.cassandrablogCassTag.name">Name</span></dt>
+          <dd>
+            <span>{{ cassTagRef.name }}</span>
+          </dd>
+          <dt><span jhiTranslate="cassandrablogApp.cassandrablogCassTag.description">Description</span></dt>
+          <dd>
+            <span>{{ cassTagRef.description }}</span>
+          </dd>
+        </dl>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span>Name Embedding</span></dt>
+          <dd>
+            <small class="text-muted">
+              @if (cassTagRef.nameEmbedding && cassTagRef.nameEmbedding.length > 0) {
+                [{{ cassTagRef.nameEmbedding[0] | number: '1.0-5' }}, {{ cassTagRef.nameEmbedding[1] | number: '1.0-5' }},
+                {{ cassTagRef.nameEmbedding[2] | number: '1.0-5' }}, ...]
+              } @else {
+                <em>Not generated</em>
+              }
+            </small>
+          </dd>
+        </dl>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span>Description Embedding</span></dt>
+          <dd>
+            <small class="text-muted">
+              @if (cassTagRef.descriptionEmbedding && cassTagRef.descriptionEmbedding.length > 0) {
+                [{{ cassTagRef.descriptionEmbedding[0] | number: '1.0-5' }}, {{ cassTagRef.descriptionEmbedding[1] | number: '1.0-5' }},
+                {{ cassTagRef.descriptionEmbedding[2] | number: '1.0-5' }}, ...]
+              } @else {
+                <em>Not generated</em>
+              }
+            </small>
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+        </button>
+
+        <button type="button" [routerLink]="['/cassandrablog/cass-tag', cassTagRef.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

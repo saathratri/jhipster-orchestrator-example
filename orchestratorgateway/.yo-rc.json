@@ -1,0 +1,67 @@
+{
+  "generator-jhipster": {
+    "applicationIndex": 0,
+    "applicationType": "gateway",
+    "applications": {
+      "cassandrablog": {
+        "applicationIndex": 3,
+        "clientFramework": "angularX",
+        "serverPort": "8083"
+      },
+      "cassandrastore": {
+        "applicationIndex": 4,
+        "clientFramework": "angularX",
+        "serverPort": "8084"
+      },
+      "psqlblog": {
+        "applicationIndex": 1,
+        "clientFramework": "angularX",
+        "serverPort": "8081"
+      },
+      "psqlstore": {
+        "applicationIndex": 2,
+        "clientFramework": "angularX",
+        "serverPort": "8082"
+      }
+    },
+    "authenticationType": "oauth2",
+    "baseName": "orchestratorgateway",
+    "blueprints": [
+      {
+        "name": "generator-jhipster-orchestrator",
+        "version": "1.0.1"
+      }
+    ],
+    "buildTool": "maven",
+    "clientFramework": "angularX",
+    "devServerPort": 4200,
+    "entities": [],
+    "jhipsterVersion": "9.0.0",
+    "jwtSecretKey": "NGI4ZDExZWVlYWEzMDlhNzg5NWVjZTZmYzI1MDAxYzA5NzNmNTJjNzY5M2EzZDczNzc2ZDE3MDQ3MmRmNTg2MDdhNTY2MzNhNmRiMWJkZDM3NjgzNmQ1YWIyNDgzODYwYjRkZGY3MWRhNzkzNDM0NzdmOTgzYjVjY2NiM2U1MjE=",
+    "languages": ["en"],
+    "microfrontends": [
+      {
+        "baseName": "psqlblog"
+      },
+      {
+        "baseName": "psqlstore"
+      },
+      {
+        "baseName": "cassandrablog"
+      },
+      {
+        "baseName": "cassandrastore"
+      }
+    ],
+    "monorepository": true,
+    "nativeLanguage": "en",
+    "packageName": "com.saathratri.developer.gateway",
+    "prodDatabaseType": "postgresql",
+    "reactive": true,
+    "serverPort": "8080",
+    "serviceDiscoveryType": "eureka",
+    "skipCommitHook": true,
+    "skipJhipsterDependencies": true,
+    "testFrameworks": ["cypress"]
+  }
+}

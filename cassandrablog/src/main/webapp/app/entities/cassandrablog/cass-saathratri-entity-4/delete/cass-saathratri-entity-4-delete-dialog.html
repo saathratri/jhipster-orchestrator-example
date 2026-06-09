@@ -1,0 +1,33 @@
+@if (cassSaathratriEntity4) {
+  <form name="deleteForm" (ngSubmit)="confirmDelete(cassSaathratriEntity4)">
+    <div class="modal-header">
+      <h4 class="modal-title" data-cy="cassSaathratriEntity4DeleteDialogHeading" jhiTranslate="entity.delete.title">
+        Confirm delete operation
+      </h4>
+    </div>
+
+    <div class="modal-body">
+      <jhi-alert-error></jhi-alert-error>
+      <p
+        id="jhi-delete-cassSaathratriEntity4-heading"
+        jhiTranslate="cassandrablogApp.cassandrablogCassSaathratriEntity4.delete.question"
+        [translateValues]="{
+          organizationId: cassSaathratriEntity4.compositeId.organizationId,
+          attributeKey: cassSaathratriEntity4.compositeId.attributeKey,
+        }"
+      >
+        Are you sure you want to delete this CassSaathratriEntity4?
+      </p>
+    </div>
+
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="cancel()">
+        <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+      </button>
+
+      <button id="jhi-confirm-delete-cassSaathratriEntity4" data-cy="entityConfirmDeleteButton" type="submit" class="btn btn-danger">
+        <fa-icon icon="times"></fa-icon>&nbsp;<span jhiTranslate="entity.action.delete">Delete</span>
+      </button>
+    </div>
+  </form>
+}

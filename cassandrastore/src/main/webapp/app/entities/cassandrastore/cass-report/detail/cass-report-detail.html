@@ -1,0 +1,101 @@
+<style>
+  .saathratri-pdf-badge-link {
+    text-decoration: none;
+    display: inline-block;
+    cursor: pointer;
+  }
+  .saathratri-pdf-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #e53935;
+    color: white;
+    font-weight: bold;
+    border-radius: 4px;
+    border: 2px solid #1976d2;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition:
+      border-color 0.2s ease,
+      box-shadow 0.2s ease,
+      transform 0.2s ease;
+  }
+  .saathratri-pdf-badge:hover {
+    border-color: #0d47a1;
+    box-shadow: 0 4px 8px rgba(25, 118, 210, 0.4);
+    transform: scale(1.05);
+  }
+  .saathratri-pdf-badge-sm {
+    width: 40px;
+    height: 52px;
+    font-size: 0.6rem;
+  }
+  .saathratri-pdf-badge-lg {
+    width: 60px;
+    height: 78px;
+    font-size: 0.75rem;
+  }
+</style>
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (cassReport(); as cassReportRef) {
+      <div>
+        <h2 data-cy="cassReportDetailsHeading">
+          <span jhiTranslate="cassandrastoreApp.cassandrastoreCassReport.detail.title">Cass Report</span>
+        </h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span jhiTranslate="cassandrastoreApp.cassandrastoreCassReport.id">Id</span></dt>
+          <dd>
+            <span>{{ cassReportRef.id }}</span>
+          </dd>
+          <dt><span jhiTranslate="cassandrastoreApp.cassandrastoreCassReport.fileName">File Name</span></dt>
+          <dd>
+            <span>{{ cassReportRef.fileName }}</span>
+          </dd>
+          <dt><span jhiTranslate="cassandrastoreApp.cassandrastoreCassReport.fileExtension">File Extension</span></dt>
+          <dd>
+            <span>{{ cassReportRef.fileExtension }}</span>
+          </dd>
+          <dt><span jhiTranslate="cassandrastoreApp.cassandrastoreCassReport.createDate">Create Date</span></dt>
+          <dd>
+            <span>{{ cassReportRef.createDate }}</span>
+          </dd>
+          <dt><span jhiTranslate="cassandrastoreApp.cassandrastoreCassReport.file">File</span></dt>
+          <dd>
+            @if (cassReportRef.file) {
+              <div>
+                @if (cassReportRef.fileContentType === 'application/pdf') {
+                  <a class="saathratri-pdf-badge-link" (click)="openFile(cassReportRef.file ?? '', cassReportRef.fileContentType)">
+                    <div class="saathratri-pdf-badge saathratri-pdf-badge-lg">PDF</div>
+                  </a>
+                } @else {
+                  <a (click)="openFile(cassReportRef.file ?? '', cassReportRef.fileContentType)" jhiTranslate="entity.action.open">Open</a>
+                }
+                &nbsp;{{ cassReportRef.fileContentType }}, {{ byteSize(cassReportRef.file ?? '') }}
+              </div>
+            }
+          </dd>
+          <dt><span jhiTranslate="cassandrastoreApp.cassandrastoreCassReport.approved">Approved</span></dt>
+          <dd>
+            <span>{{ cassReportRef.approved }}</span>
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+        </button>
+
+        <button type="button" [routerLink]="['/cassandrastore/cass-report', cassReportRef.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

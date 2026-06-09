@@ -1,0 +1,383 @@
+<style>
+  .saathratri-pdf-badge-link {
+    text-decoration: none;
+    display: inline-block;
+    cursor: pointer;
+  }
+  .saathratri-pdf-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #e53935;
+    color: white;
+    font-weight: bold;
+    border-radius: 4px;
+    border: 2px solid #1976d2;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition:
+      border-color 0.2s ease,
+      box-shadow 0.2s ease,
+      transform 0.2s ease;
+  }
+  .saathratri-pdf-badge:hover {
+    border-color: #0d47a1;
+    box-shadow: 0 4px 8px rgba(25, 118, 210, 0.4);
+    transform: scale(1.05);
+  }
+  .saathratri-pdf-badge-sm {
+    width: 40px;
+    height: 52px;
+    font-size: 0.6rem;
+  }
+  .saathratri-pdf-badge-lg {
+    width: 60px;
+    height: 78px;
+    font-size: 0.75rem;
+  }
+</style>
+<div>
+  <h2 id="page-heading" data-cy="CassPostHeading">
+    <span jhiTranslate="cassandrablogApp.cassandrablogCassPost.home.title">Cass Posts</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+        <fa-icon icon="sync" [animation]="isLoading ? 'spin' : undefined"></fa-icon>
+        <span jhiTranslate="cassandrablogApp.cassandrablogCassPost.home.refreshListLabel">Refresh list</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-cass-post"
+        [routerLink]="['/cassandrablog/cass-post/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span jhiTranslate="cassandrablogApp.cassandrablogCassPost.home.createLabel">Create a new Cass Post</span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  <!-- Cassandra Search Form -->
+  <div class="card mb-3">
+    <div
+      class="card-header d-flex justify-content-between align-items-center"
+      (click)="toggleSearchForm()"
+      style="cursor: pointer"
+      data-cy="searchFormToggle"
+    >
+      <span>
+        <fa-icon [icon]="isSearchFormCollapsed ? 'chevron-right' : 'chevron-down'" class="me-2"></fa-icon>
+        <fa-icon icon="search" class="me-1"></fa-icon>
+        <span jhiTranslate="cassandrablogApp.cassandrablogCassPost.home.search">Search Cass Posts</span>
+      </span>
+      @if (hasActiveSearch()) {
+        <span class="badge bg-primary" jhiTranslate="cassandrablogApp.cassandrablogCassPost.home.searchActive">Search Active</span>
+      }
+    </div>
+    @if (!isSearchFormCollapsed) {
+      <div class="card-body">
+        <form name="searchForm" (ngSubmit)="performSearch()" #searchForm="ngForm">
+          <!-- Partition Key Fields (Required) -->
+          <div class="mb-3">
+            <h6 class="text-muted mb-2">
+              <fa-icon icon="key" class="me-1"></fa-icon>
+              <span jhiTranslate="cassandrablogApp.cassandrablogCassPost.home.partitionKeys">Partition Keys</span>
+              <span class="text-danger">*</span>
+            </h6>
+            <div class="row">
+              <div class="col-md-4 mb-2">
+                <label class="form-label" for="search_createdDate" jhiTranslate="cassandrablogApp.cassandrablogCassPost.createdDate"
+                  >Created Date</label
+                >
+                <mat-form-field appearance="outline" class="full-width">
+                  <mat-label jhiTranslate="cassandrablogApp.cassandrablogCassPost.home.selectDate">Select Date</mat-label>
+                  <input
+                    matInput
+                    [matDatepicker]="searchCreatedDatePicker"
+                    [(ngModel)]="searchCriteria.createdDateDate"
+                    name="search_createdDate"
+                    (dateChange)="onSearchDateChange('createdDate')"
+                    required
+                    data-cy="searchCreatedDate"
+                  />
+                  <mat-datepicker-toggle matSuffix [for]="searchCreatedDatePicker"></mat-datepicker-toggle>
+                  <mat-datepicker #searchCreatedDatePicker></mat-datepicker>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+
+          <!-- Clustering Key Fields (Optional) -->
+          <div class="mb-3">
+            <h6 class="text-muted mb-2">
+              <fa-icon icon="sort" class="me-1"></fa-icon>
+              <span jhiTranslate="cassandrablogApp.cassandrablogCassPost.home.clusteringKeys">Clustering Keys</span>
+              <span class="text-muted small"
+                >(<span jhiTranslate="cassandrablogApp.cassandrablogCassPost.home.optional">optional</span>)</span
+              >
+            </h6>
+            <div class="row">
+              <div class="col-md-8 mb-2">
+                <label
+                  class="form-label"
+                  for="search_addedDateTime"
+                  [class.text-muted]="isClusteringFieldDisabled('addedDateTime')"
+                  jhiTranslate="cassandrablogApp.cassandrablogCassPost.addedDateTime"
+                  >Added Date Time</label
+                >
+                <div class="date-time-search-container">
+                  <mat-form-field appearance="outline" class="search-operator-field">
+                    <mat-label jhiTranslate="cassandrablogApp.cassandrablogCassPost.home.operator">Operator</mat-label>
+                    <mat-select
+                      [(ngModel)]="searchCriteria.addedDateTimeOperator"
+                      name="search_addedDateTime_operator"
+                      [disabled]="isClusteringFieldDisabled('addedDateTime')"
+                      (selectionChange)="onOperatorChange('addedDateTime')"
+                      data-cy="searchAddedDateTimeOperator"
+                    >
+                      <mat-option value="eq">=</mat-option>
+                      <mat-option value="lt">&lt;</mat-option>
+                      <mat-option value="lte">&lt;=</mat-option>
+                      <mat-option value="gt">&gt;</mat-option>
+                      <mat-option value="gte">&gt;=</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                  <mat-form-field appearance="outline" class="search-date-field">
+                    <mat-label jhiTranslate="cassandrablogApp.cassandrablogCassPost.home.selectDate">Select Date</mat-label>
+                    <input
+                      matInput
+                      [matDatepicker]="searchAddedDateTimeDatePicker"
+                      [(ngModel)]="searchCriteria.addedDateTimeDate"
+                      name="search_addedDateTime_date"
+                      [disabled]="isClusteringFieldDisabled('addedDateTime')"
+                      (dateChange)="onSearchDateChange('addedDateTime', true)"
+                      data-cy="searchAddedDateTimeDate"
+                    />
+                    <mat-datepicker-toggle
+                      matSuffix
+                      [for]="searchAddedDateTimeDatePicker"
+                      [disabled]="isClusteringFieldDisabled('addedDateTime')"
+                    ></mat-datepicker-toggle>
+                    <mat-datepicker #searchAddedDateTimeDatePicker></mat-datepicker>
+                  </mat-form-field>
+                  <mat-form-field appearance="outline" class="search-time-field">
+                    <mat-label jhiTranslate="cassandrablogApp.cassandrablogCassPost.home.hour">Hour</mat-label>
+                    <input
+                      matInput
+                      type="number"
+                      [(ngModel)]="searchCriteria.addedDateTimeHour"
+                      name="search_addedDateTime_hour"
+                      min="1"
+                      max="12"
+                      placeholder="HH"
+                      [disabled]="isClusteringFieldDisabled('addedDateTime')"
+                      (change)="onSearchDateChange('addedDateTime', true)"
+                      data-cy="searchAddedDateTimeHour"
+                    />
+                  </mat-form-field>
+                  <mat-form-field appearance="outline" class="search-time-field">
+                    <mat-label jhiTranslate="cassandrablogApp.cassandrablogCassPost.home.minute">Minute</mat-label>
+                    <input
+                      matInput
+                      type="number"
+                      [(ngModel)]="searchCriteria.addedDateTimeMinute"
+                      name="search_addedDateTime_minute"
+                      min="0"
+                      max="59"
+                      placeholder="MM"
+                      [disabled]="isClusteringFieldDisabled('addedDateTime')"
+                      (change)="onSearchDateChange('addedDateTime', true)"
+                      data-cy="searchAddedDateTimeMinute"
+                    />
+                  </mat-form-field>
+                  <mat-form-field appearance="outline" class="search-ampm-field">
+                    <mat-label>AM/PM</mat-label>
+                    <mat-select
+                      [(ngModel)]="searchCriteria.addedDateTimeAmPm"
+                      name="search_addedDateTime_ampm"
+                      [disabled]="isClusteringFieldDisabled('addedDateTime')"
+                      (selectionChange)="onSearchDateChange('addedDateTime', true)"
+                      data-cy="searchAddedDateTimeAmPm"
+                    >
+                      <mat-option value="AM">AM</mat-option>
+                      <mat-option value="PM">PM</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="col-md-4 mb-2">
+                <label
+                  class="form-label"
+                  for="search_postId"
+                  [class.text-muted]="isClusteringFieldDisabled('postId')"
+                  jhiTranslate="cassandrablogApp.cassandrablogCassPost.postId"
+                  >Post Id</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="search_postId"
+                  name="search_postId"
+                  [(ngModel)]="searchCriteria.postId"
+                  [disabled]="isClusteringFieldDisabled('postId')"
+                  data-cy="searchPostId"
+                />
+              </div>
+            </div>
+          </div>
+
+          <!-- Search Actions -->
+          <div class="d-flex gap-2">
+            <button type="submit" class="btn btn-primary" [disabled]="!isSearchFormValid()" data-cy="searchButton">
+              <fa-icon icon="search"></fa-icon>
+              <span jhiTranslate="cassandrablogApp.cassandrablogCassPost.home.searchButton">Search</span>
+            </button>
+            <button type="button" class="btn btn-secondary" (click)="clearSearch()" data-cy="clearSearchButton">
+              <fa-icon icon="times"></fa-icon>
+              <span jhiTranslate="cassandrablogApp.cassandrablogCassPost.home.clearSearch">Clear</span>
+            </button>
+          </div>
+        </form>
+      </div>
+    }
+  </div>
+
+  @if (cassPosts().length === 0 && !isLoading) {
+    <div class="alert alert-warning" id="no-result">
+      <span jhiTranslate="cassandrablogApp.cassandrablogCassPost.home.notFound">No Cass Posts found</span>
+    </div>
+  }
+
+  @if (cassPosts().length > 0) {
+    <div class="table-responsive table-entities" id="entities">
+      <table class="table table-striped" aria-describedby="page-heading">
+        <thead>
+          <tr jhiSort [(sortState)]="sortState" (sortChange)="navigateToWithComponentValues($event)">
+            <th scope="col" jhiSortBy="createdDate">
+              <div class="d-flex">
+                <span jhiTranslate="cassandrablogApp.cassandrablogCassPost.createdDate">Created Date</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="addedDateTime">
+              <div class="d-flex">
+                <span jhiTranslate="cassandrablogApp.cassandrablogCassPost.addedDateTime">Added Date Time</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="postId">
+              <div class="d-flex">
+                <span jhiTranslate="cassandrablogApp.cassandrablogCassPost.postId">Post Id</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="title">
+              <div class="d-flex">
+                <span jhiTranslate="cassandrablogApp.cassandrablogCassPost.title">Title</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="content">
+              <div class="d-flex">
+                <span jhiTranslate="cassandrablogApp.cassandrablogCassPost.content">Content</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="publishedDateTime">
+              <div class="d-flex">
+                <span jhiTranslate="cassandrablogApp.cassandrablogCassPost.publishedDateTime">Published Date Time</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="sentDate">
+              <div class="d-flex">
+                <span jhiTranslate="cassandrablogApp.cassandrablogCassPost.sentDate">Sent Date</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (cassPost of cassPosts(); track trackCompositeId(cassPost)) {
+            <tr data-cy="entityTable">
+              <td>{{ cassPost!.compositeId.createdDate | formatMediumDate }}</td>
+
+              <td>{{ cassPost!.compositeId.addedDateTime | formatMediumDatetime }}</td>
+
+              <td>{{ cassPost!.compositeId.postId }}</td>
+
+              <td>{{ cassPost.title }}</td>
+              <td>{{ cassPost.content }}</td>
+              <td>{{ cassPost.publishedDateTime | formatMediumDatetime }}</td>
+              <td>{{ cassPost.sentDate | formatMediumDate }}</td>
+              <td class="text-end">
+                <div class="btn-group">
+                  <a
+                    [routerLink]="[
+                      '/cassandrablog/cass-post',
+                      cassPost!.compositeId.createdDate | convertFromDayjsToDateLong,
+                      cassPost!.compositeId.addedDateTime | convertFromDayjsToDateLong,
+                      cassPost!.compositeId.postId,
+                      'view',
+                    ]"
+                    class="btn btn-info btn-sm"
+                    data-cy="entityDetailsButton"
+                  >
+                    <fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                  </a>
+                  <a
+                    [routerLink]="[
+                      '/cassandrablog/cass-post',
+                      cassPost!.compositeId.createdDate | convertFromDayjsToDateLong,
+                      cassPost!.compositeId.addedDateTime | convertFromDayjsToDateLong,
+                      cassPost!.compositeId.postId,
+                      'edit',
+                    ]"
+                    class="btn btn-primary btn-sm"
+                    data-cy="entityEditButton"
+                  >
+                    <fa-icon icon="pencil-alt"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                  </a>
+
+                  <button type="submit" (click)="delete(cassPost)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                    <fa-icon icon="times"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+      <div class="d-flex justify-content-center mt-3 mb-3">
+        @if (isLoadingMore) {
+          <button class="btn btn-primary" disabled>
+            <fa-icon icon="sync" [animation]="'spin'"></fa-icon>
+            <span jhiTranslate="cassandrablogApp.cassandrablogCassPost.home.loadingMore">Loading more cass posts...</span>
+          </button>
+        }
+        @if (!hasNextPage && cassPosts().length > 0 && !isLoadingMore) {
+          <div class="text-muted">
+            <fa-icon icon="check-circle" class="me-2"></fa-icon>
+            <span jhiTranslate="cassandrablogApp.cassandrablogCassPost.home.endOfList">You&apos;ve reached the end of the list</span>
+          </div>
+        }
+      </div>
+    </div>
+  }
+</div>

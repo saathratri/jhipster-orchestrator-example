@@ -1,0 +1,68 @@
+{
+  "annotations": {
+    "changelogDate": "20260531021117"
+  },
+  "applications": ["cassandrablog"],
+  "clientRootFolder": "cassandrablog",
+  "databaseType": "cassandra",
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "createdDate",
+      "fieldType": "Long",
+      "options": {
+        "customAnnotation": ["PrimaryKeyType.PARTITIONED", "CassandraType.Name.BIGINT", "UTC_DATE", "0"],
+        "id": true
+      }
+    },
+    {
+      "fieldName": "addedDateTime",
+      "fieldType": "Long",
+      "options": {
+        "customAnnotation": ["PrimaryKeyType.CLUSTERED", "CassandraType.Name.BIGINT", "UTC_DATETIME", "1"]
+      }
+    },
+    {
+      "fieldName": "postId",
+      "fieldType": "UUID",
+      "options": {
+        "customAnnotation": ["PrimaryKeyType.CLUSTERED", "CassandraType.Name.UUID", "", "2"]
+      }
+    },
+    {
+      "fieldName": "title",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"],
+      "options": {
+        "customAnnotation": ["", "CassandraType.Name.TEXT"]
+      }
+    },
+    {
+      "fieldName": "content",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"],
+      "options": {
+        "customAnnotation": ["", "CassandraType.Name.TEXT"]
+      }
+    },
+    {
+      "fieldName": "publishedDateTime",
+      "fieldType": "Long",
+      "options": {
+        "customAnnotation": ["", "CassandraType.Name.BIGINT", "UTC_DATETIME"]
+      }
+    },
+    {
+      "fieldName": "sentDate",
+      "fieldType": "Long",
+      "options": {
+        "customAnnotation": ["", "CassandraType.Name.BIGINT", "UTC_DATE"]
+      }
+    }
+  ],
+  "microserviceName": "cassandrablog",
+  "name": "CassPost",
+  "relationships": [],
+  "searchEngine": "no",
+  "service": "serviceImpl"
+}

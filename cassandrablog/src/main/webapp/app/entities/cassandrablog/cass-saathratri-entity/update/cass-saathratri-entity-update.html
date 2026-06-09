@@ -1,0 +1,165 @@
+<style>
+  .saathratri-pdf-badge-link {
+    text-decoration: none;
+    display: inline-block;
+    cursor: pointer;
+  }
+  .saathratri-pdf-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #e53935;
+    color: white;
+    font-weight: bold;
+    border-radius: 4px;
+    border: 2px solid #1976d2;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition:
+      border-color 0.2s ease,
+      box-shadow 0.2s ease,
+      transform 0.2s ease;
+  }
+  .saathratri-pdf-badge:hover {
+    border-color: #0d47a1;
+    box-shadow: 0 4px 8px rgba(25, 118, 210, 0.4);
+    transform: scale(1.05);
+  }
+  .saathratri-pdf-badge-sm {
+    width: 40px;
+    height: 52px;
+    font-size: 0.6rem;
+  }
+  .saathratri-pdf-badge-lg {
+    width: 60px;
+    height: 78px;
+    font-size: 0.75rem;
+  }
+</style>
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2
+        id="jhi-cass-saathratri-entity-heading"
+        data-cy="CassSaathratriEntityCreateUpdateHeading"
+        jhiTranslate="cassandrablogApp.cassandrablogCassSaathratriEntity.home.createOrEditLabel"
+      >
+        Create or edit a Cass Saathratri Entity
+      </h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_entityId" jhiTranslate="cassandrablogApp.cassandrablogCassSaathratriEntity.entityId"
+            >Entity Id</label
+          >
+          <input type="text" class="form-control" name="entityId" id="field_entityId" data-cy="entityId" formControlName="entityId" />
+          @if (isNew) {
+            <button type="button" class="btn btn-primary" data-cy="entityId-generate" (click)="generateUUID('entityId')">Generate</button>
+            <button
+              type="button"
+              class="btn btn-danger"
+              data-cy="entityId-reset"
+              (click)="reset('entityId')"
+              [disabled]="isResetDisabled['entityId']"
+            >
+              Reset
+            </button>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_entityName" jhiTranslate="cassandrablogApp.cassandrablogCassSaathratriEntity.entityName"
+            >Entity Name</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="entityName"
+            id="field_entityName"
+            data-cy="entityName"
+            formControlName="entityName"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label
+            class="form-label"
+            for="field_entityDescription"
+            jhiTranslate="cassandrablogApp.cassandrablogCassSaathratriEntity.entityDescription"
+            >Entity Description</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="entityDescription"
+            id="field_entityDescription"
+            data-cy="entityDescription"
+            formControlName="entityDescription"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_entityCost" jhiTranslate="cassandrablogApp.cassandrablogCassSaathratriEntity.entityCost"
+            >Entity Cost</label
+          >
+          <input
+            type="number"
+            class="form-control"
+            name="entityCost"
+            id="field_entityCost"
+            data-cy="entityCost"
+            formControlName="entityCost"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_createdId" jhiTranslate="cassandrablogApp.cassandrablogCassSaathratriEntity.createdId"
+            >Created Id</label
+          >
+          <input type="text" class="form-control" name="createdId" id="field_createdId" data-cy="createdId" formControlName="createdId" />
+          <button type="button" class="btn btn-primary" (click)="generateUUID('createdId')">Generate</button>
+          <button type="button" class="btn btn-danger" (click)="reset('createdId')" [disabled]="isResetDisabled['createdId']">Reset</button>
+        </div>
+
+        <div class="mb-3">
+          <label
+            class="form-label"
+            for="field_createdTimeId"
+            jhiTranslate="cassandrablogApp.cassandrablogCassSaathratriEntity.createdTimeId"
+            >Created Time Id</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="createdTimeId"
+            id="field_createdTimeId"
+            data-cy="createdTimeId"
+            formControlName="createdTimeId"
+          />
+          <button type="button" class="btn btn-primary" (click)="generateTimeUUID('createdTimeId')">Generate</button>
+          <button type="button" class="btn btn-danger" (click)="reset('createdTimeId')" [disabled]="isResetDisabled['createdTimeId']">
+            Reset
+          </button>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

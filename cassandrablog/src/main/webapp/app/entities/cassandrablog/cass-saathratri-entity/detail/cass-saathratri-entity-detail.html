@@ -1,0 +1,94 @@
+<style>
+  .saathratri-pdf-badge-link {
+    text-decoration: none;
+    display: inline-block;
+    cursor: pointer;
+  }
+  .saathratri-pdf-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #e53935;
+    color: white;
+    font-weight: bold;
+    border-radius: 4px;
+    border: 2px solid #1976d2;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition:
+      border-color 0.2s ease,
+      box-shadow 0.2s ease,
+      transform 0.2s ease;
+  }
+  .saathratri-pdf-badge:hover {
+    border-color: #0d47a1;
+    box-shadow: 0 4px 8px rgba(25, 118, 210, 0.4);
+    transform: scale(1.05);
+  }
+  .saathratri-pdf-badge-sm {
+    width: 40px;
+    height: 52px;
+    font-size: 0.6rem;
+  }
+  .saathratri-pdf-badge-lg {
+    width: 60px;
+    height: 78px;
+    font-size: 0.75rem;
+  }
+</style>
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (cassSaathratriEntity(); as cassSaathratriEntityRef) {
+      <div>
+        <h2 data-cy="cassSaathratriEntityDetailsHeading">
+          <span jhiTranslate="cassandrablogApp.cassandrablogCassSaathratriEntity.detail.title">Cass Saathratri Entity</span>
+        </h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span jhiTranslate="cassandrablogApp.cassandrablogCassSaathratriEntity.entityId">Entity Id</span></dt>
+          <dd>
+            <span>{{ cassSaathratriEntityRef.entityId }}</span>
+          </dd>
+          <dt><span jhiTranslate="cassandrablogApp.cassandrablogCassSaathratriEntity.entityName">Entity Name</span></dt>
+          <dd>
+            <span>{{ cassSaathratriEntityRef.entityName }}</span>
+          </dd>
+          <dt><span jhiTranslate="cassandrablogApp.cassandrablogCassSaathratriEntity.entityDescription">Entity Description</span></dt>
+          <dd>
+            <span>{{ cassSaathratriEntityRef.entityDescription }}</span>
+          </dd>
+          <dt><span jhiTranslate="cassandrablogApp.cassandrablogCassSaathratriEntity.entityCost">Entity Cost</span></dt>
+          <dd>
+            <span>{{ cassSaathratriEntityRef.entityCost }}</span>
+          </dd>
+          <dt><span jhiTranslate="cassandrablogApp.cassandrablogCassSaathratriEntity.createdId">Created Id</span></dt>
+          <dd>
+            <span>{{ cassSaathratriEntityRef.createdId }}</span>
+          </dd>
+          <dt><span jhiTranslate="cassandrablogApp.cassandrablogCassSaathratriEntity.createdTimeId">Created Time Id</span></dt>
+          <dd>
+            <span>{{ cassSaathratriEntityRef.createdTimeId }}</span>
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+        </button>
+
+        <button
+          type="button"
+          [routerLink]="['/cassandrablog/cass-saathratri-entity', cassSaathratriEntityRef.entityId, 'edit']"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

@@ -1,0 +1,66 @@
+{
+  "annotations": {
+    "changelogDate": "20260531021617"
+  },
+  "applications": ["cassandrablog"],
+  "clientRootFolder": "cassandrablog",
+  "databaseType": "cassandra",
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "entityType",
+      "fieldType": "String",
+      "options": {
+        "customAnnotation": ["PrimaryKeyType.PARTITIONED", "CassandraType.Name.TEXT", ""],
+        "id": true
+      }
+    },
+    {
+      "fieldName": "createdTimeId",
+      "fieldType": "UUID",
+      "options": {
+        "customAnnotation": ["PrimaryKeyType.CLUSTERED", "CassandraType.Name.TIMEUUID", ""]
+      }
+    },
+    {
+      "fieldName": "entityName",
+      "fieldType": "String",
+      "options": {
+        "customAnnotation": ["", "CassandraType.Name.TEXT"]
+      }
+    },
+    {
+      "fieldName": "entityDescription",
+      "fieldType": "String",
+      "options": {
+        "customAnnotation": ["", "CassandraType.Name.TEXT"]
+      }
+    },
+    {
+      "fieldName": "entityCost",
+      "fieldType": "BigDecimal",
+      "options": {
+        "customAnnotation": ["", "CassandraType.Name.DECIMAL"]
+      }
+    },
+    {
+      "fieldName": "departureDate",
+      "fieldType": "Long",
+      "options": {
+        "customAnnotation": ["", "CassandraType.Name.BIGINT", "UTC_DATE"]
+      }
+    },
+    {
+      "fieldName": "tags",
+      "fieldType": "String",
+      "options": {
+        "customAnnotation": ["CassandraType.Name.SET", "CassandraType.Name.TEXT", ""]
+      }
+    }
+  ],
+  "microserviceName": "cassandrablog",
+  "name": "CassSaathratriEntity3",
+  "relationships": [],
+  "searchEngine": "no",
+  "service": "serviceImpl"
+}

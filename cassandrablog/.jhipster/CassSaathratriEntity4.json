@@ -1,0 +1,38 @@
+{
+  "annotations": {
+    "changelogDate": "20260531021717"
+  },
+  "applications": ["cassandrablog"],
+  "clientRootFolder": "cassandrablog",
+  "databaseType": "cassandra",
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "organizationId",
+      "fieldType": "UUID",
+      "options": {
+        "customAnnotation": ["PrimaryKeyType.PARTITIONED", "CassandraType.Name.UUID", ""],
+        "id": true
+      }
+    },
+    {
+      "fieldName": "attributeKey",
+      "fieldType": "String",
+      "options": {
+        "customAnnotation": ["PrimaryKeyType.CLUSTERED", "CassandraType.Name.TEXT", ""]
+      }
+    },
+    {
+      "fieldName": "attributeValue",
+      "fieldType": "String",
+      "options": {
+        "customAnnotation": ["", "CassandraType.Name.TEXT"]
+      }
+    }
+  ],
+  "microserviceName": "cassandrablog",
+  "name": "CassSaathratriEntity4",
+  "relationships": [],
+  "searchEngine": "no",
+  "service": "serviceImpl"
+}

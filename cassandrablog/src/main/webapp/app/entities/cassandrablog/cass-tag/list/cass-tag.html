@@ -1,0 +1,240 @@
+<style>
+  .saathratri-pdf-badge-link {
+    text-decoration: none;
+    display: inline-block;
+    cursor: pointer;
+  }
+  .saathratri-pdf-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #e53935;
+    color: white;
+    font-weight: bold;
+    border-radius: 4px;
+    border: 2px solid #1976d2;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition:
+      border-color 0.2s ease,
+      box-shadow 0.2s ease,
+      transform 0.2s ease;
+  }
+  .saathratri-pdf-badge:hover {
+    border-color: #0d47a1;
+    box-shadow: 0 4px 8px rgba(25, 118, 210, 0.4);
+    transform: scale(1.05);
+  }
+  .saathratri-pdf-badge-sm {
+    width: 40px;
+    height: 52px;
+    font-size: 0.6rem;
+  }
+  .saathratri-pdf-badge-lg {
+    width: 60px;
+    height: 78px;
+    font-size: 0.75rem;
+  }
+</style>
+<div>
+  <h2 id="page-heading" data-cy="CassTagHeading">
+    <span jhiTranslate="cassandrablogApp.cassandrablogCassTag.home.title">Cass Tags</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+        <fa-icon icon="sync" [animation]="isLoading ? 'spin' : undefined"></fa-icon>
+        <span jhiTranslate="cassandrablogApp.cassandrablogCassTag.home.refreshListLabel">Refresh list</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-cass-tag"
+        [routerLink]="['/cassandrablog/cass-tag/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span jhiTranslate="cassandrablogApp.cassandrablogCassTag.home.createLabel">Create a new Cass Tag</span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  <form name="aiSearchForm" class="row row-cols-sm-auto align-items-center">
+    <div class="col-sm-12">
+      <div class="input-group w-100 mt-3">
+        <label class="visually-hidden" for="aiSearchQuery">AI Search</label>
+        <input
+          type="text"
+          class="form-control"
+          [(ngModel)]="aiSearchQuery"
+          id="aiSearchQuery"
+          name="aiSearchQuery"
+          placeholder="AI Search (semantic)..."
+          (keyup.enter)="performAiSearch(aiSearchQuery)"
+        />
+
+        <button class="btn btn-warning" (click)="performAiSearch(aiSearchQuery)" [disabled]="aiSearchLoading()">
+          @if (aiSearchLoading()) {
+            <fa-icon icon="sync" animation="spin"></fa-icon>
+          } @else {
+            <fa-icon icon="search"></fa-icon>
+          }
+          <span class="d-none d-md-inline">AI Search</span>
+        </button>
+
+        @if (isAiSearchActive()) {
+          <button class="btn btn-danger" (click)="clearAiSearch()">
+            <fa-icon icon="trash-alt"></fa-icon>
+          </button>
+        }
+      </div>
+      <div class="mt-2 d-flex flex-wrap gap-3">
+        <small class="text-muted me-1">Search in:</small>
+        <div class="form-check form-check-inline">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            id="aiField_nameEmbedding"
+            [checked]="aiSearchSelectedFields['nameEmbedding']"
+            (change)="toggleAiSearchField('nameEmbedding')"
+          />
+          <label class="form-check-label" for="aiField_nameEmbedding">name</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            id="aiField_descriptionEmbedding"
+            [checked]="aiSearchSelectedFields['descriptionEmbedding']"
+            (change)="toggleAiSearchField('descriptionEmbedding')"
+          />
+          <label class="form-check-label" for="aiField_descriptionEmbedding">description</label>
+        </div>
+      </div>
+    </div>
+  </form>
+  @if (isAiSearchActive()) {
+    <div class="alert alert-info mt-2 mb-0">
+      <fa-icon icon="search"></fa-icon> Showing AI-powered semantic search results.
+      <a href="javascript:void(0)" (click)="clearAiSearch()">Clear search</a>
+    </div>
+  }
+
+  @if (cassTags().length === 0) {
+    <div class="alert alert-warning" id="no-result">
+      <span jhiTranslate="cassandrablogApp.cassandrablogCassTag.home.notFound">No Cass Tags found</span>
+    </div>
+  }
+
+  @if (cassTags().length > 0) {
+    <div class="table-responsive table-entities" id="entities">
+      <table class="table table-striped" aria-describedby="page-heading">
+        <thead>
+          <tr jhiSort [(sortState)]="sortState" (sortChange)="navigateToWithComponentValues($event)">
+            <th scope="col" jhiSortBy="id">
+              <div class="d-flex">
+                <span jhiTranslate="cassandrablogApp.cassandrablogCassTag.id">Id</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="name">
+              <div class="d-flex">
+                <span jhiTranslate="cassandrablogApp.cassandrablogCassTag.name">Name</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="description">
+              <div class="d-flex">
+                <span jhiTranslate="cassandrablogApp.cassandrablogCassTag.description">Description</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col">
+              <div class="d-flex"><span>Name Embedding</span></div>
+            </th>
+            <th scope="col">
+              <div class="d-flex"><span>Description Embedding</span></div>
+            </th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (cassTag of cassTags(); track trackId(cassTag)) {
+            <tr data-cy="entityTable">
+              <td>
+                <a [routerLink]="['/cassandrablog/cass-tag', cassTag.id, 'view']">{{ cassTag.id }}</a>
+              </td>
+              <td>{{ cassTag.name }}</td>
+              <td>{{ cassTag.description }}</td>
+              <td>
+                <small class="text-muted">
+                  @if (cassTag.nameEmbedding && cassTag.nameEmbedding.length > 0) {
+                    [{{ cassTag.nameEmbedding[0] | number: '1.0-5' }}, {{ cassTag.nameEmbedding[1] | number: '1.0-5' }},
+                    {{ cassTag.nameEmbedding[2] | number: '1.0-5' }}, ...]
+                  } @else {
+                    <em>Not generated</em>
+                  }
+                </small>
+              </td>
+              <td>
+                <small class="text-muted">
+                  @if (cassTag.descriptionEmbedding && cassTag.descriptionEmbedding.length > 0) {
+                    [{{ cassTag.descriptionEmbedding[0] | number: '1.0-5' }}, {{ cassTag.descriptionEmbedding[1] | number: '1.0-5' }},
+                    {{ cassTag.descriptionEmbedding[2] | number: '1.0-5' }}, ...]
+                  } @else {
+                    <em>Not generated</em>
+                  }
+                </small>
+              </td>
+              <td class="text-end">
+                <div class="btn-group">
+                  <a
+                    [routerLink]="['/cassandrablog/cass-tag', cassTag.id, 'view']"
+                    class="btn btn-info btn-sm"
+                    data-cy="entityDetailsButton"
+                  >
+                    <fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                  </a>
+                  <a
+                    [routerLink]="['/cassandrablog/cass-tag', cassTag.id, 'edit']"
+                    class="btn btn-primary btn-sm"
+                    data-cy="entityEditButton"
+                  >
+                    <fa-icon icon="pencil-alt"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                  </a>
+
+                  <button type="submit" (click)="delete(cassTag)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                    <fa-icon icon="times"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+      <div class="d-flex justify-content-center mt-3 mb-3">
+        @if (isLoadingMore) {
+          <button class="btn btn-primary" disabled>
+            <fa-icon icon="sync" [animation]="'spin'"></fa-icon>
+            <span jhiTranslate="cassandrablogApp.cassandrablogCassTag.home.loadingMore">Loading more cass tags...</span>
+          </button>
+        }
+        @if (!hasNextPage && cassTags().length > 0 && !isLoadingMore) {
+          <div class="text-muted">
+            <fa-icon icon="check-circle" class="me-2"></fa-icon>
+            <span jhiTranslate="cassandrablogApp.cassandrablogCassTag.home.endOfList">You&apos;ve reached the end of the list</span>
+          </div>
+        }
+      </div>
+    </div>
+  }
+</div>

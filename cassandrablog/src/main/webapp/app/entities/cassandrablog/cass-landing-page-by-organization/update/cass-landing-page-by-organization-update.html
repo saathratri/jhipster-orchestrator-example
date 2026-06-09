@@ -1,0 +1,162 @@
+<style>
+  .saathratri-pdf-badge-link {
+    text-decoration: none;
+    display: inline-block;
+    cursor: pointer;
+  }
+  .saathratri-pdf-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #e53935;
+    color: white;
+    font-weight: bold;
+    border-radius: 4px;
+    border: 2px solid #1976d2;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition:
+      border-color 0.2s ease,
+      box-shadow 0.2s ease,
+      transform 0.2s ease;
+  }
+  .saathratri-pdf-badge:hover {
+    border-color: #0d47a1;
+    box-shadow: 0 4px 8px rgba(25, 118, 210, 0.4);
+    transform: scale(1.05);
+  }
+  .saathratri-pdf-badge-sm {
+    width: 40px;
+    height: 52px;
+    font-size: 0.6rem;
+  }
+  .saathratri-pdf-badge-lg {
+    width: 60px;
+    height: 78px;
+    font-size: 0.75rem;
+  }
+</style>
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2
+        id="jhi-cass-landing-page-by-organization-heading"
+        data-cy="CassLandingPageByOrganizationCreateUpdateHeading"
+        jhiTranslate="cassandrablogApp.cassandrablogCassLandingPageByOrganization.home.createOrEditLabel"
+      >
+        Create or edit a Cass Landing Page By Organization
+      </h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        <div class="mb-3">
+          <label
+            class="form-label"
+            for="field_organizationId"
+            jhiTranslate="cassandrablogApp.cassandrablogCassLandingPageByOrganization.organizationId"
+            >Organization Id</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="organizationId"
+            id="field_organizationId"
+            data-cy="organizationId"
+            formControlName="organizationId"
+          />
+          @if (isNew) {
+            <button type="button" class="btn btn-primary" data-cy="organizationId-generate" (click)="generateUUID('organizationId')">
+              Generate
+            </button>
+            <button
+              type="button"
+              class="btn btn-danger"
+              data-cy="organizationId-reset"
+              (click)="reset('organizationId')"
+              [disabled]="isResetDisabled['organizationId']"
+            >
+              Reset
+            </button>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label
+            class="form-label"
+            for="field_detailsText"
+            jhiTranslate="cassandrablogApp.cassandrablogCassLandingPageByOrganization.detailsText"
+            >Details Text</label
+          >
+          <app-map-string-component
+            fieldName="detailsText"
+            [inputFields]="inputFieldsDetailsText"
+            (dataChange)="handleDetailsTextInputChange($event)"
+          >
+          </app-map-string-component>
+        </div>
+
+        <div class="mb-3">
+          <label
+            class="form-label"
+            for="field_detailsDecimal"
+            jhiTranslate="cassandrablogApp.cassandrablogCassLandingPageByOrganization.detailsDecimal"
+            >Details Decimal</label
+          >
+          <app-map-number-component
+            fieldName="detailsDecimal"
+            [inputFields]="inputFieldsDetailsDecimal"
+            (dataChange)="handleDetailsDecimalInputChange($event)"
+          >
+          </app-map-number-component>
+        </div>
+
+        <div class="mb-3">
+          <label
+            class="form-label"
+            for="field_detailsBoolean"
+            jhiTranslate="cassandrablogApp.cassandrablogCassLandingPageByOrganization.detailsBoolean"
+            >Details Boolean</label
+          >
+          <app-map-boolean-component
+            fieldName="detailsBoolean"
+            [inputFields]="inputFieldsDetailsBoolean"
+            (dataChange)="handleDetailsBooleanInputChange($event)"
+          >
+          </app-map-boolean-component>
+        </div>
+
+        <div class="mb-3">
+          <label
+            class="form-label"
+            for="field_detailsBigInt"
+            jhiTranslate="cassandrablogApp.cassandrablogCassLandingPageByOrganization.detailsBigInt"
+            >Details Big Int</label
+          >
+          <app-map-dayjs-component
+            fieldName="detailsBigInt"
+            [inputFields]="inputFieldsDetailsBigInt"
+            (dataChange)="handleDetailsBigIntInputChange($event)"
+          >
+          </app-map-dayjs-component>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving || !areAllDateTimeFieldsValid"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

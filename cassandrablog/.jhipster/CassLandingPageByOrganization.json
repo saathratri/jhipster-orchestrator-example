@@ -1,0 +1,52 @@
+{
+  "annotations": {
+    "changelogDate": "20260531022017"
+  },
+  "applications": ["cassandrablog"],
+  "clientRootFolder": "cassandrablog",
+  "databaseType": "cassandra",
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "organizationId",
+      "fieldType": "UUID",
+      "options": {
+        "customAnnotation": ["PrimaryKeyType.PARTITIONED", "CassandraType.Name.UUID", ""],
+        "id": true
+      }
+    },
+    {
+      "fieldName": "detailsText",
+      "fieldType": "String",
+      "options": {
+        "customAnnotation": ["CassandraType.Name.MAP", "CassandraType.Name.TEXT", ""]
+      }
+    },
+    {
+      "fieldName": "detailsDecimal",
+      "fieldType": "BigDecimal",
+      "options": {
+        "customAnnotation": ["CassandraType.Name.MAP", "CassandraType.Name.DECIMAL", ""]
+      }
+    },
+    {
+      "fieldName": "detailsBoolean",
+      "fieldType": "Boolean",
+      "options": {
+        "customAnnotation": ["CassandraType.Name.MAP", "CassandraType.Name.BOOLEAN", ""]
+      }
+    },
+    {
+      "fieldName": "detailsBigInt",
+      "fieldType": "Long",
+      "options": {
+        "customAnnotation": ["CassandraType.Name.MAP", "CassandraType.Name.BIGINT", "UTC_DATETIME"]
+      }
+    }
+  ],
+  "microserviceName": "cassandrablog",
+  "name": "CassLandingPageByOrganization",
+  "relationships": [],
+  "searchEngine": "no",
+  "service": "serviceImpl"
+}

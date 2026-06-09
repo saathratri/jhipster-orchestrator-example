@@ -1,0 +1,21 @@
+{
+  "generator-jhipster": {
+    "appsFolders": [
+      "orchestratorgateway",
+      "psqlblog",
+      "psqlstore",
+      "cassandrablog",
+      "cassandrastore"
+    ],
+    "baseName": "workspaces",
+    "blueprints": [
+      {
+        "name": "generator-jhipster-orchestrator",
+        "version": "1.0.1"
+      }
+    ],
+    "deploymentType": "none",
+    "directoryPath": "./",
+    "jhipsterVersion": "8.10.0"
+  }
+}

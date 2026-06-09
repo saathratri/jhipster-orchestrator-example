@@ -1,0 +1,42 @@
+{
+  "cassandrablogApp": {
+    "cassandrablogCassSaathratriEntity4": {
+      "home": {
+        "title": "Cass Saathratri Entity 4s",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Cass Saathratri Entity 4",
+        "createOrEditLabel": "Create or edit a Cass Saathratri Entity 4",
+        "notFound": "No Cass Saathratri Entity 4s found",
+        "loadMore": "Load More",
+        "loadingMore": "Loading more cass saathratri entity 4s...",
+        "endOfList": "You've reached the end of the list",
+        "search": "Search Cass Saathratri Entity 4s",
+        "searchActive": "Search Active",
+        "searchRequired": "Enter partition key values above and click Search to load data",
+        "partitionKeys": "Partition Keys",
+        "clusteringKeys": "Clustering Keys",
+        "optional": "optional",
+        "operator": "Operator",
+        "selectDate": "Select Date",
+        "hour": "Hour",
+        "minute": "Minute",
+        "dateFormat": "Format: 9 Dec 2025",
+        "dateTimeFormat": "Format: 9 Dec 2025, 14:30:00",
+        "searchButton": "Search",
+        "clearSearch": "Clear"
+      },
+      "created": "A new Cass Saathratri Entity 4 is created with identifier {{ param }}",
+      "updated": "A Cass Saathratri Entity 4 is updated with identifier {{ param }}",
+      "deleted": "A Cass Saathratri Entity 4 is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Cass Saathratri Entity 4 Organization Id '{{ organizationId }}', and Attribute Key '{{ attributeKey }}'?"
+      },
+      "detail": {
+        "title": "Cass Saathratri Entity 4"
+      },
+      "organizationId": "Organization Id",
+      "attributeKey": "Attribute Key",
+      "attributeValue": "Attribute Value"
+    }
+  }
+}

@@ -1,0 +1,406 @@
+<style>
+  .saathratri-pdf-badge-link {
+    text-decoration: none;
+    display: inline-block;
+    cursor: pointer;
+  }
+  .saathratri-pdf-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #e53935;
+    color: white;
+    font-weight: bold;
+    border-radius: 4px;
+    border: 2px solid #1976d2;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition:
+      border-color 0.2s ease,
+      box-shadow 0.2s ease,
+      transform 0.2s ease;
+  }
+  .saathratri-pdf-badge:hover {
+    border-color: #0d47a1;
+    box-shadow: 0 4px 8px rgba(25, 118, 210, 0.4);
+    transform: scale(1.05);
+  }
+  .saathratri-pdf-badge-sm {
+    width: 40px;
+    height: 52px;
+    font-size: 0.6rem;
+  }
+  .saathratri-pdf-badge-lg {
+    width: 60px;
+    height: 78px;
+    font-size: 0.75rem;
+  }
+</style>
+<div>
+  <h2 id="page-heading" data-cy="CassAddOnsAvailableByOrganizationHeading">
+    <span jhiTranslate="cassandrablogApp.cassandrablogCassAddOnsAvailableByOrganization.home.title"
+      >Cass Add Ons Available By Organizations</span
+    >
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+        <fa-icon icon="sync" [animation]="isLoading ? 'spin' : undefined"></fa-icon>
+        <span jhiTranslate="cassandrablogApp.cassandrablogCassAddOnsAvailableByOrganization.home.refreshListLabel">Refresh list</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-cass-add-ons-available-by-organization"
+        [routerLink]="['/cassandrablog/cass-add-ons-available-by-organization/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span jhiTranslate="cassandrablogApp.cassandrablogCassAddOnsAvailableByOrganization.home.createLabel"
+          >Create a new Cass Add Ons Available By Organization</span
+        >
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  <!-- Cassandra Search Form -->
+  <div class="card mb-3">
+    <div
+      class="card-header d-flex justify-content-between align-items-center"
+      (click)="toggleSearchForm()"
+      style="cursor: pointer"
+      data-cy="searchFormToggle"
+    >
+      <span>
+        <fa-icon [icon]="isSearchFormCollapsed ? 'chevron-right' : 'chevron-down'" class="me-2"></fa-icon>
+        <fa-icon icon="search" class="me-1"></fa-icon>
+        <span jhiTranslate="cassandrablogApp.cassandrablogCassAddOnsAvailableByOrganization.home.search"
+          >Search Cass Add Ons Available By Organizations</span
+        >
+      </span>
+      @if (hasActiveSearch()) {
+        <span class="badge bg-primary" jhiTranslate="cassandrablogApp.cassandrablogCassAddOnsAvailableByOrganization.home.searchActive"
+          >Search Active</span
+        >
+      }
+    </div>
+    @if (!isSearchFormCollapsed) {
+      <div class="card-body">
+        <form name="searchForm" (ngSubmit)="performSearch()" #searchForm="ngForm">
+          <!-- Partition Key Fields (Required) -->
+          <div class="mb-3">
+            <h6 class="text-muted mb-2">
+              <fa-icon icon="key" class="me-1"></fa-icon>
+              <span jhiTranslate="cassandrablogApp.cassandrablogCassAddOnsAvailableByOrganization.home.partitionKeys">Partition Keys</span>
+              <span class="text-danger">*</span>
+            </h6>
+            <div class="row">
+              <div class="col-md-4 mb-2">
+                <label
+                  class="form-label"
+                  for="search_organizationId"
+                  jhiTranslate="cassandrablogApp.cassandrablogCassAddOnsAvailableByOrganization.organizationId"
+                  >Organization Id</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="search_organizationId"
+                  name="search_organizationId"
+                  [(ngModel)]="searchCriteria.organizationId"
+                  required
+                  data-cy="searchOrganizationId"
+                />
+              </div>
+              <div class="col-md-4 mb-2">
+                <label
+                  class="form-label"
+                  for="search_entityType"
+                  jhiTranslate="cassandrablogApp.cassandrablogCassAddOnsAvailableByOrganization.entityType"
+                  >Entity Type</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="search_entityType"
+                  name="search_entityType"
+                  [(ngModel)]="searchCriteria.entityType"
+                  required
+                  data-cy="searchEntityType"
+                />
+              </div>
+              <div class="col-md-4 mb-2">
+                <label
+                  class="form-label"
+                  for="search_entityId"
+                  jhiTranslate="cassandrablogApp.cassandrablogCassAddOnsAvailableByOrganization.entityId"
+                  >Entity Id</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="search_entityId"
+                  name="search_entityId"
+                  [(ngModel)]="searchCriteria.entityId"
+                  required
+                  data-cy="searchEntityId"
+                />
+              </div>
+            </div>
+          </div>
+
+          <!-- Clustering Key Fields (Optional) -->
+          <div class="mb-3">
+            <h6 class="text-muted mb-2">
+              <fa-icon icon="sort" class="me-1"></fa-icon>
+              <span jhiTranslate="cassandrablogApp.cassandrablogCassAddOnsAvailableByOrganization.home.clusteringKeys"
+                >Clustering Keys</span
+              >
+              <span class="text-muted small"
+                >(<span jhiTranslate="cassandrablogApp.cassandrablogCassAddOnsAvailableByOrganization.home.optional">optional</span>)</span
+              >
+            </h6>
+            <div class="row">
+              <div class="col-md-4 mb-2">
+                <label
+                  class="form-label"
+                  for="search_addOnId"
+                  [class.text-muted]="isClusteringFieldDisabled('addOnId')"
+                  jhiTranslate="cassandrablogApp.cassandrablogCassAddOnsAvailableByOrganization.addOnId"
+                  >Add On Id</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="search_addOnId"
+                  name="search_addOnId"
+                  [(ngModel)]="searchCriteria.addOnId"
+                  [disabled]="isClusteringFieldDisabled('addOnId')"
+                  data-cy="searchAddOnId"
+                />
+              </div>
+            </div>
+          </div>
+
+          <!-- Search Actions -->
+          <div class="d-flex gap-2">
+            <button type="submit" class="btn btn-primary" [disabled]="!isSearchFormValid()" data-cy="searchButton">
+              <fa-icon icon="search"></fa-icon>
+              <span jhiTranslate="cassandrablogApp.cassandrablogCassAddOnsAvailableByOrganization.home.searchButton">Search</span>
+            </button>
+            <button type="button" class="btn btn-secondary" (click)="clearSearch()" data-cy="clearSearchButton">
+              <fa-icon icon="times"></fa-icon>
+              <span jhiTranslate="cassandrablogApp.cassandrablogCassAddOnsAvailableByOrganization.home.clearSearch">Clear</span>
+            </button>
+          </div>
+        </form>
+      </div>
+    }
+  </div>
+
+  @if (cassAddOnsAvailableByOrganizations().length === 0 && !isLoading) {
+    <div class="alert alert-warning" id="no-result">
+      <span jhiTranslate="cassandrablogApp.cassandrablogCassAddOnsAvailableByOrganization.home.notFound"
+        >No Cass Add Ons Available By Organizations found</span
+      >
+    </div>
+  }
+
+  @if (cassAddOnsAvailableByOrganizations().length > 0) {
+    <div class="table-responsive table-entities" id="entities">
+      <table class="table table-striped" aria-describedby="page-heading">
+        <thead>
+          <tr jhiSort [(sortState)]="sortState" (sortChange)="navigateToWithComponentValues($event)">
+            <th scope="col" jhiSortBy="organizationId">
+              <div class="d-flex">
+                <span jhiTranslate="cassandrablogApp.cassandrablogCassAddOnsAvailableByOrganization.organizationId">Organization Id</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="entityType">
+              <div class="d-flex">
+                <span jhiTranslate="cassandrablogApp.cassandrablogCassAddOnsAvailableByOrganization.entityType">Entity Type</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="entityId">
+              <div class="d-flex">
+                <span jhiTranslate="cassandrablogApp.cassandrablogCassAddOnsAvailableByOrganization.entityId">Entity Id</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="addOnId">
+              <div class="d-flex">
+                <span jhiTranslate="cassandrablogApp.cassandrablogCassAddOnsAvailableByOrganization.addOnId">Add On Id</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="addOnType">
+              <div class="d-flex">
+                <span jhiTranslate="cassandrablogApp.cassandrablogCassAddOnsAvailableByOrganization.addOnType">Add On Type</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="addOnDetailsText">
+              <div class="d-flex">
+                <span jhiTranslate="cassandrablogApp.cassandrablogCassAddOnsAvailableByOrganization.addOnDetailsText"
+                  >Add On Details Text</span
+                >
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="addOnDetailsDecimal">
+              <div class="d-flex">
+                <span jhiTranslate="cassandrablogApp.cassandrablogCassAddOnsAvailableByOrganization.addOnDetailsDecimal"
+                  >Add On Details Decimal</span
+                >
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="addOnDetailsBoolean">
+              <div class="d-flex">
+                <span jhiTranslate="cassandrablogApp.cassandrablogCassAddOnsAvailableByOrganization.addOnDetailsBoolean"
+                  >Add On Details Boolean</span
+                >
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="addOnDetailsBigInt">
+              <div class="d-flex">
+                <span jhiTranslate="cassandrablogApp.cassandrablogCassAddOnsAvailableByOrganization.addOnDetailsBigInt"
+                  >Add On Details Big Int</span
+                >
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (
+            cassAddOnsAvailableByOrganization of cassAddOnsAvailableByOrganizations();
+            track trackCompositeId(cassAddOnsAvailableByOrganization)
+          ) {
+            <tr data-cy="entityTable">
+              <td>{{ cassAddOnsAvailableByOrganization!.compositeId.organizationId }}</td>
+
+              <td>{{ cassAddOnsAvailableByOrganization!.compositeId.entityType }}</td>
+
+              <td>{{ cassAddOnsAvailableByOrganization!.compositeId.entityId }}</td>
+
+              <td>{{ cassAddOnsAvailableByOrganization!.compositeId.addOnId }}</td>
+
+              <td>{{ cassAddOnsAvailableByOrganization.addOnType }}</td>
+              <td>
+                @for (item of cassAddOnsAvailableByOrganization.addOnDetailsText | keyvalue; track item.key) {
+                  <div>
+                    <dt>{{ item.key }}</dt>
+                    <dd>{{ item.value }}</dd>
+                  </div>
+                }
+              </td>
+              <td>
+                @for (item of cassAddOnsAvailableByOrganization.addOnDetailsDecimal | keyvalue; track item.key) {
+                  <div>
+                    <dt>{{ item.key }}</dt>
+                    <dd>{{ item.value }}</dd>
+                  </div>
+                }
+              </td>
+              <td>
+                @for (item of cassAddOnsAvailableByOrganization.addOnDetailsBoolean | keyvalue; track item.key) {
+                  <div>
+                    <dt>{{ item.key }}</dt>
+                    <dd>{{ item.value }}</dd>
+                  </div>
+                }
+              </td>
+              <td>
+                @for (item of cassAddOnsAvailableByOrganization.addOnDetailsBigInt | keyvalue; track item.key) {
+                  <div>
+                    <dt>{{ item.key }}</dt>
+                    <dd>{{ item.value | formatMediumDatetime }}</dd>
+                  </div>
+                }
+              </td>
+              <td class="text-end">
+                <div class="btn-group">
+                  <a
+                    [routerLink]="[
+                      '/cassandrablog/cass-add-ons-available-by-organization',
+                      cassAddOnsAvailableByOrganization!.compositeId.organizationId,
+                      cassAddOnsAvailableByOrganization!.compositeId.entityType,
+                      cassAddOnsAvailableByOrganization!.compositeId.entityId,
+                      cassAddOnsAvailableByOrganization!.compositeId.addOnId,
+                      'view',
+                    ]"
+                    class="btn btn-info btn-sm"
+                    data-cy="entityDetailsButton"
+                  >
+                    <fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                  </a>
+                  <a
+                    [routerLink]="[
+                      '/cassandrablog/cass-add-ons-available-by-organization',
+                      cassAddOnsAvailableByOrganization!.compositeId.organizationId,
+                      cassAddOnsAvailableByOrganization!.compositeId.entityType,
+                      cassAddOnsAvailableByOrganization!.compositeId.entityId,
+                      cassAddOnsAvailableByOrganization!.compositeId.addOnId,
+                      'edit',
+                    ]"
+                    class="btn btn-primary btn-sm"
+                    data-cy="entityEditButton"
+                  >
+                    <fa-icon icon="pencil-alt"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                  </a>
+
+                  <button
+                    type="submit"
+                    (click)="delete(cassAddOnsAvailableByOrganization)"
+                    class="btn btn-danger btn-sm"
+                    data-cy="entityDeleteButton"
+                  >
+                    <fa-icon icon="times"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+      <div class="d-flex justify-content-center mt-3 mb-3">
+        @if (isLoadingMore) {
+          <button class="btn btn-primary" disabled>
+            <fa-icon icon="sync" [animation]="'spin'"></fa-icon>
+            <span jhiTranslate="cassandrablogApp.cassandrablogCassAddOnsAvailableByOrganization.home.loadingMore"
+              >Loading more cass add ons available by organizations...</span
+            >
+          </button>
+        }
+        @if (!hasNextPage && cassAddOnsAvailableByOrganizations().length > 0 && !isLoadingMore) {
+          <div class="text-muted">
+            <fa-icon icon="check-circle" class="me-2"></fa-icon>
+            <span jhiTranslate="cassandrablogApp.cassandrablogCassAddOnsAvailableByOrganization.home.endOfList"
+              >You&apos;ve reached the end of the list</span
+            >
+          </div>
+        }
+      </div>
+    </div>
+  }
+</div>

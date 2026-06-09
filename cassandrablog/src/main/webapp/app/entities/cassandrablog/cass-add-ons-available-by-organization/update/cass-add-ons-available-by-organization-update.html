@@ -1,0 +1,244 @@
+<style>
+  .saathratri-pdf-badge-link {
+    text-decoration: none;
+    display: inline-block;
+    cursor: pointer;
+  }
+  .saathratri-pdf-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #e53935;
+    color: white;
+    font-weight: bold;
+    border-radius: 4px;
+    border: 2px solid #1976d2;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition:
+      border-color 0.2s ease,
+      box-shadow 0.2s ease,
+      transform 0.2s ease;
+  }
+  .saathratri-pdf-badge:hover {
+    border-color: #0d47a1;
+    box-shadow: 0 4px 8px rgba(25, 118, 210, 0.4);
+    transform: scale(1.05);
+  }
+  .saathratri-pdf-badge-sm {
+    width: 40px;
+    height: 52px;
+    font-size: 0.6rem;
+  }
+  .saathratri-pdf-badge-lg {
+    width: 60px;
+    height: 78px;
+    font-size: 0.75rem;
+  }
+</style>
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2
+        id="jhi-cass-add-ons-available-by-organization-heading"
+        data-cy="CassAddOnsAvailableByOrganizationCreateUpdateHeading"
+        jhiTranslate="cassandrablogApp.cassandrablogCassAddOnsAvailableByOrganization.home.createOrEditLabel"
+      >
+        Create or edit a Cass Add Ons Available By Organization
+      </h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        <div formGroupName="compositeId">
+          <div class="mb-3">
+            <label
+              class="form-label"
+              for="field_organizationId"
+              jhiTranslate="cassandrablogApp.cassandrablogCassAddOnsAvailableByOrganization.organizationId"
+              >Organization Id</label
+            >
+            <input
+              type="text"
+              class="form-control"
+              name="organizationId"
+              id="field_organizationId"
+              data-cy="organizationId"
+              formControlName="organizationId"
+            />
+            @if (isNew) {
+              <button
+                type="button"
+                class="btn btn-primary"
+                data-cy="organizationId-generate"
+                (click)="generateUUID('compositeId.organizationId')"
+              >
+                Generate
+              </button>
+              <button
+                type="button"
+                class="btn btn-danger"
+                data-cy="organizationId-reset"
+                (click)="reset('compositeId.organizationId')"
+                [disabled]="isResetDisabled['compositeId.organizationId']"
+              >
+                Reset
+              </button>
+            }
+          </div>
+
+          <div class="mb-3">
+            <label
+              class="form-label"
+              for="field_entityType"
+              jhiTranslate="cassandrablogApp.cassandrablogCassAddOnsAvailableByOrganization.entityType"
+              >Entity Type</label
+            >
+            <input
+              type="text"
+              class="form-control"
+              name="entityType"
+              id="field_entityType"
+              data-cy="entityType"
+              formControlName="entityType"
+            />
+          </div>
+
+          <div class="mb-3">
+            <label
+              class="form-label"
+              for="field_entityId"
+              jhiTranslate="cassandrablogApp.cassandrablogCassAddOnsAvailableByOrganization.entityId"
+              >Entity Id</label
+            >
+            <input type="text" class="form-control" name="entityId" id="field_entityId" data-cy="entityId" formControlName="entityId" />
+            @if (isNew) {
+              <button type="button" class="btn btn-primary" data-cy="entityId-generate" (click)="generateUUID('compositeId.entityId')">
+                Generate
+              </button>
+              <button
+                type="button"
+                class="btn btn-danger"
+                data-cy="entityId-reset"
+                (click)="reset('compositeId.entityId')"
+                [disabled]="isResetDisabled['compositeId.entityId']"
+              >
+                Reset
+              </button>
+            }
+          </div>
+
+          <div class="mb-3">
+            <label
+              class="form-label"
+              for="field_addOnId"
+              jhiTranslate="cassandrablogApp.cassandrablogCassAddOnsAvailableByOrganization.addOnId"
+              >Add On Id</label
+            >
+            <input type="text" class="form-control" name="addOnId" id="field_addOnId" data-cy="addOnId" formControlName="addOnId" />
+            @if (isNew) {
+              <button type="button" class="btn btn-primary" data-cy="addOnId-generate" (click)="generateUUID('compositeId.addOnId')">
+                Generate
+              </button>
+              <button
+                type="button"
+                class="btn btn-danger"
+                data-cy="addOnId-reset"
+                (click)="reset('compositeId.addOnId')"
+                [disabled]="isResetDisabled['compositeId.addOnId']"
+              >
+                Reset
+              </button>
+            }
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label
+            class="form-label"
+            for="field_addOnType"
+            jhiTranslate="cassandrablogApp.cassandrablogCassAddOnsAvailableByOrganization.addOnType"
+            >Add On Type</label
+          >
+          <input type="text" class="form-control" name="addOnType" id="field_addOnType" data-cy="addOnType" formControlName="addOnType" />
+        </div>
+
+        <div class="mb-3">
+          <label
+            class="form-label"
+            for="field_addOnDetailsText"
+            jhiTranslate="cassandrablogApp.cassandrablogCassAddOnsAvailableByOrganization.addOnDetailsText"
+            >Add On Details Text</label
+          >
+          <app-map-string-component
+            fieldName="addOnDetailsText"
+            [inputFields]="inputFieldsAddOnDetailsText"
+            (dataChange)="handleAddOnDetailsTextInputChange($event)"
+          >
+          </app-map-string-component>
+        </div>
+
+        <div class="mb-3">
+          <label
+            class="form-label"
+            for="field_addOnDetailsDecimal"
+            jhiTranslate="cassandrablogApp.cassandrablogCassAddOnsAvailableByOrganization.addOnDetailsDecimal"
+            >Add On Details Decimal</label
+          >
+          <app-map-number-component
+            fieldName="addOnDetailsDecimal"
+            [inputFields]="inputFieldsAddOnDetailsDecimal"
+            (dataChange)="handleAddOnDetailsDecimalInputChange($event)"
+          >
+          </app-map-number-component>
+        </div>
+
+        <div class="mb-3">
+          <label
+            class="form-label"
+            for="field_addOnDetailsBoolean"
+            jhiTranslate="cassandrablogApp.cassandrablogCassAddOnsAvailableByOrganization.addOnDetailsBoolean"
+            >Add On Details Boolean</label
+          >
+          <app-map-boolean-component
+            fieldName="addOnDetailsBoolean"
+            [inputFields]="inputFieldsAddOnDetailsBoolean"
+            (dataChange)="handleAddOnDetailsBooleanInputChange($event)"
+          >
+          </app-map-boolean-component>
+        </div>
+
+        <div class="mb-3">
+          <label
+            class="form-label"
+            for="field_addOnDetailsBigInt"
+            jhiTranslate="cassandrablogApp.cassandrablogCassAddOnsAvailableByOrganization.addOnDetailsBigInt"
+            >Add On Details Big Int</label
+          >
+          <app-map-dayjs-component
+            fieldName="addOnDetailsBigInt"
+            [inputFields]="inputFieldsAddOnDetailsBigInt"
+            (dataChange)="handleAddOnDetailsBigIntInputChange($event)"
+          >
+          </app-map-dayjs-component>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving || !areAllDateTimeFieldsValid"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

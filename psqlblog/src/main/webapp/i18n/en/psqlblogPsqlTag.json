@@ -1,0 +1,28 @@
+{
+  "psqlblogApp": {
+    "psqlblogPsqlTag": {
+      "home": {
+        "title": "Psql Tags",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Psql Tag",
+        "createOrEditLabel": "Create or edit a Psql Tag",
+        "notFound": "No Psql Tags found"
+      },
+      "created": "A new Psql Tag is created with identifier {{ param }}",
+      "updated": "A Psql Tag is updated with identifier {{ param }}",
+      "deleted": "A Psql Tag is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Psql Tag {{ id }}?"
+      },
+      "detail": {
+        "title": "Psql Tag"
+      },
+      "id": "Id",
+      "name": "Name",
+      "description": "Description",
+      "nameEmbedding": "Name Embedding",
+      "descriptionEmbedding": "Description Embedding",
+      "post": "Post"
+    }
+  }
+}

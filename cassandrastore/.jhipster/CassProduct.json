@@ -1,0 +1,56 @@
+{
+  "annotations": {
+    "changelogDate": "20260531021017"
+  },
+  "applications": ["cassandrastore"],
+  "clientRootFolder": "cassandrastore",
+  "databaseType": "cassandra",
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "id",
+      "fieldType": "UUID",
+      "options": {
+        "customAnnotation": ["PrimaryKeyType.PARTITIONED", "CassandraType.Name.UUID", ""],
+        "id": true
+      }
+    },
+    {
+      "fieldName": "title",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"],
+      "options": {
+        "customAnnotation": ["", "CassandraType.Name.TEXT"]
+      }
+    },
+    {
+      "fieldName": "price",
+      "fieldType": "BigDecimal",
+      "fieldValidateRules": ["required", "min"],
+      "fieldValidateRulesMin": "0",
+      "options": {
+        "customAnnotation": ["", "CassandraType.Name.DECIMAL"]
+      }
+    },
+    {
+      "fieldName": "image",
+      "fieldType": "ImageBlob",
+      "options": {
+        "customAnnotation": ["", "CassandraType.Name.BLOB", "image"]
+      }
+    },
+    {
+      "fieldName": "addedDate",
+      "fieldType": "Long",
+      "fieldValidateRules": ["required"],
+      "options": {
+        "customAnnotation": ["", "CassandraType.Name.BIGINT", "UTC_DATE"]
+      }
+    }
+  ],
+  "microserviceName": "cassandrastore",
+  "name": "CassProduct",
+  "relationships": [],
+  "searchEngine": "no",
+  "service": "serviceImpl"
+}

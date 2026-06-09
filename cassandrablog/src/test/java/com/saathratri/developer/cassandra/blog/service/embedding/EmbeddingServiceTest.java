@@ -1,0 +1,63 @@
+package com.saathratri.developer.cassandra.blog.service.embedding;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.when;
+
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.ai.embedding.EmbeddingModel;
+
+/**
+ * Unit tests for {@link EmbeddingService}.
+ *
+ * The {@link EmbeddingModel} is mocked with a deterministic vector so the suite runs offline with no
+ * OPENAI_API_KEY (mirrors the "AI disabled" runtime path). These tests cover the blueprint's embedding
+ * logic that backs the ANN / AI-search feature on Cassandra {@code vector<float, N>} columns.
+ */
+@ExtendWith(MockitoExtension.class)
+class EmbeddingServiceTest {
+
+    private static final float[] SAMPLE_EMBEDDING = new float[] { 0.1f, -0.2f, 0.3f, 0.4f };
+
+    @Mock
+    private EmbeddingModel embeddingModel;
+
+    @Test
+    void isAvailableReflectsWhetherModelIsConfigured() {
+        assertThat(new EmbeddingService(embeddingModel).isAvailable()).isTrue();
+        assertThat(new EmbeddingService(null).isAvailable()).isFalse();
+    }
+
+    @Test
+    void generateEmbeddingReturnsModelVector() {
+        when(embeddingModel.embed(anyString())).thenReturn(SAMPLE_EMBEDDING);
+
+        float[] result = new EmbeddingService(embeddingModel).generateEmbedding("hello world");
+
+        assertThat(result).isEqualTo(SAMPLE_EMBEDDING);
+    }
+
+    @Test
+    void generateEmbeddingReturnsNullForNullOrBlankText() {
+        EmbeddingService service = new EmbeddingService(embeddingModel);
+        assertThat(service.generateEmbedding(null)).isNull();
+        assertThat(service.generateEmbedding("")).isNull();
+        assertThat(service.generateEmbedding("   ")).isNull();
+    }
+
+    @Test
+    void generateEmbeddingReturnsNullWhenModelThrows() {
+        when(embeddingModel.embed(anyString())).thenThrow(new RuntimeException("boom"));
+
+        assertThat(new EmbeddingService(embeddingModel).generateEmbedding("hello world")).isNull();
+    }
+
+    @Test
+    void generateEmbeddingReturnsNullWhenModelUnavailable() {
+        // Non-blank text with a null model: the embed() call NPEs and is swallowed, yielding null.
+        assertThat(new EmbeddingService(null).generateEmbedding("hello world")).isNull();
+    }
+}

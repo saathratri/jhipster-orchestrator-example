@@ -1,0 +1,29 @@
+{
+  "psqlstoreApp": {
+    "psqlstorePsqlReport": {
+      "home": {
+        "title": "Psql Reports",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Psql Report",
+        "createOrEditLabel": "Create or edit a Psql Report",
+        "notFound": "No Psql Reports found"
+      },
+      "created": "A new Psql Report is created with identifier {{ param }}",
+      "updated": "A Psql Report is updated with identifier {{ param }}",
+      "deleted": "A Psql Report is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Psql Report {{ id }}?"
+      },
+      "detail": {
+        "title": "Psql Report"
+      },
+      "id": "Id",
+      "fileName": "File Name",
+      "fileExtension": "File Extension",
+      "createDate": "Create Date",
+      "file": "File",
+      "approved": "Approved",
+      "product": "Product"
+    }
+  }
+}

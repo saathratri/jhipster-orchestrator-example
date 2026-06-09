@@ -1,0 +1,379 @@
+<style>
+  .saathratri-pdf-badge-link {
+    text-decoration: none;
+    display: inline-block;
+    cursor: pointer;
+  }
+  .saathratri-pdf-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #e53935;
+    color: white;
+    font-weight: bold;
+    border-radius: 4px;
+    border: 2px solid #1976d2;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition:
+      border-color 0.2s ease,
+      box-shadow 0.2s ease,
+      transform 0.2s ease;
+  }
+  .saathratri-pdf-badge:hover {
+    border-color: #0d47a1;
+    box-shadow: 0 4px 8px rgba(25, 118, 210, 0.4);
+    transform: scale(1.05);
+  }
+  .saathratri-pdf-badge-sm {
+    width: 40px;
+    height: 52px;
+    font-size: 0.6rem;
+  }
+  .saathratri-pdf-badge-lg {
+    width: 60px;
+    height: 78px;
+    font-size: 0.75rem;
+  }
+</style>
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2
+        id="jhi-cass-add-ons-selected-by-organization-heading"
+        data-cy="CassAddOnsSelectedByOrganizationCreateUpdateHeading"
+        jhiTranslate="cassandrablogApp.cassandrablogCassAddOnsSelectedByOrganization.home.createOrEditLabel"
+      >
+        Create or edit a Cass Add Ons Selected By Organization
+      </h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        <div formGroupName="compositeId">
+          <div class="mb-3">
+            <label
+              class="form-label"
+              for="field_organizationId"
+              jhiTranslate="cassandrablogApp.cassandrablogCassAddOnsSelectedByOrganization.organizationId"
+              >Organization Id</label
+            >
+            <input
+              type="text"
+              class="form-control"
+              name="organizationId"
+              id="field_organizationId"
+              data-cy="organizationId"
+              formControlName="organizationId"
+            />
+            @if (isNew) {
+              <button
+                type="button"
+                class="btn btn-primary"
+                data-cy="organizationId-generate"
+                (click)="generateUUID('compositeId.organizationId')"
+              >
+                Generate
+              </button>
+              <button
+                type="button"
+                class="btn btn-danger"
+                data-cy="organizationId-reset"
+                (click)="reset('compositeId.organizationId')"
+                [disabled]="isResetDisabled['compositeId.organizationId']"
+              >
+                Reset
+              </button>
+            }
+          </div>
+
+          <div class="mb-3">
+            <mat-form-field appearance="fill" class="full-width">
+              <mat-label jhiTranslate="cassandrablogApp.cassandrablogCassAddOnsSelectedByOrganization.arrivalDate">Arrival Date</mat-label>
+              <br />
+              <input
+                matInput
+                [matDatepicker]="arrivalDatePicker"
+                id="field_arrivalDate"
+                data-cy="arrivalDate"
+                formControlName="arrivalDate"
+              />
+              <mat-datepicker-toggle matSuffix [for]="arrivalDatePicker"></mat-datepicker-toggle>
+              <mat-datepicker #arrivalDatePicker></mat-datepicker>
+            </mat-form-field>
+          </div>
+
+          <div class="mb-3">
+            <label
+              class="form-label"
+              for="field_accountNumber"
+              jhiTranslate="cassandrablogApp.cassandrablogCassAddOnsSelectedByOrganization.accountNumber"
+              >Account Number</label
+            >
+            <input
+              type="text"
+              class="form-control"
+              name="accountNumber"
+              id="field_accountNumber"
+              data-cy="accountNumber"
+              formControlName="accountNumber"
+            />
+          </div>
+
+          <div class="mb-3">
+            <label
+              class="form-label"
+              for="field_createdTimeId"
+              jhiTranslate="cassandrablogApp.cassandrablogCassAddOnsSelectedByOrganization.createdTimeId"
+              >Created Time Id</label
+            >
+            <input
+              type="text"
+              class="form-control"
+              name="createdTimeId"
+              id="field_createdTimeId"
+              data-cy="createdTimeId"
+              formControlName="createdTimeId"
+            />
+            @if (isNew) {
+              <button
+                type="button"
+                class="btn btn-primary"
+                data-cy="createdTimeId-generate"
+                (click)="generateTimeUUID('compositeId.createdTimeId')"
+              >
+                Generate
+              </button>
+              <button
+                type="button"
+                class="btn btn-danger"
+                data-cy="createdTimeId-reset"
+                (click)="reset('compositeId.createdTimeId')"
+                [disabled]="isResetDisabled['compositeId.createdTimeId']"
+              >
+                Reset
+              </button>
+            }
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <mat-form-field appearance="fill" class="full-width">
+            <mat-label jhiTranslate="cassandrablogApp.cassandrablogCassAddOnsSelectedByOrganization.departureDate"
+              >Departure Date</mat-label
+            >
+            <br />
+            <input
+              matInput
+              [matDatepicker]="departureDatePicker"
+              id="field_departureDate"
+              data-cy="departureDate"
+              formControlName="departureDate"
+            />
+            <mat-datepicker-toggle matSuffix [for]="departureDatePicker"></mat-datepicker-toggle>
+            <mat-datepicker #departureDatePicker></mat-datepicker>
+          </mat-form-field>
+        </div>
+
+        <div class="mb-3">
+          <label
+            class="form-label"
+            for="field_customerId"
+            jhiTranslate="cassandrablogApp.cassandrablogCassAddOnsSelectedByOrganization.customerId"
+            >Customer Id</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="customerId"
+            id="field_customerId"
+            data-cy="customerId"
+            formControlName="customerId"
+          />
+          <button type="button" class="btn btn-primary" (click)="generateUUID('customerId')">Generate</button>
+          <button type="button" class="btn btn-danger" (click)="reset('customerId')" [disabled]="isResetDisabled['customerId']">
+            Reset
+          </button>
+        </div>
+
+        <div class="mb-3">
+          <label
+            class="form-label"
+            for="field_customerFirstName"
+            jhiTranslate="cassandrablogApp.cassandrablogCassAddOnsSelectedByOrganization.customerFirstName"
+            >Customer First Name</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="customerFirstName"
+            id="field_customerFirstName"
+            data-cy="customerFirstName"
+            formControlName="customerFirstName"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label
+            class="form-label"
+            for="field_customerLastName"
+            jhiTranslate="cassandrablogApp.cassandrablogCassAddOnsSelectedByOrganization.customerLastName"
+            >Customer Last Name</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="customerLastName"
+            id="field_customerLastName"
+            data-cy="customerLastName"
+            formControlName="customerLastName"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label
+            class="form-label"
+            for="field_customerUpdatedEmail"
+            jhiTranslate="cassandrablogApp.cassandrablogCassAddOnsSelectedByOrganization.customerUpdatedEmail"
+            >Customer Updated Email</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="customerUpdatedEmail"
+            id="field_customerUpdatedEmail"
+            data-cy="customerUpdatedEmail"
+            formControlName="customerUpdatedEmail"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label
+            class="form-label"
+            for="field_customerUpdatedPhoneNumber"
+            jhiTranslate="cassandrablogApp.cassandrablogCassAddOnsSelectedByOrganization.customerUpdatedPhoneNumber"
+            >Customer Updated Phone Number</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="customerUpdatedPhoneNumber"
+            id="field_customerUpdatedPhoneNumber"
+            data-cy="customerUpdatedPhoneNumber"
+            formControlName="customerUpdatedPhoneNumber"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label
+            class="form-label"
+            for="field_customerEstimatedArrivalTime"
+            jhiTranslate="cassandrablogApp.cassandrablogCassAddOnsSelectedByOrganization.customerEstimatedArrivalTime"
+            >Customer Estimated Arrival Time</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="customerEstimatedArrivalTime"
+            id="field_customerEstimatedArrivalTime"
+            data-cy="customerEstimatedArrivalTime"
+            formControlName="customerEstimatedArrivalTime"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label
+            class="form-label"
+            for="field_tinyUrlShortCode"
+            jhiTranslate="cassandrablogApp.cassandrablogCassAddOnsSelectedByOrganization.tinyUrlShortCode"
+            >Tiny Url Short Code</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="tinyUrlShortCode"
+            id="field_tinyUrlShortCode"
+            data-cy="tinyUrlShortCode"
+            formControlName="tinyUrlShortCode"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label
+            class="form-label"
+            for="field_addOnDetailsText"
+            jhiTranslate="cassandrablogApp.cassandrablogCassAddOnsSelectedByOrganization.addOnDetailsText"
+            >Add On Details Text</label
+          >
+          <app-map-string-component
+            fieldName="addOnDetailsText"
+            [inputFields]="inputFieldsAddOnDetailsText"
+            (dataChange)="handleAddOnDetailsTextInputChange($event)"
+          >
+          </app-map-string-component>
+        </div>
+
+        <div class="mb-3">
+          <label
+            class="form-label"
+            for="field_addOnDetailsDecimal"
+            jhiTranslate="cassandrablogApp.cassandrablogCassAddOnsSelectedByOrganization.addOnDetailsDecimal"
+            >Add On Details Decimal</label
+          >
+          <app-map-number-component
+            fieldName="addOnDetailsDecimal"
+            [inputFields]="inputFieldsAddOnDetailsDecimal"
+            (dataChange)="handleAddOnDetailsDecimalInputChange($event)"
+          >
+          </app-map-number-component>
+        </div>
+
+        <div class="mb-3">
+          <label
+            class="form-label"
+            for="field_addOnDetailsBoolean"
+            jhiTranslate="cassandrablogApp.cassandrablogCassAddOnsSelectedByOrganization.addOnDetailsBoolean"
+            >Add On Details Boolean</label
+          >
+          <app-map-boolean-component
+            fieldName="addOnDetailsBoolean"
+            [inputFields]="inputFieldsAddOnDetailsBoolean"
+            (dataChange)="handleAddOnDetailsBooleanInputChange($event)"
+          >
+          </app-map-boolean-component>
+        </div>
+
+        <div class="mb-3">
+          <label
+            class="form-label"
+            for="field_addOnDetailsBigInt"
+            jhiTranslate="cassandrablogApp.cassandrablogCassAddOnsSelectedByOrganization.addOnDetailsBigInt"
+            >Add On Details Big Int</label
+          >
+          <app-map-dayjs-component
+            fieldName="addOnDetailsBigInt"
+            [inputFields]="inputFieldsAddOnDetailsBigInt"
+            (dataChange)="handleAddOnDetailsBigIntInputChange($event)"
+          >
+          </app-map-dayjs-component>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving || !areAllDateTimeFieldsValid"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

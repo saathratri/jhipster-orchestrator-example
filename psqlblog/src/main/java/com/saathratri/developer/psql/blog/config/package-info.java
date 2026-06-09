@@ -1,0 +1,4 @@
+/**
+ * Application configuration.
+ */
+package com.saathratri.developer.psql.blog.config;

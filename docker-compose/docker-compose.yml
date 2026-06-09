@@ -1,0 +1,321 @@
+services:
+  orchestratorgateway:
+    image: orchestratorgateway
+    environment:
+      - _JAVA_OPTIONS=-Xmx512m -Xms256m
+      - SPRING_PROFILES_ACTIVE=prod,api-docs
+      - MANAGEMENT_PROMETHEUS_METRICS_EXPORT_ENABLED=true
+      - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://admin:$${jhipster.registry.password}@jhipster-registry:8761/eureka
+      - SPRING_CLOUD_CONFIG_URI=http://admin:$${jhipster.registry.password}@jhipster-registry:8761/config
+      - SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_OIDC_ISSUER_URI=http://keycloak:9080/realms/jhipster
+      - SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_OIDC_CLIENT_ID=web_app
+      - SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_OIDC_CLIENT_SECRET=web_app
+      - SPRING_R2DBC_URL=r2dbc:postgresql://orchestratorgateway-postgresql:5432/orchestratorgateway
+      - SPRING_R2DBC_USERNAME=orchestratorgateway
+      - SPRING_R2DBC_PASSWORD=
+      - SPRING_LIQUIBASE_URL=jdbc:postgresql://orchestratorgateway-postgresql:5432/orchestratorgateway
+      - JHIPSTER_REGISTRY_PASSWORD=admin
+    ports:
+      - 8080:8080
+    healthcheck:
+      test:
+        - CMD
+        - curl
+        - -f
+        - http://localhost:8080/management/health
+      interval: 5s
+      timeout: 5s
+      retries: 40
+    depends_on:
+      orchestratorgateway-postgresql:
+        condition: service_healthy
+      keycloak:
+        condition: service_healthy
+      jhipster-registry:
+        condition: service_healthy
+  orchestratorgateway-postgresql:
+    image: postgres:18.3
+    environment:
+      - POSTGRES_USER=orchestratorgateway
+      - POSTGRES_HOST_AUTH_METHOD=trust
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - pg_isready -U $${POSTGRES_USER}
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  psqlblog:
+    image: psqlblog
+    environment:
+      - _JAVA_OPTIONS=-Xmx512m -Xms256m
+      - SPRING_PROFILES_ACTIVE=prod,api-docs
+      - MANAGEMENT_PROMETHEUS_METRICS_EXPORT_ENABLED=true
+      - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://admin:$${jhipster.registry.password}@jhipster-registry:8761/eureka
+      - SPRING_CLOUD_CONFIG_URI=http://admin:$${jhipster.registry.password}@jhipster-registry:8761/config
+      - SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_OIDC_ISSUER_URI=http://keycloak:9080/realms/jhipster
+      - SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_OIDC_CLIENT_ID=internal
+      - SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_OIDC_CLIENT_SECRET=internal
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://psqlblog-postgresql:5432/psqlblog
+      - SPRING_DATASOURCE_USERNAME=psqlblog
+      - SPRING_DATASOURCE_PASSWORD=
+      - SPRING_LIQUIBASE_URL=jdbc:postgresql://psqlblog-postgresql:5432/psqlblog
+      - JHIPSTER_REGISTRY_PASSWORD=admin
+    healthcheck:
+      test:
+        - CMD
+        - curl
+        - -f
+        - http://localhost:8081/management/health
+      interval: 5s
+      timeout: 5s
+      retries: 40
+    depends_on:
+      psqlblog-postgresql:
+        condition: service_healthy
+      keycloak:
+        condition: service_healthy
+      jhipster-registry:
+        condition: service_healthy
+  psqlblog-postgresql:
+    build:
+      context: .
+      dockerfile: postgresql/Dockerfile
+    volumes:
+      - ./postgresql-init-scripts:/docker-entrypoint-initdb.d/
+    environment:
+      - POSTGRES_USER=psqlblog
+      - POSTGRES_HOST_AUTH_METHOD=trust
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - pg_isready -U $${POSTGRES_USER}
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  psqlstore:
+    image: psqlstore
+    environment:
+      - _JAVA_OPTIONS=-Xmx512m -Xms256m
+      - SPRING_PROFILES_ACTIVE=prod,api-docs
+      - MANAGEMENT_PROMETHEUS_METRICS_EXPORT_ENABLED=true
+      - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://admin:$${jhipster.registry.password}@jhipster-registry:8761/eureka
+      - SPRING_CLOUD_CONFIG_URI=http://admin:$${jhipster.registry.password}@jhipster-registry:8761/config
+      - SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_OIDC_ISSUER_URI=http://keycloak:9080/realms/jhipster
+      - SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_OIDC_CLIENT_ID=internal
+      - SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_OIDC_CLIENT_SECRET=internal
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://psqlstore-postgresql:5432/psqlstore
+      - SPRING_DATASOURCE_USERNAME=psqlstore
+      - SPRING_DATASOURCE_PASSWORD=
+      - SPRING_LIQUIBASE_URL=jdbc:postgresql://psqlstore-postgresql:5432/psqlstore
+      - JHIPSTER_REGISTRY_PASSWORD=admin
+    healthcheck:
+      test:
+        - CMD
+        - curl
+        - -f
+        - http://localhost:8082/management/health
+      interval: 5s
+      timeout: 5s
+      retries: 40
+    depends_on:
+      psqlstore-postgresql:
+        condition: service_healthy
+      keycloak:
+        condition: service_healthy
+      jhipster-registry:
+        condition: service_healthy
+  psqlstore-postgresql:
+    build:
+      context: .
+      dockerfile: postgresql/Dockerfile
+    volumes:
+      - ./postgresql-init-scripts:/docker-entrypoint-initdb.d/
+    environment:
+      - POSTGRES_USER=psqlstore
+      - POSTGRES_HOST_AUTH_METHOD=trust
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - pg_isready -U $${POSTGRES_USER}
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  cassandrablog:
+    image: cassandrablog
+    environment:
+      - _JAVA_OPTIONS=-Xmx512m -Xms256m
+      - SPRING_PROFILES_ACTIVE=prod,api-docs
+      - MANAGEMENT_PROMETHEUS_METRICS_EXPORT_ENABLED=true
+      - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://admin:$${jhipster.registry.password}@jhipster-registry:8761/eureka
+      - SPRING_CLOUD_CONFIG_URI=http://admin:$${jhipster.registry.password}@jhipster-registry:8761/config
+      - SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_OIDC_ISSUER_URI=http://keycloak:9080/realms/jhipster
+      - SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_OIDC_CLIENT_ID=internal
+      - SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_OIDC_CLIENT_SECRET=internal
+      - SPRING_CASSANDRA_CONTACTPOINTS=cassandrablog-cassandra
+      - JHIPSTER_SLEEP=10
+      - JHIPSTER_REGISTRY_PASSWORD=admin
+    healthcheck:
+      test:
+        - CMD
+        - curl
+        - -f
+        - http://localhost:8083/management/health
+      interval: 5s
+      timeout: 5s
+      retries: 40
+    depends_on:
+      cassandrablog-cassandra:
+        condition: service_healthy
+      cassandrablog-cassandra-migration:
+        condition: service_completed_successfully
+      keycloak:
+        condition: service_healthy
+      jhipster-registry:
+        condition: service_healthy
+  cassandrablog-cassandra-migration:
+    environment:
+      - CASSANDRA_CONTACT_POINT=cassandrablog-cassandra
+      - USER=docker-cassandra-migration
+      - CREATE_KEYSPACE_SCRIPT=create-keyspace.cql
+    build:
+      context: ../cassandrablog/src/main/docker
+      dockerfile: cassandra/Cassandra-Migration.Dockerfile
+    volumes:
+      - ../cassandrablog/src/main/resources/config/cql:/cql:ro
+  cassandrablog-cassandra:
+    image: cassandra:5.0.6
+    container_name: cassandrablog-cassandra
+    environment:
+      - MAX_HEAP_SIZE=2G
+      - HEAP_NEWSIZE=512M
+    healthcheck:
+      test:
+        - CMD
+        - cqlsh
+        - -e
+        - describe keyspaces
+      interval: 5s
+      timeout: 25s
+      retries: 20
+    labels:
+      org.springframework.boot.ignore: true
+
+  cassandrastore:
+    image: cassandrastore
+    environment:
+      - _JAVA_OPTIONS=-Xmx512m -Xms256m
+      - SPRING_PROFILES_ACTIVE=prod,api-docs
+      - MANAGEMENT_PROMETHEUS_METRICS_EXPORT_ENABLED=true
+      - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://admin:$${jhipster.registry.password}@jhipster-registry:8761/eureka
+      - SPRING_CLOUD_CONFIG_URI=http://admin:$${jhipster.registry.password}@jhipster-registry:8761/config
+      - SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_OIDC_ISSUER_URI=http://keycloak:9080/realms/jhipster
+      - SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_OIDC_CLIENT_ID=internal
+      - SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_OIDC_CLIENT_SECRET=internal
+      - SPRING_CASSANDRA_CONTACTPOINTS=cassandrastore-cassandra
+      - JHIPSTER_SLEEP=10
+      - JHIPSTER_REGISTRY_PASSWORD=admin
+    healthcheck:
+      test:
+        - CMD
+        - curl
+        - -f
+        - http://localhost:8084/management/health
+      interval: 5s
+      timeout: 5s
+      retries: 40
+    depends_on:
+      cassandrastore-cassandra:
+        condition: service_healthy
+      cassandrastore-cassandra-migration:
+        condition: service_completed_successfully
+      keycloak:
+        condition: service_healthy
+      jhipster-registry:
+        condition: service_healthy
+  cassandrastore-cassandra-migration:
+    environment:
+      - CASSANDRA_CONTACT_POINT=cassandrastore-cassandra
+      - USER=docker-cassandra-migration
+      - CREATE_KEYSPACE_SCRIPT=create-keyspace.cql
+    build:
+      context: ../cassandrastore/src/main/docker
+      dockerfile: cassandra/Cassandra-Migration.Dockerfile
+    volumes:
+      - ../cassandrastore/src/main/resources/config/cql:/cql:ro
+  cassandrastore-cassandra:
+    image: cassandra:5.0.6
+    container_name: cassandrastore-cassandra
+    environment:
+      - MAX_HEAP_SIZE=2G
+      - HEAP_NEWSIZE=512M
+    healthcheck:
+      test:
+        - CMD
+        - cqlsh
+        - -e
+        - describe keyspaces
+      interval: 5s
+      timeout: 25s
+      retries: 20
+    labels:
+      org.springframework.boot.ignore: true
+
+  jhipster-registry:
+    image: jhipster/jhipster-registry:v7.5.0
+    volumes:
+      - ./central-server-config:/central-config
+    # By default the JHipster Registry runs with the "dev" and "native"
+    # Spring profiles.
+    # "native" profile means the filesystem is used to store data, see
+    # http://cloud.spring.io/spring-cloud-config/spring-cloud-config.html
+    environment:
+      - _JAVA_OPTIONS=-Xmx512m -Xms256m
+      - SPRING_PROFILES_ACTIVE=dev,oauth2
+      - SPRING_SECURITY_USER_PASSWORD=admin
+      - JHIPSTER_REGISTRY_PASSWORD=admin
+      - SPRING_CLOUD_CONFIG_SERVER_COMPOSITE_0_TYPE=native
+      - SPRING_CLOUD_CONFIG_SERVER_COMPOSITE_0_SEARCH_LOCATIONS=file:./central-config
+      # - SPRING_CLOUD_CONFIG_SERVER_COMPOSITE_0_TYPE=git
+      # - SPRING_CLOUD_CONFIG_SERVER_COMPOSITE_0_URI=https://github.com/jhipster/jhipster-registry/
+      # - SPRING_CLOUD_CONFIG_SERVER_COMPOSITE_0_SEARCH_PATHS=central-config
+      # For Keycloak to work, you need to add '127.0.0.1 keycloak' to your hosts file
+      - SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_OIDC_ISSUER_URI=http://keycloak:9080/realms/jhipster
+      - SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_OIDC_CLIENT_ID=jhipster-registry
+      - SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_OIDC_CLIENT_SECRET=jhipster-registry
+    depends_on:
+      keycloak:
+        condition: "service_healthy"
+    ports:
+      - 8761:8761
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8761/management/health"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.5.5
+    command: "start-dev --import-realm"
+    volumes:
+      - ./realm-config:/opt/keycloak/data/import
+      - ./realm-config/keycloak-health-check.sh:/opt/keycloak/health-check.sh
+    environment:
+      - KC_DB=dev-file
+      - KC_BOOTSTRAP_ADMIN_USERNAME=admin
+      - KC_BOOTSTRAP_ADMIN_PASSWORD=admin
+      - KC_FEATURES=scripts
+      - KC_HTTP_PORT=9080
+      - KC_HTTPS_PORT=9443
+      - KC_HEALTH_ENABLED=true
+      - KC_HTTP_MANAGEMENT_PORT=9990
+    ports:
+      - 9080:9080
+      - 9443:9443
+    healthcheck:
+      test: "bash /opt/keycloak/health-check.sh"
+      interval: 5s
+      timeout: 5s
+      retries: 20

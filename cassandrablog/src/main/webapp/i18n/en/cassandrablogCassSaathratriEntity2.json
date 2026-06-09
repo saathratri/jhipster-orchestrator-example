@@ -1,0 +1,47 @@
+{
+  "cassandrablogApp": {
+    "cassandrablogCassSaathratriEntity2": {
+      "home": {
+        "title": "Cass Saathratri Entity 2s",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Cass Saathratri Entity 2",
+        "createOrEditLabel": "Create or edit a Cass Saathratri Entity 2",
+        "notFound": "No Cass Saathratri Entity 2s found",
+        "loadMore": "Load More",
+        "loadingMore": "Loading more cass saathratri entity 2s...",
+        "endOfList": "You've reached the end of the list",
+        "search": "Search Cass Saathratri Entity 2s",
+        "searchActive": "Search Active",
+        "searchRequired": "Enter partition key values above and click Search to load data",
+        "partitionKeys": "Partition Keys",
+        "clusteringKeys": "Clustering Keys",
+        "optional": "optional",
+        "operator": "Operator",
+        "selectDate": "Select Date",
+        "hour": "Hour",
+        "minute": "Minute",
+        "dateFormat": "Format: 9 Dec 2025",
+        "dateTimeFormat": "Format: 9 Dec 2025, 14:30:00",
+        "searchButton": "Search",
+        "clearSearch": "Clear"
+      },
+      "created": "A new Cass Saathratri Entity 2 is created with identifier {{ param }}",
+      "updated": "A Cass Saathratri Entity 2 is updated with identifier {{ param }}",
+      "deleted": "A Cass Saathratri Entity 2 is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Cass Saathratri Entity 2 Entity Type Id '{{ entityTypeId }}', Year Of Date Added '{{ yearOfDateAdded }}', Arrival Date '{{ arrivalDate }}', and Blog Id '{{ blogId }}'?"
+      },
+      "detail": {
+        "title": "Cass Saathratri Entity 2"
+      },
+      "entityTypeId": "Entity Type Id",
+      "yearOfDateAdded": "Year Of Date Added",
+      "arrivalDate": "Arrival Date",
+      "blogId": "Blog Id",
+      "entityName": "Entity Name",
+      "entityDescription": "Entity Description",
+      "entityCost": "Entity Cost",
+      "departureDate": "Departure Date"
+    }
+  }
+}

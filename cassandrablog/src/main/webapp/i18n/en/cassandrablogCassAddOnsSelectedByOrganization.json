@@ -1,0 +1,55 @@
+{
+  "cassandrablogApp": {
+    "cassandrablogCassAddOnsSelectedByOrganization": {
+      "home": {
+        "title": "Cass Add Ons Selected By Organizations",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Cass Add Ons Selected By Organization",
+        "createOrEditLabel": "Create or edit a Cass Add Ons Selected By Organization",
+        "notFound": "No Cass Add Ons Selected By Organizations found",
+        "loadMore": "Load More",
+        "loadingMore": "Loading more cass add ons selected by organizations...",
+        "endOfList": "You've reached the end of the list",
+        "search": "Search Cass Add Ons Selected By Organizations",
+        "searchActive": "Search Active",
+        "searchRequired": "Enter partition key values above and click Search to load data",
+        "partitionKeys": "Partition Keys",
+        "clusteringKeys": "Clustering Keys",
+        "optional": "optional",
+        "operator": "Operator",
+        "selectDate": "Select Date",
+        "hour": "Hour",
+        "minute": "Minute",
+        "dateFormat": "Format: 9 Dec 2025",
+        "dateTimeFormat": "Format: 9 Dec 2025, 14:30:00",
+        "searchButton": "Search",
+        "clearSearch": "Clear"
+      },
+      "created": "A new Cass Add Ons Selected By Organization is created with identifier {{ param }}",
+      "updated": "A Cass Add Ons Selected By Organization is updated with identifier {{ param }}",
+      "deleted": "A Cass Add Ons Selected By Organization is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Cass Add Ons Selected By Organization Organization Id '{{ organizationId }}', Arrival Date '{{ arrivalDate }}', Account Number '{{ accountNumber }}', and Created Time Id '{{ createdTimeId }}'?"
+      },
+      "detail": {
+        "title": "Cass Add Ons Selected By Organization"
+      },
+      "organizationId": "Organization Id",
+      "arrivalDate": "Arrival Date",
+      "accountNumber": "Account Number",
+      "createdTimeId": "Created Time Id",
+      "departureDate": "Departure Date",
+      "customerId": "Customer Id",
+      "customerFirstName": "Customer First Name",
+      "customerLastName": "Customer Last Name",
+      "customerUpdatedEmail": "Customer Updated Email",
+      "customerUpdatedPhoneNumber": "Customer Updated Phone Number",
+      "customerEstimatedArrivalTime": "Customer Estimated Arrival Time",
+      "tinyUrlShortCode": "Tiny Url Short Code",
+      "addOnDetailsText": "Add On Details Text",
+      "addOnDetailsDecimal": "Add On Details Decimal",
+      "addOnDetailsBoolean": "Add On Details Boolean",
+      "addOnDetailsBigInt": "Add On Details Big Int"
+    }
+  }
+}

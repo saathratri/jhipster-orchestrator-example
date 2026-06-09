@@ -1,0 +1,211 @@
+<style>
+  .saathratri-pdf-badge-link {
+    text-decoration: none;
+    display: inline-block;
+    cursor: pointer;
+  }
+  .saathratri-pdf-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #e53935;
+    color: white;
+    font-weight: bold;
+    border-radius: 4px;
+    border: 2px solid #1976d2;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition:
+      border-color 0.2s ease,
+      box-shadow 0.2s ease,
+      transform 0.2s ease;
+  }
+  .saathratri-pdf-badge:hover {
+    border-color: #0d47a1;
+    box-shadow: 0 4px 8px rgba(25, 118, 210, 0.4);
+    transform: scale(1.05);
+  }
+  .saathratri-pdf-badge-sm {
+    width: 40px;
+    height: 52px;
+    font-size: 0.6rem;
+  }
+  .saathratri-pdf-badge-lg {
+    width: 60px;
+    height: 78px;
+    font-size: 0.75rem;
+  }
+</style>
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (cassAddOnsSelectedByOrganization(); as cassAddOnsSelectedByOrganizationRef) {
+      <div>
+        <h2 data-cy="cassAddOnsSelectedByOrganizationDetailsHeading">
+          <span jhiTranslate="cassandrablogApp.cassandrablogCassAddOnsSelectedByOrganization.detail.title"
+            >Cass Add Ons Selected By Organization</span
+          >
+        </h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span jhiTranslate="cassandrablogApp.cassandrablogCassAddOnsSelectedByOrganization.organizationId">Organization Id</span></dt>
+          <dd>
+            <span>{{ cassAddOnsSelectedByOrganizationRef.compositeId.organizationId }}</span>
+          </dd>
+          <dt><span jhiTranslate="cassandrablogApp.cassandrablogCassAddOnsSelectedByOrganization.arrivalDate">Arrival Date</span></dt>
+          <dd>
+            <span>{{ cassAddOnsSelectedByOrganizationRef.compositeId.arrivalDate | formatMediumDate }}</span>
+          </dd>
+          <dt><span jhiTranslate="cassandrablogApp.cassandrablogCassAddOnsSelectedByOrganization.accountNumber">Account Number</span></dt>
+          <dd>
+            <span>{{ cassAddOnsSelectedByOrganizationRef.compositeId.accountNumber }}</span>
+          </dd>
+          <dt><span jhiTranslate="cassandrablogApp.cassandrablogCassAddOnsSelectedByOrganization.createdTimeId">Created Time Id</span></dt>
+          <dd>
+            <span>{{ cassAddOnsSelectedByOrganizationRef.compositeId.createdTimeId }}</span>
+          </dd>
+          <dt><span jhiTranslate="cassandrablogApp.cassandrablogCassAddOnsSelectedByOrganization.departureDate">Departure Date</span></dt>
+          <dd>
+            <td>{{ cassAddOnsSelectedByOrganizationRef.departureDate | formatMediumDate }}</td>
+          </dd>
+          <dt><span jhiTranslate="cassandrablogApp.cassandrablogCassAddOnsSelectedByOrganization.customerId">Customer Id</span></dt>
+          <dd>
+            <span>{{ cassAddOnsSelectedByOrganizationRef.customerId }}</span>
+          </dd>
+          <dt>
+            <span jhiTranslate="cassandrablogApp.cassandrablogCassAddOnsSelectedByOrganization.customerFirstName">Customer First Name</span>
+          </dt>
+          <dd>
+            <span>{{ cassAddOnsSelectedByOrganizationRef.customerFirstName }}</span>
+          </dd>
+          <dt>
+            <span jhiTranslate="cassandrablogApp.cassandrablogCassAddOnsSelectedByOrganization.customerLastName">Customer Last Name</span>
+          </dt>
+          <dd>
+            <span>{{ cassAddOnsSelectedByOrganizationRef.customerLastName }}</span>
+          </dd>
+          <dt>
+            <span jhiTranslate="cassandrablogApp.cassandrablogCassAddOnsSelectedByOrganization.customerUpdatedEmail"
+              >Customer Updated Email</span
+            >
+          </dt>
+          <dd>
+            <span>{{ cassAddOnsSelectedByOrganizationRef.customerUpdatedEmail }}</span>
+          </dd>
+          <dt>
+            <span jhiTranslate="cassandrablogApp.cassandrablogCassAddOnsSelectedByOrganization.customerUpdatedPhoneNumber"
+              >Customer Updated Phone Number</span
+            >
+          </dt>
+          <dd>
+            <span>{{ cassAddOnsSelectedByOrganizationRef.customerUpdatedPhoneNumber }}</span>
+          </dd>
+          <dt>
+            <span jhiTranslate="cassandrablogApp.cassandrablogCassAddOnsSelectedByOrganization.customerEstimatedArrivalTime"
+              >Customer Estimated Arrival Time</span
+            >
+          </dt>
+          <dd>
+            <span>{{ cassAddOnsSelectedByOrganizationRef.customerEstimatedArrivalTime }}</span>
+          </dd>
+          <dt>
+            <span jhiTranslate="cassandrablogApp.cassandrablogCassAddOnsSelectedByOrganization.tinyUrlShortCode">Tiny Url Short Code</span>
+          </dt>
+          <dd>
+            <span>{{ cassAddOnsSelectedByOrganizationRef.tinyUrlShortCode }}</span>
+          </dd>
+          <dt>
+            <span jhiTranslate="cassandrablogApp.cassandrablogCassAddOnsSelectedByOrganization.addOnDetailsText">Add On Details Text</span>
+          </dt>
+          <dd>
+            @if (cassAddOnsSelectedByOrganizationRef.addOnDetailsText) {
+              <dl>
+                @for (item of cassAddOnsSelectedByOrganizationRef.addOnDetailsText | keyvalue; track item.key) {
+                  <div>
+                    <dt>{{ item.key }}</dt>
+                    <dd>{{ item.value }}</dd>
+                  </div>
+                }
+              </dl>
+            }
+          </dd>
+          <dt>
+            <span jhiTranslate="cassandrablogApp.cassandrablogCassAddOnsSelectedByOrganization.addOnDetailsDecimal"
+              >Add On Details Decimal</span
+            >
+          </dt>
+          <dd>
+            @if (cassAddOnsSelectedByOrganizationRef.addOnDetailsDecimal) {
+              <dl>
+                @for (item of cassAddOnsSelectedByOrganizationRef.addOnDetailsDecimal | keyvalue; track item.key) {
+                  <div>
+                    <dt>{{ item.key }}</dt>
+                    <dd>{{ item.value }}</dd>
+                  </div>
+                }
+              </dl>
+            }
+          </dd>
+          <dt>
+            <span jhiTranslate="cassandrablogApp.cassandrablogCassAddOnsSelectedByOrganization.addOnDetailsBoolean"
+              >Add On Details Boolean</span
+            >
+          </dt>
+          <dd>
+            @if (cassAddOnsSelectedByOrganizationRef.addOnDetailsBoolean) {
+              <dl>
+                @for (item of cassAddOnsSelectedByOrganizationRef.addOnDetailsBoolean | keyvalue; track item.key) {
+                  <div>
+                    <dt>{{ item.key }}</dt>
+                    <dd>{{ item.value }}</dd>
+                  </div>
+                }
+              </dl>
+            }
+          </dd>
+          <dt>
+            <span jhiTranslate="cassandrablogApp.cassandrablogCassAddOnsSelectedByOrganization.addOnDetailsBigInt"
+              >Add On Details Big Int</span
+            >
+          </dt>
+          <dd>
+            @if (cassAddOnsSelectedByOrganizationRef.addOnDetailsBigInt) {
+              <dl>
+                @for (item of cassAddOnsSelectedByOrganizationRef.addOnDetailsBigInt | keyvalue; track item.key) {
+                  <div>
+                    <dt>{{ item.key }}</dt>
+                    <dd>{{ item.value | formatMediumDatetime }}</dd>
+                  </div>
+                }
+              </dl>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+        </button>
+
+        <button
+          type="button"
+          [routerLink]="[
+            '/cassandrablog/cass-add-ons-selected-by-organization',
+            cassAddOnsSelectedByOrganization()!.compositeId.organizationId,
+            cassAddOnsSelectedByOrganization()!.compositeId.arrivalDate | convertFromDayjsToDateLong,
+            cassAddOnsSelectedByOrganization()!.compositeId.accountNumber,
+            cassAddOnsSelectedByOrganization()!.compositeId.createdTimeId,
+            'edit',
+          ]"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

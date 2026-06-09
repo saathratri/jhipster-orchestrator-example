@@ -1,0 +1,58 @@
+{
+  "annotations": {
+    "changelogDate": "20260531021217"
+  },
+  "applications": ["psqlblog"],
+  "clientRootFolder": "psqlblog",
+  "databaseType": "sql",
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "id",
+      "fieldType": "UUID"
+    },
+    {
+      "fieldName": "name",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength", "required"],
+      "fieldValidateRulesMaxlength": "100",
+      "options": {
+        "customAnnotation": ["DISPLAY_IN_GUI_RELATIONSHIP_LINK", ""]
+      }
+    },
+    {
+      "fieldName": "description",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength"],
+      "fieldValidateRulesMaxlength": "255"
+    },
+    {
+      "fieldName": "nameEmbedding",
+      "fieldType": "Blob",
+      "options": {
+        "customAnnotation": ["VECTOR", "1536"]
+      }
+    },
+    {
+      "fieldName": "descriptionEmbedding",
+      "fieldType": "Blob",
+      "options": {
+        "customAnnotation": ["VECTOR", "1536"]
+      }
+    }
+  ],
+  "microserviceName": "psqlblog",
+  "name": "PsqlTag",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityName": "psqlPost",
+      "otherEntityRelationshipName": "tag",
+      "relationshipName": "post",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-many"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceImpl"
+}

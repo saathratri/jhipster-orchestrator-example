@@ -1,0 +1,161 @@
+<style>
+  .saathratri-pdf-badge-link {
+    text-decoration: none;
+    display: inline-block;
+    cursor: pointer;
+  }
+  .saathratri-pdf-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #e53935;
+    color: white;
+    font-weight: bold;
+    border-radius: 4px;
+    border: 2px solid #1976d2;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition:
+      border-color 0.2s ease,
+      box-shadow 0.2s ease,
+      transform 0.2s ease;
+  }
+  .saathratri-pdf-badge:hover {
+    border-color: #0d47a1;
+    box-shadow: 0 4px 8px rgba(25, 118, 210, 0.4);
+    transform: scale(1.05);
+  }
+  .saathratri-pdf-badge-sm {
+    width: 40px;
+    height: 52px;
+    font-size: 0.6rem;
+  }
+  .saathratri-pdf-badge-lg {
+    width: 60px;
+    height: 78px;
+    font-size: 0.75rem;
+  }
+</style>
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-psql-tag-heading" data-cy="PsqlTagCreateUpdateHeading" jhiTranslate="psqlblogApp.psqlblogPsqlTag.home.createOrEditLabel">
+        Create or edit a Psql Tag
+      </h2>
+
+      <div>
+        <jhi-alert-error />
+
+        @if (editForm.controls.id.value !== null) {
+          <div class="mb-3">
+            <label class="form-label" for="field_id" jhiTranslate="psqlblogApp.psqlblogPsqlTag.id">Id</label>
+            <input type="text" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+          </div>
+        }
+
+        @let nameRef = editForm.get('name')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_name" jhiTranslate="psqlblogApp.psqlblogPsqlTag.name">Name</label>
+          <input type="text" class="form-control" name="name" id="field_name" data-cy="name" formControlName="name" />
+          @if (nameRef.invalid && (nameRef.dirty || nameRef.touched)) {
+            <div>
+              @if (editForm.get('name')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">This field is required.</small>
+              }
+              @if (editForm.get('name')?.errors?.maxlength) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: '100' }"
+                  >This field cannot be longer than 100 characters.</small
+                >
+              }
+            </div>
+          }
+        </div>
+
+        @let descriptionRef = editForm.get('description')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_description" jhiTranslate="psqlblogApp.psqlblogPsqlTag.description">Description</label>
+          <input
+            type="text"
+            class="form-control"
+            name="description"
+            id="field_description"
+            data-cy="description"
+            formControlName="description"
+          />
+          @if (descriptionRef.invalid && (descriptionRef.dirty || descriptionRef.touched)) {
+            <div>
+              @if (editForm.get('description')?.errors?.maxlength) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: '255' }"
+                  >This field cannot be longer than 255 characters.</small
+                >
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_nameEmbedding" jhiTranslate="psqlblogApp.psqlblogPsqlTag.nameEmbedding"
+            >Name Embedding</label
+          >
+          @if (psqlTag?.nameEmbedding && psqlTag!.nameEmbedding!.length > 0) {
+            <textarea class="form-control font-monospace" readonly rows="4" style="font-size: 0.75rem">{{
+              psqlTag!.nameEmbedding! | json
+            }}</textarea>
+          } @else {
+            <div class="form-control bg-light">
+              <small class="text-muted"><em>Not generated yet</em></small>
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_descriptionEmbedding" jhiTranslate="psqlblogApp.psqlblogPsqlTag.descriptionEmbedding"
+            >Description Embedding</label
+          >
+          @if (psqlTag?.descriptionEmbedding && psqlTag!.descriptionEmbedding!.length > 0) {
+            <textarea class="form-control font-monospace" readonly rows="4" style="font-size: 0.75rem">{{
+              psqlTag!.descriptionEmbedding! | json
+            }}</textarea>
+          } @else {
+            <div class="form-control bg-light">
+              <small class="text-muted"><em>Not generated yet</em></small>
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label for="field_posts" jhiTranslate="psqlblogApp.psqlblogPsqlTag.post">Post</label>
+          <select
+            class="form-control"
+            id="field_posts"
+            data-cy="post"
+            multiple
+            name="posts"
+            formControlName="posts"
+            [compareWith]="comparePsqlPost"
+          >
+            @for (psqlPostOption of psqlPostsSharedCollection(); track $index) {
+              <option [ngValue]="psqlPostOption">{{ psqlPostOption.id }}</option>
+            }
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban" />&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving()"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save" />&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

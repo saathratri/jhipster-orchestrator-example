@@ -1,0 +1,63 @@
+{
+  "annotations": {
+    "changelogDate": "20260531021117"
+  },
+  "applications": ["cassandrastore"],
+  "clientRootFolder": "cassandrastore",
+  "databaseType": "cassandra",
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "id",
+      "fieldType": "UUID",
+      "options": {
+        "customAnnotation": ["PrimaryKeyType.PARTITIONED", "CassandraType.Name.UUID", ""],
+        "id": true
+      }
+    },
+    {
+      "fieldName": "fileName",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"],
+      "options": {
+        "customAnnotation": ["", "CassandraType.Name.TEXT"]
+      }
+    },
+    {
+      "fieldName": "fileExtension",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"],
+      "options": {
+        "customAnnotation": ["", "CassandraType.Name.TEXT"]
+      }
+    },
+    {
+      "fieldName": "createDate",
+      "fieldType": "Long",
+      "fieldValidateRules": ["required"],
+      "options": {
+        "customAnnotation": ["", "CassandraType.Name.BIGINT", "UTC_DATETIME"]
+      }
+    },
+    {
+      "fieldName": "file",
+      "fieldType": "AnyBlob",
+      "fieldValidateRules": ["required"],
+      "options": {
+        "customAnnotation": ["", "CassandraType.Name.BLOB", "any"]
+      }
+    },
+    {
+      "fieldName": "approved",
+      "fieldType": "Boolean",
+      "options": {
+        "customAnnotation": ["", "CassandraType.Name.BOOLEAN"]
+      }
+    }
+  ],
+  "microserviceName": "cassandrastore",
+  "name": "CassReport",
+  "relationships": [],
+  "searchEngine": "no",
+  "service": "serviceImpl"
+}

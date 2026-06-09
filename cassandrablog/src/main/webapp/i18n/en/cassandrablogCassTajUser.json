@@ -1,0 +1,27 @@
+{
+  "cassandrablogApp": {
+    "cassandrablogCassTajUser": {
+      "home": {
+        "title": "Cass Taj Users",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Cass Taj User",
+        "createOrEditLabel": "Create or edit a Cass Taj User",
+        "notFound": "No Cass Taj Users found",
+        "loadMore": "Load More",
+        "loadingMore": "Loading more cass taj users...",
+        "endOfList": "You've reached the end of the list"
+      },
+      "created": "A new Cass Taj User is created with identifier {{ param }}",
+      "updated": "A Cass Taj User is updated with identifier {{ param }}",
+      "deleted": "A Cass Taj User is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Cass Taj User {{ id }}?"
+      },
+      "detail": {
+        "title": "Cass Taj User"
+      },
+      "id": "Id",
+      "login": "Login"
+    }
+  }
+}

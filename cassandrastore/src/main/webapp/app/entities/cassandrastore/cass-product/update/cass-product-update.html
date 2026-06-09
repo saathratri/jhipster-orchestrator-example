@@ -1,0 +1,178 @@
+<style>
+  .saathratri-pdf-badge-link {
+    text-decoration: none;
+    display: inline-block;
+    cursor: pointer;
+  }
+  .saathratri-pdf-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #e53935;
+    color: white;
+    font-weight: bold;
+    border-radius: 4px;
+    border: 2px solid #1976d2;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition:
+      border-color 0.2s ease,
+      box-shadow 0.2s ease,
+      transform 0.2s ease;
+  }
+  .saathratri-pdf-badge:hover {
+    border-color: #0d47a1;
+    box-shadow: 0 4px 8px rgba(25, 118, 210, 0.4);
+    transform: scale(1.05);
+  }
+  .saathratri-pdf-badge-sm {
+    width: 40px;
+    height: 52px;
+    font-size: 0.6rem;
+  }
+  .saathratri-pdf-badge-lg {
+    width: 60px;
+    height: 78px;
+    font-size: 0.75rem;
+  }
+</style>
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2
+        id="jhi-cass-product-heading"
+        data-cy="CassProductCreateUpdateHeading"
+        jhiTranslate="cassandrastoreApp.cassandrastoreCassProduct.home.createOrEditLabel"
+      >
+        Create or edit a Cass Product
+      </h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_id" jhiTranslate="cassandrastoreApp.cassandrastoreCassProduct.id">Id</label>
+          <input type="text" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" />
+          @if (isNew) {
+            <button type="button" class="btn btn-primary" data-cy="id-generate" (click)="generateUUID('id')">Generate</button>
+            <button type="button" class="btn btn-danger" data-cy="id-reset" (click)="reset('id')" [disabled]="isResetDisabled['id']">
+              Reset
+            </button>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_title" jhiTranslate="cassandrastoreApp.cassandrastoreCassProduct.title">Title</label>
+          <input type="text" class="form-control" name="title" id="field_title" data-cy="title" formControlName="title" />
+          @if (editForm.get('title')!.invalid && (editForm.get('title')!.dirty || editForm.get('title')!.touched)) {
+            <div>
+              @if (editForm.get('title')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">This field is required.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_price" jhiTranslate="cassandrastoreApp.cassandrastoreCassProduct.price">Price</label>
+          <input type="number" class="form-control" name="price" id="field_price" data-cy="price" formControlName="price" />
+          @if (editForm.get('price')!.invalid && (editForm.get('price')!.dirty || editForm.get('price')!.touched)) {
+            <div>
+              @if (editForm.get('price')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">This field is required.</small>
+              }
+              @if (editForm.get('price')?.errors?.min) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.min" [translateValues]="{ min: '0' }"
+                  >This field should be at least 0.</small
+                >
+              }
+              <small class="form-text text-danger" [hidden]="!editForm.get('price')?.errors?.number" jhiTranslate="entity.validation.number"
+                >This field should be a number.</small
+              >
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_image" jhiTranslate="cassandrastoreApp.cassandrastoreCassProduct.image">Image</label>
+          <div>
+            @if (editForm.get('image')!.value) {
+              <img
+                [src]="'data:' + editForm.get('imageContentType')!.value + ';base64,' + editForm.get('image')!.value"
+                style="max-height: 100px"
+                alt="cassProduct"
+              />
+            }
+            @if (editForm.get('image')!.value) {
+              <div class="form-text text-danger clearfix">
+                <span class="pull-start">{{ editForm.get('imageContentType')!.value }}, {{ byteSize(editForm.get('image')!.value!) }}</span>
+                <button
+                  type="button"
+                  (click)="clearInputImage('image', 'imageContentType', 'file_image')"
+                  class="btn btn-secondary btn-xs pull-end"
+                >
+                  <fa-icon icon="times"></fa-icon>
+                </button>
+              </div>
+            }
+            <input
+              type="file"
+              id="file_image"
+              data-cy="image"
+              (change)="setFileData($event, 'image', true)"
+              accept="image/*"
+              jhiTranslate="entity.action.addimage"
+            />
+          </div>
+          <input type="hidden" class="form-control" name="image" id="field_image" data-cy="image" formControlName="image" />
+          <input
+            type="hidden"
+            class="form-control"
+            name="imageContentType"
+            id="field_imageContentType"
+            formControlName="imageContentType"
+          />
+        </div>
+
+        <div class="mb-3">
+          <mat-form-field appearance="fill" class="full-width">
+            <mat-label jhiTranslate="cassandrastoreApp.cassandrastoreCassProduct.addedDate">Added Date</mat-label>
+            <br />
+            <input matInput [matDatepicker]="addedDatePicker" id="field_addedDate" data-cy="addedDate" formControlName="addedDate" />
+            <mat-datepicker-toggle matSuffix [for]="addedDatePicker"></mat-datepicker-toggle>
+            <mat-datepicker #addedDatePicker></mat-datepicker>
+          </mat-form-field>
+          @if (editForm.get('addedDate')!.invalid && (editForm.get('addedDate')!.dirty || editForm.get('addedDate')!.touched)) {
+            <div>
+              @if (editForm.get('addedDate')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">This field is required.</small>
+              }
+              <small
+                class="form-text text-danger"
+                [hidden]="!editForm.get('addedDate')?.errors?.number"
+                jhiTranslate="entity.validation.number"
+                >This field should be a number.</small
+              >
+            </div>
+          }
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

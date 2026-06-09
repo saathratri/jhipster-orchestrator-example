@@ -1,0 +1,109 @@
+<style>
+  .saathratri-pdf-badge-link {
+    text-decoration: none;
+    display: inline-block;
+    cursor: pointer;
+  }
+  .saathratri-pdf-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #e53935;
+    color: white;
+    font-weight: bold;
+    border-radius: 4px;
+    border: 2px solid #1976d2;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition:
+      border-color 0.2s ease,
+      box-shadow 0.2s ease,
+      transform 0.2s ease;
+  }
+  .saathratri-pdf-badge:hover {
+    border-color: #0d47a1;
+    box-shadow: 0 4px 8px rgba(25, 118, 210, 0.4);
+    transform: scale(1.05);
+  }
+  .saathratri-pdf-badge-sm {
+    width: 40px;
+    height: 52px;
+    font-size: 0.6rem;
+  }
+  .saathratri-pdf-badge-lg {
+    width: 60px;
+    height: 78px;
+    font-size: 0.75rem;
+  }
+</style>
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (cassSaathratriEntity2(); as cassSaathratriEntity2Ref) {
+      <div>
+        <h2 data-cy="cassSaathratriEntity2DetailsHeading">
+          <span jhiTranslate="cassandrablogApp.cassandrablogCassSaathratriEntity2.detail.title">Cass Saathratri Entity 2</span>
+        </h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span jhiTranslate="cassandrablogApp.cassandrablogCassSaathratriEntity2.entityTypeId">Entity Type Id</span></dt>
+          <dd>
+            <span>{{ cassSaathratriEntity2Ref.compositeId.entityTypeId }}</span>
+          </dd>
+          <dt><span jhiTranslate="cassandrablogApp.cassandrablogCassSaathratriEntity2.yearOfDateAdded">Year Of Date Added</span></dt>
+          <dd>
+            <span>{{ cassSaathratriEntity2Ref.compositeId.yearOfDateAdded }}</span>
+          </dd>
+          <dt><span jhiTranslate="cassandrablogApp.cassandrablogCassSaathratriEntity2.arrivalDate">Arrival Date</span></dt>
+          <dd>
+            <span>{{ cassSaathratriEntity2Ref.compositeId.arrivalDate | formatMediumDate }}</span>
+          </dd>
+          <dt><span jhiTranslate="cassandrablogApp.cassandrablogCassSaathratriEntity2.blogId">Blog Id</span></dt>
+          <dd>
+            <span>{{ cassSaathratriEntity2Ref.compositeId.blogId }}</span>
+          </dd>
+          <dt><span jhiTranslate="cassandrablogApp.cassandrablogCassSaathratriEntity2.entityName">Entity Name</span></dt>
+          <dd>
+            <span>{{ cassSaathratriEntity2Ref.entityName }}</span>
+          </dd>
+          <dt><span jhiTranslate="cassandrablogApp.cassandrablogCassSaathratriEntity2.entityDescription">Entity Description</span></dt>
+          <dd>
+            <span>{{ cassSaathratriEntity2Ref.entityDescription }}</span>
+          </dd>
+          <dt><span jhiTranslate="cassandrablogApp.cassandrablogCassSaathratriEntity2.entityCost">Entity Cost</span></dt>
+          <dd>
+            <span>{{ cassSaathratriEntity2Ref.entityCost }}</span>
+          </dd>
+          <dt><span jhiTranslate="cassandrablogApp.cassandrablogCassSaathratriEntity2.departureDate">Departure Date</span></dt>
+          <dd>
+            <td>{{ cassSaathratriEntity2Ref.departureDate | formatMediumDate }}</td>
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+        </button>
+
+        <button
+          type="button"
+          [routerLink]="[
+            '/cassandrablog/cass-saathratri-entity-2',
+            cassSaathratriEntity2()!.compositeId.entityTypeId,
+            cassSaathratriEntity2()!.compositeId.yearOfDateAdded,
+            cassSaathratriEntity2()!.compositeId.arrivalDate | convertFromDayjsToDateLong,
+            cassSaathratriEntity2()!.compositeId.blogId,
+            'edit',
+          ]"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

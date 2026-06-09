@@ -1,0 +1,245 @@
+<style>
+  .saathratri-pdf-badge-link {
+    text-decoration: none;
+    display: inline-block;
+    cursor: pointer;
+  }
+  .saathratri-pdf-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #e53935;
+    color: white;
+    font-weight: bold;
+    border-radius: 4px;
+    border: 2px solid #1976d2;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition:
+      border-color 0.2s ease,
+      box-shadow 0.2s ease,
+      transform 0.2s ease;
+  }
+  .saathratri-pdf-badge:hover {
+    border-color: #0d47a1;
+    box-shadow: 0 4px 8px rgba(25, 118, 210, 0.4);
+    transform: scale(1.05);
+  }
+  .saathratri-pdf-badge-sm {
+    width: 40px;
+    height: 52px;
+    font-size: 0.6rem;
+  }
+  .saathratri-pdf-badge-lg {
+    width: 60px;
+    height: 78px;
+    font-size: 0.75rem;
+  }
+</style>
+<div>
+  <h2 id="page-heading" data-cy="PsqlTagHeading">
+    <span jhiTranslate="psqlblogApp.psqlblogPsqlTag.home.title">Psql Tags</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading()">
+        <fa-icon icon="sync" [animation]="isLoading() ? 'spin' : undefined" />
+        <span jhiTranslate="psqlblogApp.psqlblogPsqlTag.home.refreshListLabel">Refresh list</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-psql-tag"
+        [routerLink]="['/psqlblog/psql-tag/new']"
+      >
+        <fa-icon icon="plus" />
+        <span jhiTranslate="psqlblogApp.psqlblogPsqlTag.home.createLabel">Create a new Psql Tag</span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error />
+
+  <jhi-alert />
+
+  <form name="aiSearchForm" class="row row-cols-sm-auto align-items-center">
+    <div class="col-sm-12">
+      <div class="input-group w-100 mt-3">
+        <label class="visually-hidden" for="aiSearchQuery">AI Search</label>
+        <input
+          type="text"
+          class="form-control"
+          [(ngModel)]="aiSearchQuery"
+          id="aiSearchQuery"
+          name="aiSearchQuery"
+          data-cy="aiSearchInput"
+          placeholder="AI Search (semantic)..."
+          (keyup.enter)="performAiSearch(aiSearchQuery)"
+        />
+
+        <button class="btn btn-warning" data-cy="aiSearchButton" (click)="performAiSearch(aiSearchQuery)" [disabled]="aiSearchLoading()">
+          @if (aiSearchLoading()) {
+            <fa-icon icon="sync" animation="spin" />
+          } @else {
+            <fa-icon icon="search" />
+          }
+          <span class="d-none d-md-inline">AI Search</span>
+        </button>
+
+        @if (isAiSearchActive()) {
+          <button class="btn btn-danger" data-cy="aiSearchClearButton" (click)="clearAiSearch()">
+            <fa-icon icon="trash-alt" />
+          </button>
+        }
+      </div>
+      <div class="mt-2 d-flex flex-wrap gap-3">
+        <small class="text-muted me-1">Search in:</small>
+        <div class="form-check form-check-inline">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            id="aiField_nameEmbedding"
+            [checked]="aiSearchSelectedFields['nameEmbedding']"
+            (change)="toggleAiSearchField('nameEmbedding')"
+          />
+          <label class="form-check-label" for="aiField_nameEmbedding">name</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            id="aiField_descriptionEmbedding"
+            [checked]="aiSearchSelectedFields['descriptionEmbedding']"
+            (change)="toggleAiSearchField('descriptionEmbedding')"
+          />
+          <label class="form-check-label" for="aiField_descriptionEmbedding">description</label>
+        </div>
+      </div>
+    </div>
+  </form>
+  @if (isAiSearchActive()) {
+    <div class="alert alert-info mt-2 mb-0">
+      <fa-icon icon="search" /> Showing AI-powered semantic search results.
+      <a href="javascript:void(0)" (click)="clearAiSearch()">Clear search</a>
+    </div>
+  }
+
+  @if (psqlTags().length === 0) {
+    <div class="alert alert-warning" id="no-result">
+      <span jhiTranslate="psqlblogApp.psqlblogPsqlTag.home.notFound">No Psql Tags found</span>
+    </div>
+  } @else {
+    <div class="table-responsive table-entities" id="entities">
+      <table class="table table-striped" aria-describedby="page-heading">
+        <thead>
+          <tr jhiSort [(sortState)]="sortState" (sortChange)="navigateToWithComponentValues($event)">
+            <th scope="col" jhiSortBy="id">
+              <div class="d-flex">
+                <span jhiTranslate="psqlblogApp.psqlblogPsqlTag.id">Id</span>
+
+                <fa-icon class="p-1" icon="sort" />
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="name">
+              <div class="d-flex">
+                <span jhiTranslate="psqlblogApp.psqlblogPsqlTag.name">Name</span>
+
+                <fa-icon class="p-1" icon="sort" />
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="description">
+              <div class="d-flex">
+                <span jhiTranslate="psqlblogApp.psqlblogPsqlTag.description">Description</span>
+
+                <fa-icon class="p-1" icon="sort" />
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="nameEmbedding">
+              <div class="d-flex">
+                <span jhiTranslate="psqlblogApp.psqlblogPsqlTag.nameEmbedding">Name Embedding</span>
+
+                <fa-icon class="p-1" icon="sort" />
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="descriptionEmbedding">
+              <div class="d-flex">
+                <span jhiTranslate="psqlblogApp.psqlblogPsqlTag.descriptionEmbedding">Description Embedding</span>
+
+                <fa-icon class="p-1" icon="sort" />
+              </div>
+            </th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (psqlTag of psqlTags(); track trackId(psqlTag)) {
+            <tr data-cy="entityTable">
+              <td>
+                <a [routerLink]="['/psqlblog/psql-tag', psqlTag.id, 'view']">{{ psqlTag.id }}</a>
+              </td>
+              <td>{{ psqlTag.name }}</td>
+              <td>{{ psqlTag.description }}</td>
+              <td>
+                <small class="text-muted">
+                  @if (psqlTag.nameEmbedding && psqlTag.nameEmbedding.length > 0) {
+                    [{{ psqlTag.nameEmbedding[0] | number: '1.0-5' }}, {{ psqlTag.nameEmbedding[1] | number: '1.0-5' }},
+                    {{ psqlTag.nameEmbedding[2] | number: '1.0-5' }}, ...]
+                  } @else {
+                    <em>Not generated</em>
+                  }
+                </small>
+              </td>
+              <td>
+                <small class="text-muted">
+                  @if (psqlTag.descriptionEmbedding && psqlTag.descriptionEmbedding.length > 0) {
+                    [{{ psqlTag.descriptionEmbedding[0] | number: '1.0-5' }}, {{ psqlTag.descriptionEmbedding[1] | number: '1.0-5' }},
+                    {{ psqlTag.descriptionEmbedding[2] | number: '1.0-5' }}, ...]
+                  } @else {
+                    <em>Not generated</em>
+                  }
+                </small>
+              </td>
+              <td class="text-end">
+                <div class="btn-group">
+                  <a [routerLink]="['/psqlblog/psql-tag', psqlTag.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
+                    <fa-icon icon="eye" />
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                  </a>
+
+                  <a [routerLink]="['/psqlblog/psql-tag', psqlTag.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
+                    <fa-icon icon="pencil-alt" />
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                  </a>
+
+                  <button type="submit" (click)="delete(psqlTag)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                    <fa-icon icon="times" />
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+  @if (psqlTags().length > 0 && !isAiSearchActive()) {
+    <div>
+      <div class="d-flex justify-content-center">
+        <jhi-item-count [params]="{ page: page(), totalItems: totalItems(), itemsPerPage: itemsPerPage() }" />
+      </div>
+
+      <div class="d-flex justify-content-center">
+        <ngb-pagination
+          [collectionSize]="totalItems()"
+          [page]="page()"
+          [pageSize]="itemsPerPage()"
+          [maxSize]="5"
+          [rotate]="true"
+          [boundaryLinks]="true"
+          (pageChange)="navigateToPage($event)"
+        />
+      </div>
+    </div>
+  }
+</div>
