@@ -34,8 +34,6 @@ A single OAuth2 gateway (`orchestratorgateway`) hosts an Angular **micro fronten
 to four independently-deployed microservices through a Eureka service registry. Two services are
 backed by **PostgreSQL** (with `pgvector` for AI search), two by **Cassandra 5**.
 
-![Saathratri Orchestrator architecture](saathratri-apps-postgresql-mf.png)
-
 | App | Database | Blueprint half | Port | DTO module |
 | --- | --- | --- | --- | --- |
 | `orchestratorgateway` | PostgreSQL | `sql-*` (gateway shell) | 8080 | — |
