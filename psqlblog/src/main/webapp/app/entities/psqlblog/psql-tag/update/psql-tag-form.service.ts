@@ -55,7 +55,7 @@ export class PsqlTagFormService {
   }
 
   getPsqlTag(form: PsqlTagFormGroup): IPsqlTag | NewPsqlTag {
-    return form.getRawValue() as IPsqlTag | NewPsqlTag;
+    return form.getRawValue();
   }
 
   resetForm(form: PsqlTagFormGroup, psqlTag: PsqlTagFormGroupInput): void {

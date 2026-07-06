@@ -9,10 +9,10 @@ import { ICassAddOnsAvailableByOrganization } from '../cass-add-ons-available-by
 import { CassAddOnsAvailableByOrganizationService } from '../service/cass-add-ons-available-by-organization.service';
 
 const cassAddOnsAvailableByOrganizationResolve = (route: ActivatedRouteSnapshot): Observable<null | ICassAddOnsAvailableByOrganization> => {
-  const organizationId = route.params.organizationId;
-  const entityType = route.params.entityType;
-  const entityId = route.params.entityId;
-  const addOnId = route.params.addOnId;
+  const { organizationId } = route.params;
+  const { entityType } = route.params;
+  const { entityId } = route.params;
+  const { addOnId } = route.params;
 
   if (organizationId && entityType && entityId && addOnId) {
     return inject(CassAddOnsAvailableByOrganizationService)

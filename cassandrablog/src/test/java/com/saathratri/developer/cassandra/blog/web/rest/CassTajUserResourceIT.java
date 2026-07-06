@@ -154,6 +154,7 @@ class CassTajUserResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(cassTajUser.getId().toString())))
+
             .andExpect(jsonPath("$.[*].login").value(hasItem(DEFAULT_LOGIN)));
     }
 
@@ -169,6 +170,7 @@ class CassTajUserResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(cassTajUser.getId().toString()))
+
             .andExpect(jsonPath("$.login").value(DEFAULT_LOGIN));
     }
 

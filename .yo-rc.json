@@ -11,9 +11,10 @@
     "blueprints": [
       {
         "name": "generator-jhipster-orchestrator",
-        "version": "1.0.1"
+        "version": "1.0.2"
       }
     ],
+    "defaultCommand": "workspaces",
     "deploymentType": "none",
     "directoryPath": "./",
     "jhipsterVersion": "8.10.0"

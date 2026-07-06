@@ -62,6 +62,7 @@ public class PsqlProductServiceImpl implements PsqlProductService {
 
                 return existingPsqlProduct;
             })
+
             .map(psqlProductRepository::save)
             .map(psqlProductMapper::toDto);
     }

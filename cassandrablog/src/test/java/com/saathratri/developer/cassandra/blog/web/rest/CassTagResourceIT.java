@@ -15,6 +15,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.saathratri.developer.cassandra.blog.IntegrationTest;
 import com.saathratri.developer.cassandra.blog.domain.CassTag;
 import com.saathratri.developer.cassandra.blog.repository.CassTagRepository;
+import com.saathratri.developer.cassandra.blog.service.CassTagService;
 import com.saathratri.developer.cassandra.blog.service.dto.CassTagDTO;
 import com.saathratri.developer.cassandra.blog.service.mapper.CassTagMapper;
 import java.util.List;
@@ -159,7 +160,9 @@ class CassTagResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(cassTag.getId().toString())))
+
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
+
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)));
     }
 
@@ -175,7 +178,9 @@ class CassTagResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(cassTag.getId().toString()))
+
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME))
+
             .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION));
     }
 
@@ -195,7 +200,11 @@ class CassTagResourceIT {
 
         // Update the cassTag
         CassTag updatedCassTag = cassTagRepository.findById(cassTag.getId()).orElseThrow();
-        updatedCassTag.name(UPDATED_NAME).description(UPDATED_DESCRIPTION);
+        updatedCassTag
+
+            .name(UPDATED_NAME)
+
+            .description(UPDATED_DESCRIPTION);
         CassTagDTO cassTagDTO = cassTagMapper.toDto(updatedCassTag);
 
         restCassTagMockMvc
@@ -284,7 +293,11 @@ class CassTagResourceIT {
         CassTag partialUpdatedCassTag = new CassTag();
         partialUpdatedCassTag.setId(cassTag.getId());
 
-        partialUpdatedCassTag.name(UPDATED_NAME).description(UPDATED_DESCRIPTION);
+        partialUpdatedCassTag
+
+            .name(UPDATED_NAME)
+
+            .description(UPDATED_DESCRIPTION);
 
         restCassTagMockMvc
             .perform(
@@ -313,7 +326,11 @@ class CassTagResourceIT {
         CassTag partialUpdatedCassTag = new CassTag();
         partialUpdatedCassTag.setId(cassTag.getId());
 
-        partialUpdatedCassTag.name(UPDATED_NAME).description(UPDATED_DESCRIPTION);
+        partialUpdatedCassTag
+
+            .name(UPDATED_NAME)
+
+            .description(UPDATED_DESCRIPTION);
 
         restCassTagMockMvc
             .perform(
@@ -469,7 +486,11 @@ class CassTagResourceIT {
         when(embeddingModelSaathratriMock.embed(anyString())).thenReturn(sampleFloatsSaathratri(1536));
 
         restCassTagMockMvc
-            .perform(get(ENTITY_API_URL + "/ai-search").param("query", "find similar rows").param("limit", "10"))
+            .perform(
+                get(ENTITY_API_URL + "/ai-search")
+                    .param("query", "find similar rows")
+                    .param("limit", "10")
+            )
             .andExpect(status().isOk())
             .andExpect(jsonPath("$").isArray())
             .andExpect(jsonPath("$.[*].id").value(hasItem(cassTag.getId().toString())));
@@ -478,7 +499,11 @@ class CassTagResourceIT {
     @Test
     void aiSearchReturnsEmptyForBlankQuery() throws Exception {
         restCassTagMockMvc
-            .perform(get(ENTITY_API_URL + "/ai-search").param("query", "  ").param("limit", "10"))
+            .perform(
+                get(ENTITY_API_URL + "/ai-search")
+                    .param("query", "  ")
+                    .param("limit", "10")
+            )
             .andExpect(status().isOk())
             .andExpect(jsonPath("$").isArray())
             .andExpect(jsonPath("$.length()").value(0));
@@ -494,5 +519,66 @@ class CassTagResourceIT {
 
         CassTag persisted = getPersistedCassTag(cassTag);
         assertThat(persisted.getNameEmbedding()).isEqualTo(embedding);
+    }
+
+    // ---- Embedding lifecycle: generated on create, regenerated on update / partial update ----
+
+    @Autowired
+    private CassTagService cassTagServiceSaathratri;
+
+    private static CqlVector<Float> toCqlVectorSaathratri(float[] floats) {
+        java.util.List<Float> values = new java.util.ArrayList<>(floats.length);
+        for (float f : floats) {
+            values.add(f);
+        }
+        return CqlVector.newInstance(values);
+    }
+
+    @Test
+    void serviceSaveGeneratesEmbeddingsFromSourceFields() {
+        // The embedding model is stubbed, so save() must populate the vector field(s) from their source text.
+        float[] generated = sampleFloatsSaathratri(1536);
+        when(embeddingModelSaathratriMock.embed(anyString())).thenReturn(generated);
+
+        cassTagServiceSaathratri.save(cassTagMapper.toDto(cassTag));
+
+        CassTag persisted = getPersistedCassTag(cassTag);
+        assertThat(persisted.getNameEmbedding()).isEqualTo(toCqlVectorSaathratri(generated));
+        assertThat(persisted.getDescriptionEmbedding()).isEqualTo(toCqlVectorSaathratri(generated));
+    }
+
+    @Test
+    void serviceUpdateRegeneratesEmbeddings() {
+        cassTag.setNameEmbedding(sampleCqlVectorSaathratri(1536));
+        cassTagRepository.save(cassTag);
+        // The model now embeds to a DIFFERENT vector; update() must overwrite the stored one.
+        float[] regenerated = new float[1536];
+        for (int i = 0; i < regenerated.length; i++) {
+            regenerated[i] = 0.20f + ((i % 8) * 0.01f);
+        }
+        when(embeddingModelSaathratriMock.embed(anyString())).thenReturn(regenerated);
+
+        cassTagServiceSaathratri.update(cassTagMapper.toDto(cassTag));
+
+        CassTag persisted = getPersistedCassTag(cassTag);
+        assertThat(persisted.getNameEmbedding()).isEqualTo(toCqlVectorSaathratri(regenerated));
+    }
+
+    @Test
+    void servicePartialUpdateRegeneratesEmbeddings() {
+        // Guards the PATCH staleness fix: without regeneration in partialUpdate, the previously
+        // stored vector would survive a patch that changes its source text.
+        cassTag.setNameEmbedding(sampleCqlVectorSaathratri(1536));
+        cassTagRepository.save(cassTag);
+        float[] regenerated = new float[1536];
+        for (int i = 0; i < regenerated.length; i++) {
+            regenerated[i] = 0.20f + ((i % 8) * 0.01f);
+        }
+        when(embeddingModelSaathratriMock.embed(anyString())).thenReturn(regenerated);
+
+        cassTagServiceSaathratri.partialUpdate(cassTagMapper.toDto(cassTag)).orElseThrow();
+
+        CassTag persisted = getPersistedCassTag(cassTag);
+        assertThat(persisted.getNameEmbedding()).isEqualTo(toCqlVectorSaathratri(regenerated));
     }
 }

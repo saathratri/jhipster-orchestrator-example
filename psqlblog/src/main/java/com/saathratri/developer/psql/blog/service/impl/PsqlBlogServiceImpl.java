@@ -62,6 +62,7 @@ public class PsqlBlogServiceImpl implements PsqlBlogService {
 
                 return existingPsqlBlog;
             })
+
             .map(psqlBlogRepository::save)
             .map(psqlBlogMapper::toDto);
     }

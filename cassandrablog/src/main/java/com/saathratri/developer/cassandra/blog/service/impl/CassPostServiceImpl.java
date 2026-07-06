@@ -69,6 +69,7 @@ public class CassPostServiceImpl implements CassPostService {
 
                 return existingCassPost;
             })
+
             .map(cassPostRepository::save)
             .map(cassPostMapper::toDto);
     }

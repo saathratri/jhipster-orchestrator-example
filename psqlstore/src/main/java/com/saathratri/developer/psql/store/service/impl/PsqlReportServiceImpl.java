@@ -60,6 +60,7 @@ public class PsqlReportServiceImpl implements PsqlReportService {
 
                 return existingPsqlReport;
             })
+
             .map(psqlReportRepository::save)
             .map(psqlReportMapper::toDto);
     }

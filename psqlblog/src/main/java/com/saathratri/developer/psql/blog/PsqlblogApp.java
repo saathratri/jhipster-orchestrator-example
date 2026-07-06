@@ -21,7 +21,7 @@ import tech.jhipster.config.JHipsterConstants;
 
 // --- SAATHRATRI CHANGE: Imports for DataStax Astra DB CqlSession bean (Cassandra prod profile) ---
 // --- END SAATHRATRI CHANGE ---
-@SpringBootApplication
+@SpringBootApplication()
 @EnableConfigurationProperties({ LiquibaseProperties.class, ApplicationProperties.class })
 public class PsqlblogApp {
 

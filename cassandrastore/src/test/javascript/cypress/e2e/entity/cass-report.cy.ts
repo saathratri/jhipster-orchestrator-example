@@ -66,6 +66,11 @@ describe('CassReport e2e test', () => {
   });
 
   describe('CassReport page', () => {
+    it('should have translated page title', () => {
+      cy.visit(cassReportPageUrl);
+      cy.getEntityHeading('CassReport').should('not.contain', 'cassandrastoreApp.cassandrastoreCassReport.home.title');
+    });
+
     describe('create button click', () => {
       beforeEach(() => {
         cy.visit(cassReportPageUrl);

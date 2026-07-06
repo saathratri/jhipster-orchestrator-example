@@ -29,14 +29,14 @@
     "blueprints": [
       {
         "name": "generator-jhipster-orchestrator",
-        "version": "1.0.1"
+        "version": "1.0.2"
       }
     ],
     "buildTool": "maven",
     "clientFramework": "angularX",
     "devServerPort": 4200,
     "entities": [],
-    "jhipsterVersion": "9.0.0",
+    "jhipsterVersion": "9.1.0",
     "jwtSecretKey": "NGI4ZDExZWVlYWEzMDlhNzg5NWVjZTZmYzI1MDAxYzA5NzNmNTJjNzY5M2EzZDczNzc2ZDE3MDQ3MmRmNTg2MDdhNTY2MzNhNmRiMWJkZDM3NjgzNmQ1YWIyNDgzODYwYjRkZGY3MWRhNzkzNDM0NzdmOTgzYjVjY2NiM2U1MjE=",
     "languages": ["en"],
     "microfrontends": [

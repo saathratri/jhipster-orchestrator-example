@@ -381,7 +381,7 @@ export class CassSaathratriEntity3Component implements OnInit {
   }
 
   private getCompositeKey(item: ICassSaathratriEntity3): string {
-    const compositeId = item.compositeId;
+    const { compositeId } = item;
     return [compositeId.entityType, compositeId.createdTimeId].join('|');
   }
 

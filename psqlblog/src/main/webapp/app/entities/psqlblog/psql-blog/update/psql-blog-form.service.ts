@@ -51,7 +51,7 @@ export class PsqlBlogFormService {
   }
 
   getPsqlBlog(form: PsqlBlogFormGroup): IPsqlBlog | NewPsqlBlog {
-    return form.getRawValue() as IPsqlBlog | NewPsqlBlog;
+    return form.getRawValue();
   }
 
   resetForm(form: PsqlBlogFormGroup, psqlBlog: PsqlBlogFormGroupInput): void {

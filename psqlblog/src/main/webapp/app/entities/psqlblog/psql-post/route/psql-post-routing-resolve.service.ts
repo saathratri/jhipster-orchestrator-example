@@ -2,14 +2,13 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { ActivatedRouteSnapshot, Router } from '@angular/router';
 
-import { EMPTY, Observable, of } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { EMPTY, Observable, catchError, of } from 'rxjs';
 
 import { IPsqlPost } from '../psql-post.model';
 import { PsqlPostService } from '../service/psql-post.service';
 
 const psqlPostResolve = (route: ActivatedRouteSnapshot): Observable<null | IPsqlPost> => {
-  const id = route.params.id;
+  const { id } = route.params;
   if (id) {
     const router = inject(Router);
     const service = inject(PsqlPostService);

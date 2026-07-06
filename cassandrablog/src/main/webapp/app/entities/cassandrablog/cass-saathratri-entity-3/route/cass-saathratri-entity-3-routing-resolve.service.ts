@@ -9,8 +9,8 @@ import { ICassSaathratriEntity3 } from '../cass-saathratri-entity-3.model';
 import { CassSaathratriEntity3Service } from '../service/cass-saathratri-entity-3.service';
 
 const cassSaathratriEntity3Resolve = (route: ActivatedRouteSnapshot): Observable<null | ICassSaathratriEntity3> => {
-  const entityType = route.params.entityType;
-  const createdTimeId = route.params.createdTimeId;
+  const { entityType } = route.params;
+  const { createdTimeId } = route.params;
 
   if (entityType && createdTimeId) {
     return inject(CassSaathratriEntity3Service)

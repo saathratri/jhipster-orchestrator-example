@@ -69,6 +69,7 @@ public class CassSetEntityByOrganizationServiceImpl implements CassSetEntityByOr
 
                 return existingCassSetEntityByOrganization;
             })
+
             .map(cassSetEntityByOrganizationRepository::save)
             .map(cassSetEntityByOrganizationMapper::toDto);
     }

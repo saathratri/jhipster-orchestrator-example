@@ -9,8 +9,8 @@ import { ICassBlog } from '../cass-blog.model';
 import { CassBlogService } from '../service/cass-blog.service';
 
 const cassBlogResolve = (route: ActivatedRouteSnapshot): Observable<null | ICassBlog> => {
-  const category = route.params.category;
-  const blogId = route.params.blogId;
+  const { category } = route.params;
+  const { blogId } = route.params;
 
   if (category && blogId) {
     return inject(CassBlogService)

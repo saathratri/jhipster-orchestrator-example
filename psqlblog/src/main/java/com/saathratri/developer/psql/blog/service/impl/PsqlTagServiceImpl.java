@@ -67,8 +67,10 @@ public class PsqlTagServiceImpl implements PsqlTagService {
             .map(existingPsqlTag -> {
                 psqlTagMapper.partialUpdate(existingPsqlTag, psqlTagDTO);
 
+                generateEmbeddings(existingPsqlTag);
                 return existingPsqlTag;
             })
+
             .map(psqlTagRepository::save)
             .map(psqlTagMapper::toDto);
     }

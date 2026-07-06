@@ -2,14 +2,13 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { ActivatedRouteSnapshot, Router } from '@angular/router';
 
-import { EMPTY, Observable, of } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { EMPTY, Observable, catchError, of } from 'rxjs';
 
 import { IPsqlBlog } from '../psql-blog.model';
 import { PsqlBlogService } from '../service/psql-blog.service';
 
 const psqlBlogResolve = (route: ActivatedRouteSnapshot): Observable<null | IPsqlBlog> => {
-  const id = route.params.id;
+  const { id } = route.params;
   if (id) {
     const router = inject(Router);
     const service = inject(PsqlBlogService);

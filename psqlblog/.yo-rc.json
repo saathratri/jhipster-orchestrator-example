@@ -7,7 +7,7 @@
     "blueprints": [
       {
         "name": "generator-jhipster-orchestrator",
-        "version": "1.0.1"
+        "version": "1.0.2"
       }
     ],
     "buildTool": "maven",
@@ -18,7 +18,7 @@
     "enableHibernateCache": false,
     "entities": ["PsqlBlog", "PsqlPost", "PsqlTag", "PsqlTajUser"],
     "gatewayServerPort": "8080",
-    "jhipsterVersion": "9.0.0",
+    "jhipsterVersion": "9.1.0",
     "jwtSecretKey": "MTYzZTE3N2EzNjVlZmM4MzgyZjZmMjJkZDM5Yzc5YWJhNTAwMTIwYzIxNTMzZTc5OGNiMTA4ZGYxYWM3NzU3MmJlMThmZDM3ODEzMWEwMTg0MjMyMTdiZDczZDM5NjJhZmJlZWM4MjIxMjRiOWVkMDMyZjgyZjIxZjY4NWQxYTU=",
     "languages": ["en"],
     "lastLiquibaseTimestamp": 1780193597000,

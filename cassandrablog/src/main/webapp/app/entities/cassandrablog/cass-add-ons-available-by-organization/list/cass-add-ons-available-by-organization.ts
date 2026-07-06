@@ -394,7 +394,7 @@ export class CassAddOnsAvailableByOrganizationComponent implements OnInit {
   }
 
   private getCompositeKey(item: ICassAddOnsAvailableByOrganization): string {
-    const compositeId = item.compositeId;
+    const { compositeId } = item;
     return [compositeId.organizationId, compositeId.entityType, compositeId.entityId, compositeId.addOnId].join('|');
   }
 

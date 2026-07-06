@@ -9,7 +9,7 @@ import { ICassTag } from '../cass-tag.model';
 import { CassTagService } from '../service/cass-tag.service';
 
 const cassTagResolve = (route: ActivatedRouteSnapshot): Observable<null | ICassTag> => {
-  const id = route.params.id;
+  const { id } = route.params;
 
   if (id) {
     return inject(CassTagService)

@@ -1,6 +1,7 @@
 package com.saathratri.developer.cassandra.blog.service.embedding;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.within;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
@@ -59,5 +60,26 @@ class EmbeddingServiceTest {
     void generateEmbeddingReturnsNullWhenModelUnavailable() {
         // Non-blank text with a null model: the embed() call NPEs and is swallowed, yielding null.
         assertThat(new EmbeddingService(null).generateEmbedding("hello world")).isNull();
+    }
+
+    @Test
+    void deterministicFakeEmbeddingIsStableNormalizedAndTextSensitive() {
+        // The offline fake model (openai.embedding.fake=true, used by e2e) must embed the same
+        // normalized text to the same unit vector and different texts to different vectors.
+        float[] first = com.saathratri.developer.cassandra.blog.config.EmbeddingConfiguration.deterministicEmbedding("Hello World", 64);
+        float[] normalizedSame = com.saathratri.developer.cassandra.blog.config.EmbeddingConfiguration.deterministicEmbedding(
+            "  hello world  ",
+            64
+        );
+        float[] other = com.saathratri.developer.cassandra.blog.config.EmbeddingConfiguration.deterministicEmbedding("something else", 64);
+
+        assertThat(normalizedSame).containsExactly(first);
+        assertThat(other).isNotEqualTo(first);
+
+        double norm = 0;
+        for (float component : first) {
+            norm += component * component;
+        }
+        assertThat(Math.sqrt(norm)).isCloseTo(1.0, within(1e-3));
     }
 }

@@ -376,7 +376,7 @@ export class CassBlogComponent implements OnInit {
   }
 
   private getCompositeKey(item: ICassBlog): string {
-    const compositeId = item.compositeId;
+    const { compositeId } = item;
     return [compositeId.category, compositeId.blogId].join('|');
   }
 

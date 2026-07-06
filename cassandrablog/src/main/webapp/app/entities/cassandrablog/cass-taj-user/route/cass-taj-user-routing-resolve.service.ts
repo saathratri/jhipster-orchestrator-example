@@ -9,7 +9,7 @@ import { ICassTajUser } from '../cass-taj-user.model';
 import { CassTajUserService } from '../service/cass-taj-user.service';
 
 const cassTajUserResolve = (route: ActivatedRouteSnapshot): Observable<null | ICassTajUser> => {
-  const id = route.params.id;
+  const { id } = route.params;
 
   if (id) {
     return inject(CassTajUserService)

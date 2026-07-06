@@ -61,6 +61,11 @@ describe('PsqlTajUser e2e test', () => {
   });
 
   describe('PsqlTajUser page', () => {
+    it('should have translated page title', () => {
+      cy.visit(psqlTajUserPageUrl);
+      cy.getEntityHeading('PsqlTajUser').should('not.contain', 'psqlblogApp.psqlblogPsqlTajUser.home.title');
+    });
+
     describe('create button click', () => {
       beforeEach(() => {
         cy.visit(psqlTajUserPageUrl);

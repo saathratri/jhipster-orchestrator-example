@@ -68,6 +68,14 @@ describe('CassAddOnsAvailableByOrganization e2e test', () => {
   });
 
   describe('CassAddOnsAvailableByOrganization page', () => {
+    it('should have translated page title', () => {
+      cy.visit(cassAddOnsAvailableByOrganizationPageUrl);
+      cy.getEntityHeading('CassAddOnsAvailableByOrganization').should(
+        'not.contain',
+        'cassandrablogApp.cassandrablogCassAddOnsAvailableByOrganization.home.title',
+      );
+    });
+
     describe('create button click', () => {
       beforeEach(() => {
         cy.visit(cassAddOnsAvailableByOrganizationPageUrl);

@@ -71,6 +71,7 @@ public class CassSaathratriEntity4ServiceImpl implements CassSaathratriEntity4Se
 
                 return existingCassSaathratriEntity4;
             })
+
             .map(cassSaathratriEntity4Repository::save)
             .map(cassSaathratriEntity4Mapper::toDto);
     }

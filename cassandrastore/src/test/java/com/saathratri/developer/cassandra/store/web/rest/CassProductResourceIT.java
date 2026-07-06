@@ -77,6 +77,7 @@ class CassProductResourceIT {
      */
     public static CassProduct createEntity() {
         CassProduct cassProduct = new CassProduct()
+
             .id(DEFAULT_ID)
             .title(DEFAULT_TITLE)
             .price(DEFAULT_PRICE)
@@ -94,6 +95,7 @@ class CassProductResourceIT {
      */
     public static CassProduct createUpdatedEntity() {
         CassProduct cassProduct = new CassProduct()
+
             .id(UPDATED_ID)
             .title(UPDATED_TITLE)
             .price(UPDATED_PRICE)
@@ -217,10 +219,14 @@ class CassProductResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(cassProduct.getId().toString())))
+
             .andExpect(jsonPath("$.[*].title").value(hasItem(DEFAULT_TITLE)))
+
             .andExpect(jsonPath("$.[*].price").value(hasItem(sameNumber(DEFAULT_PRICE))))
             .andExpect(jsonPath("$.[*].imageContentType").value(hasItem(DEFAULT_IMAGE_CONTENT_TYPE)))
+
             .andExpect(jsonPath("$.[*].image").value(hasItem(Base64.getEncoder().encodeToString(DEFAULT_IMAGE.array()))))
+
             .andExpect(jsonPath("$.[*].addedDate").value(hasItem(DEFAULT_ADDED_DATE.intValue())));
     }
 
@@ -236,10 +242,14 @@ class CassProductResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(cassProduct.getId().toString()))
+
             .andExpect(jsonPath("$.title").value(DEFAULT_TITLE))
+
             .andExpect(jsonPath("$.price").value(sameNumber(DEFAULT_PRICE)))
             .andExpect(jsonPath("$.imageContentType").value(DEFAULT_IMAGE_CONTENT_TYPE))
+
             .andExpect(jsonPath("$.image").value(Base64.getEncoder().encodeToString(DEFAULT_IMAGE.array())))
+
             .andExpect(jsonPath("$.addedDate").value(DEFAULT_ADDED_DATE.intValue()));
     }
 
@@ -260,10 +270,14 @@ class CassProductResourceIT {
         // Update the cassProduct
         CassProduct updatedCassProduct = cassProductRepository.findById(cassProduct.getId()).orElseThrow();
         updatedCassProduct
+
             .title(UPDATED_TITLE)
+
             .price(UPDATED_PRICE)
+
             .image(UPDATED_IMAGE)
             .imageContentType(UPDATED_IMAGE_CONTENT_TYPE)
+
             .addedDate(UPDATED_ADDED_DATE);
         CassProductDTO cassProductDTO = cassProductMapper.toDto(updatedCassProduct);
 
@@ -354,10 +368,14 @@ class CassProductResourceIT {
         partialUpdatedCassProduct.setId(cassProduct.getId());
 
         partialUpdatedCassProduct
+
             .title(UPDATED_TITLE)
+
             .price(UPDATED_PRICE)
+
             .image(UPDATED_IMAGE)
             .imageContentType(UPDATED_IMAGE_CONTENT_TYPE)
+
             .addedDate(UPDATED_ADDED_DATE);
 
         restCassProductMockMvc
@@ -391,10 +409,14 @@ class CassProductResourceIT {
         partialUpdatedCassProduct.setId(cassProduct.getId());
 
         partialUpdatedCassProduct
+
             .title(UPDATED_TITLE)
+
             .price(UPDATED_PRICE)
+
             .image(UPDATED_IMAGE)
             .imageContentType(UPDATED_IMAGE_CONTENT_TYPE)
+
             .addedDate(UPDATED_ADDED_DATE);
 
         restCassProductMockMvc

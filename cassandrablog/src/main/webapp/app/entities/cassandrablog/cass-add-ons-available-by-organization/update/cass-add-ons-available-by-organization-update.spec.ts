@@ -65,7 +65,7 @@ describe('CassAddOnsAvailableByOrganization Management Update Component', () => 
         .spyOn(cassAddOnsAvailableByOrganizationFormService, 'getCassAddOnsAvailableByOrganization')
         .mockReturnValue(cassAddOnsAvailableByOrganization);
       vitest.spyOn(cassAddOnsAvailableByOrganizationService, 'update').mockReturnValue(saveSubject);
-      vitest.spyOn(comp, 'previousState');
+      vitest.spyOn(comp, 'previousState').mockImplementation(() => {});
       activatedRoute.data = of({ cassAddOnsAvailableByOrganization });
       comp.ngOnInit();
 
@@ -92,7 +92,7 @@ describe('CassAddOnsAvailableByOrganization Management Update Component', () => 
         .spyOn(cassAddOnsAvailableByOrganizationFormService, 'getCassAddOnsAvailableByOrganization')
         .mockReturnValue(cassAddOnsAvailableByOrganization);
       vitest.spyOn(cassAddOnsAvailableByOrganizationService, 'create').mockReturnValue(saveSubject);
-      vitest.spyOn(comp, 'previousState');
+      vitest.spyOn(comp, 'previousState').mockImplementation(() => {});
       // routeConfig.path === 'new' makes the component treat this as a create
       (activatedRoute as unknown as { snapshot: unknown }).snapshot = { routeConfig: { path: 'new' } };
       activatedRoute.data = of({ cassAddOnsAvailableByOrganization: null });
@@ -116,7 +116,7 @@ describe('CassAddOnsAvailableByOrganization Management Update Component', () => 
       const saveSubject = new Subject<HttpResponse<ICassAddOnsAvailableByOrganization>>();
       const cassAddOnsAvailableByOrganization = { ...sampleWithRequiredData };
       vitest.spyOn(cassAddOnsAvailableByOrganizationService, 'update').mockReturnValue(saveSubject);
-      vitest.spyOn(comp, 'previousState');
+      vitest.spyOn(comp, 'previousState').mockImplementation(() => {});
       activatedRoute.data = of({ cassAddOnsAvailableByOrganization });
       comp.ngOnInit();
 

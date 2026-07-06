@@ -61,6 +61,11 @@ describe('PsqlBlog e2e test', () => {
   });
 
   describe('PsqlBlog page', () => {
+    it('should have translated page title', () => {
+      cy.visit(psqlBlogPageUrl);
+      cy.getEntityHeading('PsqlBlog').should('not.contain', 'psqlblogApp.psqlblogPsqlBlog.home.title');
+    });
+
     describe('create button click', () => {
       beforeEach(() => {
         cy.visit(psqlBlogPageUrl);

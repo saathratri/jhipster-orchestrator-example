@@ -82,6 +82,7 @@ public class CassAddOnsSelectedByOrganizationServiceImpl implements CassAddOnsSe
 
                 return existingCassAddOnsSelectedByOrganization;
             })
+
             .map(cassAddOnsSelectedByOrganizationRepository::save)
             .map(cassAddOnsSelectedByOrganizationMapper::toDto);
     }

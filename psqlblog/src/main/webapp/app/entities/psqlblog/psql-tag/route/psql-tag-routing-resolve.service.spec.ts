@@ -81,7 +81,7 @@ describe('PsqlTag routing resolve service', () => {
 
       // WHEN
       await TestBed.runInInjectionContext(async () => {
-        await expect(lastValueFrom(psqlTagResolve(mockActivatedRouteSnapshot))).rejects.toThrowError('no elements in sequence');
+        await expect(lastValueFrom(psqlTagResolve(mockActivatedRouteSnapshot))).rejects.toThrow('no elements in sequence');
         // THEN
         expect(service.find).toHaveBeenCalledWith('9fec3727-3421-4967-b213-ba36557ca194');
         expect(mockRouter.navigate).toHaveBeenCalledWith(['404']);
@@ -97,7 +97,7 @@ describe('PsqlTag routing resolve service', () => {
 
       // WHEN
       await TestBed.runInInjectionContext(async () => {
-        await expect(lastValueFrom(psqlTagResolve(mockActivatedRouteSnapshot))).rejects.toThrowError('no elements in sequence');
+        await expect(lastValueFrom(psqlTagResolve(mockActivatedRouteSnapshot))).rejects.toThrow('no elements in sequence');
         // THEN
         expect(service.find).toHaveBeenCalledWith('9fec3727-3421-4967-b213-ba36557ca194');
         expect(mockRouter.navigate).toHaveBeenCalledWith(['error']);

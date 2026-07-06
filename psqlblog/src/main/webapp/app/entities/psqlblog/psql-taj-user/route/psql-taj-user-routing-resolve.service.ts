@@ -2,14 +2,13 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { ActivatedRouteSnapshot, Router } from '@angular/router';
 
-import { EMPTY, Observable, of } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { EMPTY, Observable, catchError, of } from 'rxjs';
 
 import { IPsqlTajUser } from '../psql-taj-user.model';
 import { PsqlTajUserService } from '../service/psql-taj-user.service';
 
 const psqlTajUserResolve = (route: ActivatedRouteSnapshot): Observable<null | IPsqlTajUser> => {
-  const id = route.params.id;
+  const { id } = route.params;
   if (id) {
     const router = inject(Router);
     const service = inject(PsqlTajUserService);

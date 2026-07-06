@@ -9,9 +9,9 @@ import { ICassPost } from '../cass-post.model';
 import { CassPostService } from '../service/cass-post.service';
 
 const cassPostResolve = (route: ActivatedRouteSnapshot): Observable<null | ICassPost> => {
-  const createdDate = route.params.createdDate;
-  const addedDateTime = route.params.addedDateTime;
-  const postId = route.params.postId;
+  const { createdDate } = route.params;
+  const { addedDateTime } = route.params;
+  const { postId } = route.params;
 
   if (createdDate && addedDateTime && postId) {
     return inject(CassPostService)

@@ -3,7 +3,6 @@ package com.saathratri.developer.psql.blog.repository;
 import com.saathratri.developer.psql.blog.domain.PsqlPost;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
@@ -34,7 +33,7 @@ public class PsqlPostRepositoryWithBagRelationshipsImpl implements PsqlPostRepos
 
     @Override
     public List<PsqlPost> fetchBagRelationships(List<PsqlPost> psqlPosts) {
-        return Optional.of(psqlPosts).map(this::fetchTags).orElse(Collections.emptyList());
+        return Optional.of(psqlPosts).map(this::fetchTags).orElse(List.of());
     }
 
     PsqlPost fetchTags(PsqlPost result) {
@@ -54,7 +53,7 @@ public class PsqlPostRepositoryWithBagRelationshipsImpl implements PsqlPostRepos
             )
             .setParameter(PSQLPOSTS_PARAMETER, psqlPosts)
             .getResultList();
-        Collections.sort(result, (o1, o2) -> Integer.compare(order.get(o1.getId()), order.get(o2.getId())));
+        result.sort((o1, o2) -> Integer.compare(order.get(o1.getId()), order.get(o2.getId())));
         return result;
     }
 }

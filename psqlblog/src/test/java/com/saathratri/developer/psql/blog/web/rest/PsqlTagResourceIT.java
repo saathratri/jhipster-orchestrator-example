@@ -15,6 +15,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.saathratri.developer.psql.blog.IntegrationTest;
 import com.saathratri.developer.psql.blog.domain.PsqlTag;
 import com.saathratri.developer.psql.blog.repository.PsqlTagRepository;
+import com.saathratri.developer.psql.blog.service.PsqlTagService;
 import com.saathratri.developer.psql.blog.service.dto.PsqlTagDTO;
 import com.saathratri.developer.psql.blog.service.mapper.PsqlTagMapper;
 import jakarta.persistence.EntityManager;
@@ -622,7 +623,11 @@ class PsqlTagResourceIT {
         );
 
         restPsqlTagMockMvc
-            .perform(get(ENTITY_API_URL + "/ai-search").param("query", "find similar rows").param("limit", "10"))
+            .perform(
+                get(ENTITY_API_URL + "/ai-search")
+                    .param("query", "find similar rows")
+                    .param("limit", "10")
+            )
             .andExpect(status().isOk())
             .andExpect(jsonPath("$").isArray())
             .andExpect(jsonPath("$.[*].id").value(hasItem(insertedPsqlTag.getId().toString())));
@@ -632,7 +637,11 @@ class PsqlTagResourceIT {
     @Transactional
     void aiSearchReturnsEmptyForBlankQuery() throws Exception {
         restPsqlTagMockMvc
-            .perform(get(ENTITY_API_URL + "/ai-search").param("query", "  ").param("limit", "10"))
+            .perform(
+                get(ENTITY_API_URL + "/ai-search")
+                    .param("query", "  ")
+                    .param("limit", "10")
+            )
             .andExpect(status().isOk())
             .andExpect(jsonPath("$").isArray())
             .andExpect(jsonPath("$.length()").value(0));
@@ -657,5 +666,60 @@ class PsqlTagResourceIT {
         String vectorText = storedVector.toString().trim();
         assertThat(vectorText).startsWith("[").endsWith("]");
         assertThat(vectorText.substring(1, vectorText.length() - 1).split(",")).hasSize(DEFAULT_NAME_EMBEDDING.length);
+    }
+
+    // ---- Embedding lifecycle: generated on create, regenerated on update / partial update ----
+
+    @Autowired
+    private PsqlTagService psqlTagServiceSaathratri;
+
+    @Test
+    @Transactional
+    void serviceSaveGeneratesEmbeddingsFromSourceFields() {
+        // The embedding model is stubbed, so save() must populate every vector field from its source text.
+        when(embeddingModelSaathratriMock.embedForResponse(any())).thenReturn(
+            new EmbeddingResponse(List.of(new Embedding(DEFAULT_NAME_EMBEDDING, 0)))
+        );
+
+        PsqlTagDTO saved = psqlTagServiceSaathratri.save(psqlTagMapper.toDto(psqlTag));
+        insertedPsqlTag = psqlTagRepository.findById(saved.getId()).orElseThrow();
+
+        assertThat(insertedPsqlTag.getNameEmbedding()).containsExactly(DEFAULT_NAME_EMBEDDING);
+        assertThat(insertedPsqlTag.getDescriptionEmbedding()).containsExactly(DEFAULT_NAME_EMBEDDING);
+    }
+
+    @Test
+    @Transactional
+    void serviceUpdateRegeneratesEmbeddings() {
+        psqlTag.setNameEmbedding(DEFAULT_NAME_EMBEDDING);
+        insertedPsqlTag = psqlTagRepository.saveAndFlush(psqlTag);
+        // The model now embeds to a DIFFERENT vector; update() must overwrite the stored one.
+        float[] regenerated = sampleVectorSaathratri(1536, 0.20f);
+        when(embeddingModelSaathratriMock.embedForResponse(any())).thenReturn(
+            new EmbeddingResponse(List.of(new Embedding(regenerated, 0)))
+        );
+
+        psqlTagServiceSaathratri.update(psqlTagMapper.toDto(insertedPsqlTag));
+
+        PsqlTag persisted = psqlTagRepository.findById(insertedPsqlTag.getId()).orElseThrow();
+        assertThat(persisted.getNameEmbedding()).containsExactly(regenerated);
+    }
+
+    @Test
+    @Transactional
+    void servicePartialUpdateRegeneratesEmbeddings() {
+        // Guards the PATCH staleness fix: without regeneration in partialUpdate, the previously
+        // stored vector would survive a patch that changes its source text.
+        psqlTag.setNameEmbedding(DEFAULT_NAME_EMBEDDING);
+        insertedPsqlTag = psqlTagRepository.saveAndFlush(psqlTag);
+        float[] regenerated = sampleVectorSaathratri(1536, 0.20f);
+        when(embeddingModelSaathratriMock.embedForResponse(any())).thenReturn(
+            new EmbeddingResponse(List.of(new Embedding(regenerated, 0)))
+        );
+
+        psqlTagServiceSaathratri.partialUpdate(psqlTagMapper.toDto(insertedPsqlTag)).orElseThrow();
+
+        PsqlTag persisted = psqlTagRepository.findById(insertedPsqlTag.getId()).orElseThrow();
+        assertThat(persisted.getNameEmbedding()).containsExactly(regenerated);
     }
 }

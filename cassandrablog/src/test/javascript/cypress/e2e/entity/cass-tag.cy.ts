@@ -61,6 +61,11 @@ describe('CassTag e2e test', () => {
   });
 
   describe('CassTag page', () => {
+    it('should have translated page title', () => {
+      cy.visit(cassTagPageUrl);
+      cy.getEntityHeading('CassTag').should('not.contain', 'cassandrablogApp.cassandrablogCassTag.home.title');
+    });
+
     describe('create button click', () => {
       beforeEach(() => {
         cy.visit(cassTagPageUrl);
@@ -199,5 +204,56 @@ describe('CassTag e2e test', () => {
     // Reset restores the (empty) saved value, clearing the field.
     cy.get(`[data-cy="id-reset"]`).click();
     cy.get(`[data-cy="id"]`).should('have.value', '');
+  });
+
+  it('should run an AI semantic search', () => {
+    cy.intercept('GET', /\/api\/cass-tags\/ai-search/).as('aiSearchRequest');
+    cy.visit('/');
+    cy.clickOnEntityMenuItem('cassandrablog/cass-tag');
+    cy.wait('@entitiesRequest', { timeout: 30000 });
+    cy.get('#aiSearchQuery').type('semantic query');
+    cy.get('form[name="aiSearchForm"] button.btn-warning').click();
+    cy.wait('@aiSearchRequest', { timeout: 30000 }).its('response.statusCode').should('eq', 200);
+  });
+
+  it('should generate embeddings on create and regenerate on update (fake embedding model)', function () {
+    cy.env(['fakeEmbeddings']).then(({ fakeEmbeddings }) => {
+      if (!fakeEmbeddings) this.skip();
+    });
+    const createdText = `cypress embed ${Date.now()}`;
+    const updatedText = `cypress reembed ${Date.now()}`;
+    cy.authenticatedRequest({
+      method: 'POST',
+      url: '/services/cassandrablog/api/cass-tags',
+      body: { ...cassTagSample, name: createdText },
+    }).then(({ body }) => {
+      cassTag = body;
+      // Embedding created on insert: the vector column is populated (exposed via the DTO).
+      cy.authenticatedRequest({ method: 'GET', url: `/services/cassandrablog/api/cass-tags/${cassTag.id}` }).then(({ body: created }) => {
+        expect(created.nameEmbedding, 'embedding generated on create').to.exist;
+        const embeddingBefore = JSON.stringify(created.nameEmbedding);
+        // The ANN search finds the new row for its exact text.
+        cy.visit('/');
+        cy.clickOnEntityMenuItem('cassandrablog/cass-tag');
+        cy.wait('@entitiesRequest', { timeout: 30000 });
+        cy.intercept('GET', /\/api\/cass-tags\/ai-search/).as('aiSearchCreated');
+        cy.get('#aiSearchQuery').clear().type(createdText);
+        cy.get('form[name="aiSearchForm"] button.btn-warning').click();
+        cy.wait('@aiSearchCreated', { timeout: 30000 }).then(({ response }) => {
+          expect(response.statusCode).to.eq(200);
+          expect(response.body.map(row => row.id)).to.include(cassTag.id);
+        });
+        // Update the source text; the stored vector must be REGENERATED (value changes).
+        cy.authenticatedRequest({
+          method: 'PUT',
+          url: `/services/cassandrablog/api/cass-tags/${cassTag.id}`,
+          body: { ...created, name: updatedText },
+        });
+        cy.authenticatedRequest({ method: 'GET', url: `/services/cassandrablog/api/cass-tags/${cassTag.id}` }).then(({ body: updated }) => {
+          expect(updated.nameEmbedding, 'embedding regenerated on update').to.exist;
+          expect(JSON.stringify(updated.nameEmbedding)).to.not.eq(embeddingBefore);
+        });
+      });
+    });
   });
 });

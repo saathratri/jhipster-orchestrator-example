@@ -63,6 +63,7 @@ public class PsqlPostServiceImpl implements PsqlPostService {
 
                 return existingPsqlPost;
             })
+
             .map(psqlPostRepository::save)
             .map(psqlPostMapper::toDto);
     }

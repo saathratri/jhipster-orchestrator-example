@@ -53,7 +53,7 @@ export class PsqlProductFormService {
   }
 
   getPsqlProduct(form: PsqlProductFormGroup): IPsqlProduct | NewPsqlProduct {
-    return form.getRawValue() as IPsqlProduct | NewPsqlProduct;
+    return form.getRawValue();
   }
 
   resetForm(form: PsqlProductFormGroup, psqlProduct: PsqlProductFormGroupInput): void {

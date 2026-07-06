@@ -1,4 +1,4 @@
-import { Component, OnInit, effect, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, effect, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Data, ParamMap, Router, RouterLink } from '@angular/router';
 
@@ -17,6 +17,7 @@ import { IPsqlBlog } from '../psql-blog.model';
 import { PsqlBlogService } from '../service/psql-blog.service';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'jhi-psql-blog',
   templateUrl: './psql-blog.html',
   imports: [

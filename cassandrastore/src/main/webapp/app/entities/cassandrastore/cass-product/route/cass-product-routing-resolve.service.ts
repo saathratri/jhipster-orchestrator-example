@@ -9,7 +9,7 @@ import { ICassProduct } from '../cass-product.model';
 import { CassProductService } from '../service/cass-product.service';
 
 const cassProductResolve = (route: ActivatedRouteSnapshot): Observable<null | ICassProduct> => {
-  const id = route.params.id;
+  const { id } = route.params;
 
   if (id) {
     return inject(CassProductService)

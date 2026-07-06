@@ -9,10 +9,10 @@ import { ICassSaathratriEntity2 } from '../cass-saathratri-entity-2.model';
 import { CassSaathratriEntity2Service } from '../service/cass-saathratri-entity-2.service';
 
 const cassSaathratriEntity2Resolve = (route: ActivatedRouteSnapshot): Observable<null | ICassSaathratriEntity2> => {
-  const entityTypeId = route.params.entityTypeId;
-  const yearOfDateAdded = route.params.yearOfDateAdded;
-  const arrivalDate = route.params.arrivalDate;
-  const blogId = route.params.blogId;
+  const { entityTypeId } = route.params;
+  const { yearOfDateAdded } = route.params;
+  const { arrivalDate } = route.params;
+  const { blogId } = route.params;
 
   if (entityTypeId && yearOfDateAdded && arrivalDate && blogId) {
     return inject(CassSaathratriEntity2Service)

@@ -2,7 +2,7 @@
 name: cassandrablog
 services:
   cassandra:
-    image: cassandra:5.0.6
+    image: cassandra:5.0.8
     container_name: cassandrablog-cassandra
     environment:
       - MAX_HEAP_SIZE=2G

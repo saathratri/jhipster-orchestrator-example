@@ -181,9 +181,13 @@ class CassBlogResourceIT {
             .perform(get(ENTITY_API_URL))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+
             .andExpect(jsonPath("$.[*].compositeId.category").value(hasItem(cassBlog.getCompositeId().getCategory().toString())))
+
             .andExpect(jsonPath("$.[*].compositeId.blogId").value(hasItem(cassBlog.getCompositeId().getBlogId().toString())))
+
             .andExpect(jsonPath("$.[*].handle").value(hasItem(DEFAULT_HANDLE)))
+
             .andExpect(jsonPath("$.[*].content").value(hasItem(DEFAULT_CONTENT)));
     }
 
@@ -203,9 +207,13 @@ class CassBlogResourceIT {
             )
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+
             .andExpect(jsonPath("$.compositeId.category").value(cassBlog.getCompositeId().getCategory().toString()))
+
             .andExpect(jsonPath("$.compositeId.blogId").value(cassBlog.getCompositeId().getBlogId().toString()))
+
             .andExpect(jsonPath("$.handle").value(DEFAULT_HANDLE))
+
             .andExpect(jsonPath("$.content").value(DEFAULT_CONTENT));
     }
 
@@ -334,7 +342,11 @@ class CassBlogResourceIT {
 
         // Update the cassBlog
         CassBlog updatedCassBlog = cassBlogRepository.findById(cassBlog.getCompositeId()).orElseThrow();
-        updatedCassBlog.handle(UPDATED_HANDLE).content(UPDATED_CONTENT);
+        updatedCassBlog
+
+            .handle(UPDATED_HANDLE)
+
+            .content(UPDATED_CONTENT);
         CassBlogDTO cassBlogDTO = cassBlogMapper.toDto(updatedCassBlog);
 
         restCassBlogMockMvc
@@ -432,7 +444,11 @@ class CassBlogResourceIT {
         CassBlog partialUpdatedCassBlog = new CassBlog();
         partialUpdatedCassBlog.setCompositeId(cassBlog.getCompositeId());
 
-        partialUpdatedCassBlog.handle(UPDATED_HANDLE).content(UPDATED_CONTENT);
+        partialUpdatedCassBlog
+
+            .handle(UPDATED_HANDLE)
+
+            .content(UPDATED_CONTENT);
 
         restCassBlogMockMvc
             .perform(
@@ -466,7 +482,11 @@ class CassBlogResourceIT {
         CassBlog partialUpdatedCassBlog = new CassBlog();
         partialUpdatedCassBlog.setCompositeId(cassBlog.getCompositeId());
 
-        partialUpdatedCassBlog.handle(UPDATED_HANDLE).content(UPDATED_CONTENT);
+        partialUpdatedCassBlog
+
+            .handle(UPDATED_HANDLE)
+
+            .content(UPDATED_CONTENT);
 
         restCassBlogMockMvc
             .perform(

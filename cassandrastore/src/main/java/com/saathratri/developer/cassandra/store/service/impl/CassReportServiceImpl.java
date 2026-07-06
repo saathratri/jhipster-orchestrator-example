@@ -62,6 +62,7 @@ public class CassReportServiceImpl implements CassReportService {
 
                 return existingCassReport;
             })
+
             .map(cassReportRepository::save)
             .map(cassReportMapper::toDto);
     }

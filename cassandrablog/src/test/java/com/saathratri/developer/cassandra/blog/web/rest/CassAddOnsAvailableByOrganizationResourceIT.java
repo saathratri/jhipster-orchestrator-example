@@ -228,30 +228,39 @@ class CassAddOnsAvailableByOrganizationResourceIT {
             .perform(get(ENTITY_API_URL))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+
             .andExpect(
                 jsonPath("$.[*].compositeId.organizationId").value(
                     hasItem(cassAddOnsAvailableByOrganization.getCompositeId().getOrganizationId().toString())
                 )
             )
+
             .andExpect(
                 jsonPath("$.[*].compositeId.entityType").value(
                     hasItem(cassAddOnsAvailableByOrganization.getCompositeId().getEntityType().toString())
                 )
             )
+
             .andExpect(
                 jsonPath("$.[*].compositeId.entityId").value(
                     hasItem(cassAddOnsAvailableByOrganization.getCompositeId().getEntityId().toString())
                 )
             )
+
             .andExpect(
                 jsonPath("$.[*].compositeId.addOnId").value(
                     hasItem(cassAddOnsAvailableByOrganization.getCompositeId().getAddOnId().toString())
                 )
             )
+
             .andExpect(jsonPath("$.[*].addOnType").value(hasItem(DEFAULT_ADD_ON_TYPE)))
+
             .andExpect(jsonPath("$.[*].addOnDetailsText").exists())
+
             .andExpect(jsonPath("$.[*].addOnDetailsDecimal").exists())
+
             .andExpect(jsonPath("$.[*].addOnDetailsBoolean").exists())
+
             .andExpect(jsonPath("$.[*].addOnDetailsBigInt").exists());
     }
 
@@ -275,22 +284,31 @@ class CassAddOnsAvailableByOrganizationResourceIT {
             )
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+
             .andExpect(
                 jsonPath("$.compositeId.organizationId").value(
                     cassAddOnsAvailableByOrganization.getCompositeId().getOrganizationId().toString()
                 )
             )
+
             .andExpect(
                 jsonPath("$.compositeId.entityType").value(cassAddOnsAvailableByOrganization.getCompositeId().getEntityType().toString())
             )
+
             .andExpect(
                 jsonPath("$.compositeId.entityId").value(cassAddOnsAvailableByOrganization.getCompositeId().getEntityId().toString())
             )
+
             .andExpect(jsonPath("$.compositeId.addOnId").value(cassAddOnsAvailableByOrganization.getCompositeId().getAddOnId().toString()))
+
             .andExpect(jsonPath("$.addOnType").value(DEFAULT_ADD_ON_TYPE))
+
             .andExpect(jsonPath("$.addOnDetailsText").exists())
+
             .andExpect(jsonPath("$.addOnDetailsDecimal").exists())
+
             .andExpect(jsonPath("$.addOnDetailsBoolean").exists())
+
             .andExpect(jsonPath("$.addOnDetailsBigInt").exists());
     }
 
@@ -398,10 +416,15 @@ class CassAddOnsAvailableByOrganizationResourceIT {
             .findById(cassAddOnsAvailableByOrganization.getCompositeId())
             .orElseThrow();
         updatedCassAddOnsAvailableByOrganization
+
             .addOnType(UPDATED_ADD_ON_TYPE)
+
             .addOnDetailsText(UPDATED_ADD_ON_DETAILS_TEXT)
+
             .addOnDetailsDecimal(UPDATED_ADD_ON_DETAILS_DECIMAL)
+
             .addOnDetailsBoolean(UPDATED_ADD_ON_DETAILS_BOOLEAN)
+
             .addOnDetailsBigInt(UPDATED_ADD_ON_DETAILS_BIG_INT);
         CassAddOnsAvailableByOrganizationDTO cassAddOnsAvailableByOrganizationDTO = cassAddOnsAvailableByOrganizationMapper.toDto(
             updatedCassAddOnsAvailableByOrganization
@@ -532,10 +555,15 @@ class CassAddOnsAvailableByOrganizationResourceIT {
         partialUpdatedCassAddOnsAvailableByOrganization.setCompositeId(cassAddOnsAvailableByOrganization.getCompositeId());
 
         partialUpdatedCassAddOnsAvailableByOrganization
+
             .addOnType(UPDATED_ADD_ON_TYPE)
+
             .addOnDetailsText(UPDATED_ADD_ON_DETAILS_TEXT)
+
             .addOnDetailsDecimal(UPDATED_ADD_ON_DETAILS_DECIMAL)
+
             .addOnDetailsBoolean(UPDATED_ADD_ON_DETAILS_BOOLEAN)
+
             .addOnDetailsBigInt(UPDATED_ADD_ON_DETAILS_BIG_INT);
 
         restCassAddOnsAvailableByOrganizationMockMvc
@@ -578,10 +606,15 @@ class CassAddOnsAvailableByOrganizationResourceIT {
         partialUpdatedCassAddOnsAvailableByOrganization.setCompositeId(cassAddOnsAvailableByOrganization.getCompositeId());
 
         partialUpdatedCassAddOnsAvailableByOrganization
+
             .addOnType(UPDATED_ADD_ON_TYPE)
+
             .addOnDetailsText(UPDATED_ADD_ON_DETAILS_TEXT)
+
             .addOnDetailsDecimal(UPDATED_ADD_ON_DETAILS_DECIMAL)
+
             .addOnDetailsBoolean(UPDATED_ADD_ON_DETAILS_BOOLEAN)
+
             .addOnDetailsBigInt(UPDATED_ADD_ON_DETAILS_BIG_INT);
 
         restCassAddOnsAvailableByOrganizationMockMvc

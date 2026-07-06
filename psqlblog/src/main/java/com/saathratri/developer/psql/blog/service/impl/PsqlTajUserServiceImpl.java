@@ -60,6 +60,7 @@ public class PsqlTajUserServiceImpl implements PsqlTajUserService {
 
                 return existingPsqlTajUser;
             })
+
             .map(psqlTajUserRepository::save)
             .map(psqlTajUserMapper::toDto);
     }

@@ -76,6 +76,7 @@ class CassSaathratriEntityResourceIT {
      */
     public static CassSaathratriEntity createEntity() {
         CassSaathratriEntity cassSaathratriEntity = new CassSaathratriEntity()
+
             .entityId(DEFAULT_ENTITY_ID)
             .entityName(DEFAULT_ENTITY_NAME)
             .entityDescription(DEFAULT_ENTITY_DESCRIPTION)
@@ -93,6 +94,7 @@ class CassSaathratriEntityResourceIT {
      */
     public static CassSaathratriEntity createUpdatedEntity() {
         CassSaathratriEntity cassSaathratriEntity = new CassSaathratriEntity()
+
             .entityId(UPDATED_ENTITY_ID)
             .entityName(UPDATED_ENTITY_NAME)
             .entityDescription(UPDATED_ENTITY_DESCRIPTION)
@@ -171,10 +173,15 @@ class CassSaathratriEntityResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].entityId").value(hasItem(cassSaathratriEntity.getEntityId().toString())))
+
             .andExpect(jsonPath("$.[*].entityName").value(hasItem(DEFAULT_ENTITY_NAME)))
+
             .andExpect(jsonPath("$.[*].entityDescription").value(hasItem(DEFAULT_ENTITY_DESCRIPTION)))
+
             .andExpect(jsonPath("$.[*].entityCost").value(hasItem(sameNumber(DEFAULT_ENTITY_COST))))
+
             .andExpect(jsonPath("$.[*].createdId").value(hasItem(DEFAULT_CREATED_ID.toString())))
+
             .andExpect(jsonPath("$.[*].createdTimeId").value(hasItem(DEFAULT_CREATED_TIME_ID.toString())));
     }
 
@@ -190,10 +197,15 @@ class CassSaathratriEntityResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.entityId").value(cassSaathratriEntity.getEntityId().toString()))
+
             .andExpect(jsonPath("$.entityName").value(DEFAULT_ENTITY_NAME))
+
             .andExpect(jsonPath("$.entityDescription").value(DEFAULT_ENTITY_DESCRIPTION))
+
             .andExpect(jsonPath("$.entityCost").value(sameNumber(DEFAULT_ENTITY_COST)))
+
             .andExpect(jsonPath("$.createdId").value(DEFAULT_CREATED_ID.toString()))
+
             .andExpect(jsonPath("$.createdTimeId").value(DEFAULT_CREATED_TIME_ID.toString()));
     }
 
@@ -216,10 +228,15 @@ class CassSaathratriEntityResourceIT {
             .findById(cassSaathratriEntity.getEntityId())
             .orElseThrow();
         updatedCassSaathratriEntity
+
             .entityName(UPDATED_ENTITY_NAME)
+
             .entityDescription(UPDATED_ENTITY_DESCRIPTION)
+
             .entityCost(UPDATED_ENTITY_COST)
+
             .createdId(UPDATED_CREATED_ID)
+
             .createdTimeId(UPDATED_CREATED_TIME_ID);
         CassSaathratriEntityDTO cassSaathratriEntityDTO = cassSaathratriEntityMapper.toDto(updatedCassSaathratriEntity);
 
@@ -315,10 +332,15 @@ class CassSaathratriEntityResourceIT {
         partialUpdatedCassSaathratriEntity.setEntityId(cassSaathratriEntity.getEntityId());
 
         partialUpdatedCassSaathratriEntity
+
             .entityName(UPDATED_ENTITY_NAME)
+
             .entityDescription(UPDATED_ENTITY_DESCRIPTION)
+
             .entityCost(UPDATED_ENTITY_COST)
+
             .createdId(UPDATED_CREATED_ID)
+
             .createdTimeId(UPDATED_CREATED_TIME_ID);
 
         restCassSaathratriEntityMockMvc
@@ -352,10 +374,15 @@ class CassSaathratriEntityResourceIT {
         partialUpdatedCassSaathratriEntity.setEntityId(cassSaathratriEntity.getEntityId());
 
         partialUpdatedCassSaathratriEntity
+
             .entityName(UPDATED_ENTITY_NAME)
+
             .entityDescription(UPDATED_ENTITY_DESCRIPTION)
+
             .entityCost(UPDATED_ENTITY_COST)
+
             .createdId(UPDATED_CREATED_ID)
+
             .createdTimeId(UPDATED_CREATED_TIME_ID);
 
         restCassSaathratriEntityMockMvc

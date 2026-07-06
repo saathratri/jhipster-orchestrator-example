@@ -65,7 +65,7 @@ describe('CassLandingPageByOrganization Management Update Component', () => {
         .spyOn(cassLandingPageByOrganizationFormService, 'getCassLandingPageByOrganization')
         .mockReturnValue(cassLandingPageByOrganization);
       vitest.spyOn(cassLandingPageByOrganizationService, 'update').mockReturnValue(saveSubject);
-      vitest.spyOn(comp, 'previousState');
+      vitest.spyOn(comp, 'previousState').mockImplementation(() => {});
       activatedRoute.data = of({ cassLandingPageByOrganization });
       comp.ngOnInit();
 
@@ -90,7 +90,7 @@ describe('CassLandingPageByOrganization Management Update Component', () => {
         .spyOn(cassLandingPageByOrganizationFormService, 'getCassLandingPageByOrganization')
         .mockReturnValue(cassLandingPageByOrganization);
       vitest.spyOn(cassLandingPageByOrganizationService, 'create').mockReturnValue(saveSubject);
-      vitest.spyOn(comp, 'previousState');
+      vitest.spyOn(comp, 'previousState').mockImplementation(() => {});
       // routeConfig.path === 'new' makes the component treat this as a create
       (activatedRoute as unknown as { snapshot: unknown }).snapshot = { routeConfig: { path: 'new' } };
       activatedRoute.data = of({ cassLandingPageByOrganization: null });
@@ -114,7 +114,7 @@ describe('CassLandingPageByOrganization Management Update Component', () => {
       const saveSubject = new Subject<HttpResponse<ICassLandingPageByOrganization>>();
       const cassLandingPageByOrganization = { ...sampleWithRequiredData };
       vitest.spyOn(cassLandingPageByOrganizationService, 'update').mockReturnValue(saveSubject);
-      vitest.spyOn(comp, 'previousState');
+      vitest.spyOn(comp, 'previousState').mockImplementation(() => {});
       activatedRoute.data = of({ cassLandingPageByOrganization });
       comp.ngOnInit();
 

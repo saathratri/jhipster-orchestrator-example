@@ -180,22 +180,46 @@ export MAVEN_OPTS="-Djavax.net.ssl.trustStoreType=Windows-ROOT"  # Windows; macO
 ### AI Semantic Search (Optional)
 
 Two entities ship vector fields — `PsqlTag` (pgvector) and `CassTag` (Cassandra `VECTOR`). To enable
-AI-powered semantic search, set your OpenAI API key as an environment variable before starting the
-services:
+AI-powered semantic search, supply your OpenAI API key in any of these ways (checked in this order):
 
-```console
-export OPENAI_API_KEY=sk-your-key-here
-```
+1. **`application-dev.yml`** in the service — note the property name differs by service type:
 
-Or add it to a service's `application-dev.yml`:
+   ```yaml
+   # SQL services (psqlblog):
+   openai:
+     api-key: sk-your-key-here
 
-```yaml
-openai:
-  api-key: sk-your-key-here
-```
+   # Cassandra services (cassandrablog):
+   spring:
+     ai:
+       openai:
+         api-key: sk-your-key-here
+   ```
+
+2. **Environment variable**, set before starting the services:
+
+   ```console
+   export OPENAI_API_KEY=sk-your-key-here
+   ```
+
+3. **A `.env` file** in the app root (e.g. `psqlblog/.env`, `cassandrablog/.env`). Each vector-enabled
+   app has a checked-in `.env.example` — copy it and fill in the key:
+
+   ```console
+   cp psqlblog/.env.example psqlblog/.env    # then edit: OPENAI_API_KEY=sk-your-key-here
+   ```
+
+   `.env` is git-ignored, so the key can never be committed; only `.env.example` (with an empty value)
+   is checked in.
 
 Without the API key the applications run normally — embedding generation and AI search are simply
 disabled, and the test suite still passes (the key is only used at runtime).
+
+**Offline/e2e alternative — fake embedding model.** Set `OPENAI_EMBEDDING_FAKE=true` to replace the
+OpenAI model with a deterministic offline one (same text → same vector), so exact-text semantic
+search works with no key and no API cost. The Cypress suites include an embedding-lifecycle e2e that
+requires this mode (skipped unless `CYPRESS_fakeEmbeddings=true`); `saathratri-run-all-tests.sh`
+enables both automatically during its e2e phase.
 
 ## Regenerate the code
 
@@ -287,15 +311,15 @@ for the full per-layer runbook; the short version follows.
 
 ### One-shot — the full gamut across all 5 apps
 
-`run-all-tests.sh` runs every layer across all five apps in one reliable pass (the merged equivalent
+`saathratri-run-all-tests.sh` runs every layer across all five apps in one reliable pass (the merged equivalent
 of both base examples' harnesses, plus the orchestrator's DTO-module install). It is the fastest way
 to confirm a regen is fully green:
 
 ```console
-sh run-all-tests.sh                 # full run, no regen (apps already generated)
-sh run-all-tests.sh --regen         # prepare + jhipster jdl --force, then the full run
-sh run-all-tests.sh --no-e2e        # backend + frontend only (no infra / Cypress)
-sh run-all-tests.sh --skip-backend --skip-frontend   # e2e only
+sh saathratri-run-all-tests.sh                 # full run, no regen (apps already generated)
+sh saathratri-run-all-tests.sh --regen         # prepare + jhipster jdl --force, then the full run
+sh saathratri-run-all-tests.sh --no-e2e        # backend + frontend only (no infra / Cypress)
+sh saathratri-run-all-tests.sh --skip-backend --skip-frontend   # e2e only
 ```
 
 It frees ports 8080–8084, installs the four DTO JARs, runs `npm install` + backend unit/IT + frontend
@@ -394,7 +418,7 @@ and
 | `saathratri-generator-code-prepare.sh` | Copy `sql-*` / `cassandra-*` from the base repos into the orchestrator and rename namespaces |
 | `saathratri-cleanup-dev-main.sh` | Remove previous generated output (apps, DTO modules, root build artifacts) |
 | `copy-files.sh <src> <dst>` | Overlay `custom-files/` onto the generated tree |
-| `run-all-tests.sh` | One-shot full test gamut across all 5 apps (`--regen`, `--no-e2e`, `--skip-backend`, `--skip-frontend`) |
+| `saathratri-run-all-tests.sh` | One-shot full test gamut across all 5 apps (`--regen`, `--no-e2e`, `--skip-backend`, `--skip-frontend`) |
 
 ## Switch Identity Providers
 

@@ -1,4 +1,4 @@
-import { Component, OnInit, effect, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, effect, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Data, ParamMap, Router, RouterLink } from '@angular/router';
 
@@ -17,6 +17,7 @@ import { IPsqlTajUser } from '../psql-taj-user.model';
 import { PsqlTajUserService } from '../service/psql-taj-user.service';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'jhi-psql-taj-user',
   templateUrl: './psql-taj-user.html',
   imports: [

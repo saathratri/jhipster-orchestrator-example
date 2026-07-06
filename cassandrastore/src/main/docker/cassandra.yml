@@ -2,7 +2,7 @@
 name: cassandrastore
 services:
   cassandra:
-    image: cassandra:5.0.6
+    image: cassandra:5.0.8
     container_name: cassandrastore-cassandra
     environment:
       - MAX_HEAP_SIZE=2G

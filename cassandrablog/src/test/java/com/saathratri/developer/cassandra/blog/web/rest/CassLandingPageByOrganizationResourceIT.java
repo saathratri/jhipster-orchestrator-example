@@ -94,6 +94,7 @@ class CassLandingPageByOrganizationResourceIT {
      */
     public static CassLandingPageByOrganization createEntity() {
         CassLandingPageByOrganization cassLandingPageByOrganization = new CassLandingPageByOrganization()
+
             .organizationId(DEFAULT_ORGANIZATION_ID)
             .detailsText(DEFAULT_DETAILS_TEXT)
             .detailsDecimal(DEFAULT_DETAILS_DECIMAL)
@@ -110,6 +111,7 @@ class CassLandingPageByOrganizationResourceIT {
      */
     public static CassLandingPageByOrganization createUpdatedEntity() {
         CassLandingPageByOrganization cassLandingPageByOrganization = new CassLandingPageByOrganization()
+
             .organizationId(UPDATED_ORGANIZATION_ID)
             .detailsText(UPDATED_DETAILS_TEXT)
             .detailsDecimal(UPDATED_DETAILS_DECIMAL)
@@ -191,9 +193,13 @@ class CassLandingPageByOrganizationResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].organizationId").value(hasItem(cassLandingPageByOrganization.getOrganizationId().toString())))
+
             .andExpect(jsonPath("$.[*].detailsText").exists())
+
             .andExpect(jsonPath("$.[*].detailsDecimal").exists())
+
             .andExpect(jsonPath("$.[*].detailsBoolean").exists())
+
             .andExpect(jsonPath("$.[*].detailsBigInt").exists());
     }
 
@@ -209,9 +215,13 @@ class CassLandingPageByOrganizationResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.organizationId").value(cassLandingPageByOrganization.getOrganizationId().toString()))
+
             .andExpect(jsonPath("$.detailsText").exists())
+
             .andExpect(jsonPath("$.detailsDecimal").exists())
+
             .andExpect(jsonPath("$.detailsBoolean").exists())
+
             .andExpect(jsonPath("$.detailsBigInt").exists());
     }
 
@@ -236,9 +246,13 @@ class CassLandingPageByOrganizationResourceIT {
             .findById(cassLandingPageByOrganization.getOrganizationId())
             .orElseThrow();
         updatedCassLandingPageByOrganization
+
             .detailsText(UPDATED_DETAILS_TEXT)
+
             .detailsDecimal(UPDATED_DETAILS_DECIMAL)
+
             .detailsBoolean(UPDATED_DETAILS_BOOLEAN)
+
             .detailsBigInt(UPDATED_DETAILS_BIG_INT);
         CassLandingPageByOrganizationDTO cassLandingPageByOrganizationDTO = cassLandingPageByOrganizationMapper.toDto(
             updatedCassLandingPageByOrganization
@@ -342,9 +356,13 @@ class CassLandingPageByOrganizationResourceIT {
         partialUpdatedCassLandingPageByOrganization.setOrganizationId(cassLandingPageByOrganization.getOrganizationId());
 
         partialUpdatedCassLandingPageByOrganization
+
             .detailsText(UPDATED_DETAILS_TEXT)
+
             .detailsDecimal(UPDATED_DETAILS_DECIMAL)
+
             .detailsBoolean(UPDATED_DETAILS_BOOLEAN)
+
             .detailsBigInt(UPDATED_DETAILS_BIG_INT);
 
         restCassLandingPageByOrganizationMockMvc
@@ -378,9 +396,13 @@ class CassLandingPageByOrganizationResourceIT {
         partialUpdatedCassLandingPageByOrganization.setOrganizationId(cassLandingPageByOrganization.getOrganizationId());
 
         partialUpdatedCassLandingPageByOrganization
+
             .detailsText(UPDATED_DETAILS_TEXT)
+
             .detailsDecimal(UPDATED_DETAILS_DECIMAL)
+
             .detailsBoolean(UPDATED_DETAILS_BOOLEAN)
+
             .detailsBigInt(UPDATED_DETAILS_BIG_INT);
 
         restCassLandingPageByOrganizationMockMvc

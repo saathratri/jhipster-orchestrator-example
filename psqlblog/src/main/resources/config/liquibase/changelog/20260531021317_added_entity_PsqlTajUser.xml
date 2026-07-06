@@ -33,7 +33,8 @@
     -->
     <changeSet id="20260531021317-1-data" author="jhipster" context="faker">
         <loadData
-                  file="config/liquibase/fake-data/psql_taj_user.csv"
+                  file="../fake-data/psql_taj_user.csv"
+                  relativeToChangelogFile="true"
                   separator=";"
                   tableName="psql_taj_user"
                   usePreparedStatements="true">

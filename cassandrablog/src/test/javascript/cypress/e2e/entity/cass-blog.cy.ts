@@ -65,6 +65,11 @@ describe('CassBlog e2e test', () => {
   });
 
   describe('CassBlog page', () => {
+    it('should have translated page title', () => {
+      cy.visit(cassBlogPageUrl);
+      cy.getEntityHeading('CassBlog').should('not.contain', 'cassandrablogApp.cassandrablogCassBlog.home.title');
+    });
+
     describe('create button click', () => {
       beforeEach(() => {
         cy.visit(cassBlogPageUrl);

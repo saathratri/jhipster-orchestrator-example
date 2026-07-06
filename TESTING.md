@@ -127,17 +127,17 @@ generated services automatically and are fixed in the base repos, never here. Ca
 
 ---
 
-## 7. One-shot: the full test gamut (`run-all-tests.sh`)
+## 7. One-shot: the full test gamut (`saathratri-run-all-tests.sh`)
 
-`run-all-tests.sh` runs every layer above across all 5 apps in one reliable pass — the merged
+`saathratri-run-all-tests.sh` runs every layer above across all 5 apps in one reliable pass — the merged
 equivalent of the two base examples' harnesses, plus the orchestrator's DTO-module install. It is
 the fastest way to confirm a regen is fully green.
 
 ```bash
-sh run-all-tests.sh                 # full run, no regen (apps already generated)
-sh run-all-tests.sh --regen         # prepare + jhipster jdl --force, then the full run
-sh run-all-tests.sh --no-e2e        # backend + frontend only (no infra/Cypress)
-sh run-all-tests.sh --skip-backend --skip-frontend   # e2e only
+sh saathratri-run-all-tests.sh                 # full run, no regen (apps already generated)
+sh saathratri-run-all-tests.sh --regen         # prepare + jhipster jdl --force, then the full run
+sh saathratri-run-all-tests.sh --no-e2e        # backend + frontend only (no infra/Cypress)
+sh saathratri-run-all-tests.sh --skip-backend --skip-frontend   # e2e only
 ```
 
 What it does, in order: free ports 8080–8084 → (optional) regen → `mvn install` the 4 DTO modules
@@ -194,7 +194,7 @@ broke. **Fixed**; cassandrablog e2e is now 150/150 and the full one-shot is gree
 
 ```bash
 # ----- one-shot full gamut (all 5 apps) -----
-sh run-all-tests.sh [--regen] [--no-e2e]
+sh saathratri-run-all-tests.sh [--regen] [--no-e2e]
 
 # ----- regenerate this workspace -----
 sh saathratri-generate-code-dev-orchestrator.sh

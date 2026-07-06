@@ -77,7 +77,7 @@ export class PsqlReportFormService {
   }
 
   getPsqlReport(form: PsqlReportFormGroup): IPsqlReport | NewPsqlReport {
-    return this.convertPsqlReportRawValueToPsqlReport(form.getRawValue() as PsqlReportFormRawValue | NewPsqlReportFormRawValue);
+    return this.convertPsqlReportRawValueToPsqlReport(form.getRawValue());
   }
 
   resetForm(form: PsqlReportFormGroup, psqlReport: PsqlReportFormGroupInput): void {

@@ -63,7 +63,7 @@ describe('CassSaathratriEntity Management Update Component', () => {
       const cassSaathratriEntity = { ...sampleWithRequiredData };
       vitest.spyOn(cassSaathratriEntityFormService, 'getCassSaathratriEntity').mockReturnValue(cassSaathratriEntity);
       vitest.spyOn(cassSaathratriEntityService, 'update').mockReturnValue(saveSubject);
-      vitest.spyOn(comp, 'previousState');
+      vitest.spyOn(comp, 'previousState').mockImplementation(() => {});
       activatedRoute.data = of({ cassSaathratriEntity });
       comp.ngOnInit();
 
@@ -86,7 +86,7 @@ describe('CassSaathratriEntity Management Update Component', () => {
       const cassSaathratriEntity = { ...sampleWithRequiredData };
       vitest.spyOn(cassSaathratriEntityFormService, 'getCassSaathratriEntity').mockReturnValue(cassSaathratriEntity);
       vitest.spyOn(cassSaathratriEntityService, 'create').mockReturnValue(saveSubject);
-      vitest.spyOn(comp, 'previousState');
+      vitest.spyOn(comp, 'previousState').mockImplementation(() => {});
       // routeConfig.path === 'new' makes the component treat this as a create
       (activatedRoute as unknown as { snapshot: unknown }).snapshot = { routeConfig: { path: 'new' } };
       activatedRoute.data = of({ cassSaathratriEntity: null });
@@ -110,7 +110,7 @@ describe('CassSaathratriEntity Management Update Component', () => {
       const saveSubject = new Subject<HttpResponse<ICassSaathratriEntity>>();
       const cassSaathratriEntity = { ...sampleWithRequiredData };
       vitest.spyOn(cassSaathratriEntityService, 'update').mockReturnValue(saveSubject);
-      vitest.spyOn(comp, 'previousState');
+      vitest.spyOn(comp, 'previousState').mockImplementation(() => {});
       activatedRoute.data = of({ cassSaathratriEntity });
       comp.ngOnInit();
 

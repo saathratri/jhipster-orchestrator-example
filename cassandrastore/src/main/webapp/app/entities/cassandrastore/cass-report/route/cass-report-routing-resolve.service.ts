@@ -9,7 +9,7 @@ import { ICassReport } from '../cass-report.model';
 import { CassReportService } from '../service/cass-report.service';
 
 const cassReportResolve = (route: ActivatedRouteSnapshot): Observable<null | ICassReport> => {
-  const id = route.params.id;
+  const { id } = route.params;
 
   if (id) {
     return inject(CassReportService)

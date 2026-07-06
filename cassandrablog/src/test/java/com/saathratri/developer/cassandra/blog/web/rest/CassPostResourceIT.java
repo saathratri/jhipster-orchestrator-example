@@ -199,12 +199,19 @@ class CassPostResourceIT {
             .perform(get(ENTITY_API_URL))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+
             .andExpect(jsonPath("$.[*].compositeId.createdDate").value(hasItem(cassPost.getCompositeId().getCreatedDate().intValue())))
+
             .andExpect(jsonPath("$.[*].compositeId.addedDateTime").value(hasItem(cassPost.getCompositeId().getAddedDateTime().intValue())))
+
             .andExpect(jsonPath("$.[*].compositeId.postId").value(hasItem(cassPost.getCompositeId().getPostId().toString())))
+
             .andExpect(jsonPath("$.[*].title").value(hasItem(DEFAULT_TITLE)))
+
             .andExpect(jsonPath("$.[*].content").value(hasItem(DEFAULT_CONTENT)))
+
             .andExpect(jsonPath("$.[*].publishedDateTime").value(hasItem(DEFAULT_PUBLISHED_DATE_TIME.intValue())))
+
             .andExpect(jsonPath("$.[*].sentDate").value(hasItem(DEFAULT_SENT_DATE.intValue())));
     }
 
@@ -225,12 +232,19 @@ class CassPostResourceIT {
             )
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+
             .andExpect(jsonPath("$.compositeId.createdDate").value(cassPost.getCompositeId().getCreatedDate().intValue()))
+
             .andExpect(jsonPath("$.compositeId.addedDateTime").value(cassPost.getCompositeId().getAddedDateTime().intValue()))
+
             .andExpect(jsonPath("$.compositeId.postId").value(cassPost.getCompositeId().getPostId().toString()))
+
             .andExpect(jsonPath("$.title").value(DEFAULT_TITLE))
+
             .andExpect(jsonPath("$.content").value(DEFAULT_CONTENT))
+
             .andExpect(jsonPath("$.publishedDateTime").value(DEFAULT_PUBLISHED_DATE_TIME.intValue()))
+
             .andExpect(jsonPath("$.sentDate").value(DEFAULT_SENT_DATE.intValue()));
     }
 
@@ -369,9 +383,13 @@ class CassPostResourceIT {
         // Update the cassPost
         CassPost updatedCassPost = cassPostRepository.findById(cassPost.getCompositeId()).orElseThrow();
         updatedCassPost
+
             .title(UPDATED_TITLE)
+
             .content(UPDATED_CONTENT)
+
             .publishedDateTime(UPDATED_PUBLISHED_DATE_TIME)
+
             .sentDate(UPDATED_SENT_DATE);
         CassPostDTO cassPostDTO = cassPostMapper.toDto(updatedCassPost);
 
@@ -478,9 +496,13 @@ class CassPostResourceIT {
         partialUpdatedCassPost.setCompositeId(cassPost.getCompositeId());
 
         partialUpdatedCassPost
+
             .title(UPDATED_TITLE)
+
             .content(UPDATED_CONTENT)
+
             .publishedDateTime(UPDATED_PUBLISHED_DATE_TIME)
+
             .sentDate(UPDATED_SENT_DATE);
 
         restCassPostMockMvc
@@ -517,9 +539,13 @@ class CassPostResourceIT {
         partialUpdatedCassPost.setCompositeId(cassPost.getCompositeId());
 
         partialUpdatedCassPost
+
             .title(UPDATED_TITLE)
+
             .content(UPDATED_CONTENT)
+
             .publishedDateTime(UPDATED_PUBLISHED_DATE_TIME)
+
             .sentDate(UPDATED_SENT_DATE);
 
         restCassPostMockMvc

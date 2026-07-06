@@ -71,7 +71,7 @@ export class PsqlPostFormService {
   }
 
   getPsqlPost(form: PsqlPostFormGroup): IPsqlPost | NewPsqlPost {
-    return this.convertPsqlPostRawValueToPsqlPost(form.getRawValue() as PsqlPostFormRawValue | NewPsqlPostFormRawValue);
+    return this.convertPsqlPostRawValueToPsqlPost(form.getRawValue());
   }
 
   resetForm(form: PsqlPostFormGroup, psqlPost: PsqlPostFormGroupInput): void {

@@ -7,7 +7,7 @@
     "blueprints": [
       {
         "name": "generator-jhipster-orchestrator",
-        "version": "1.0.1"
+        "version": "1.0.2"
       }
     ],
     "buildTool": "maven",
@@ -31,7 +31,7 @@
       "CassSetEntityByOrganization"
     ],
     "gatewayServerPort": "8080",
-    "jhipsterVersion": "9.0.0",
+    "jhipsterVersion": "9.1.0",
     "jwtSecretKey": "MTMzYTJkOGQyMDVjMzlhMTE2YzA2NDEzMmE2NDk5YTM3MTk4OTlhZWU0YjhlNWRiODMwYTE5NDQwNjVlMTRiMDU5MTk2NTg2NzZmOTBlY2QzYzk3YjgyMDQ5MmNhZjBjZmNjOWJlYTljMjVlN2NjOGRjYWExYzJkN2UyNWE3ODU=",
     "languages": ["en"],
     "lastLiquibaseTimestamp": 1780194077000,

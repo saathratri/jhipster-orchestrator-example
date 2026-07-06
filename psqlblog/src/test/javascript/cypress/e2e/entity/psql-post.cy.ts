@@ -65,6 +65,11 @@ describe('PsqlPost e2e test', () => {
   });
 
   describe('PsqlPost page', () => {
+    it('should have translated page title', () => {
+      cy.visit(psqlPostPageUrl);
+      cy.getEntityHeading('PsqlPost').should('not.contain', 'psqlblogApp.psqlblogPsqlPost.home.title');
+    });
+
     describe('create button click', () => {
       beforeEach(() => {
         cy.visit(psqlPostPageUrl);

@@ -61,6 +61,11 @@ describe('PsqlProduct e2e test', () => {
   });
 
   describe('PsqlProduct page', () => {
+    it('should have translated page title', () => {
+      cy.visit(psqlProductPageUrl);
+      cy.getEntityHeading('PsqlProduct').should('not.contain', 'psqlstoreApp.psqlstorePsqlProduct.home.title');
+    });
+
     describe('create button click', () => {
       beforeEach(() => {
         cy.visit(psqlProductPageUrl);

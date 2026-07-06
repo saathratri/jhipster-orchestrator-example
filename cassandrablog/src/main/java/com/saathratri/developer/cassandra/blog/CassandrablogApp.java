@@ -35,7 +35,7 @@ import tech.jhipster.config.DefaultProfileUtil;
 import tech.jhipster.config.JHipsterConstants;
 
 // --- END SAATHRATRI CHANGE ---
-@SpringBootApplication
+@SpringBootApplication()
 @EnableConfigurationProperties({ ApplicationProperties.class })
 public class CassandrablogApp {
 

@@ -67,6 +67,11 @@ describe('PsqlReport e2e test', () => {
   });
 
   describe('PsqlReport page', () => {
+    it('should have translated page title', () => {
+      cy.visit(psqlReportPageUrl);
+      cy.getEntityHeading('PsqlReport').should('not.contain', 'psqlstoreApp.psqlstorePsqlReport.home.title');
+    });
+
     describe('create button click', () => {
       beforeEach(() => {
         cy.visit(psqlReportPageUrl);

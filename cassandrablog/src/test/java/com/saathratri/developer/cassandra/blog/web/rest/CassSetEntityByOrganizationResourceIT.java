@@ -69,6 +69,7 @@ class CassSetEntityByOrganizationResourceIT {
      */
     public static CassSetEntityByOrganization createEntity() {
         CassSetEntityByOrganization cassSetEntityByOrganization = new CassSetEntityByOrganization()
+
             .organizationId(DEFAULT_ORGANIZATION_ID)
             .tags(DEFAULT_TAGS);
         return cassSetEntityByOrganization;
@@ -82,6 +83,7 @@ class CassSetEntityByOrganizationResourceIT {
      */
     public static CassSetEntityByOrganization createUpdatedEntity() {
         CassSetEntityByOrganization cassSetEntityByOrganization = new CassSetEntityByOrganization()
+
             .organizationId(UPDATED_ORGANIZATION_ID)
             .tags(UPDATED_TAGS);
         return cassSetEntityByOrganization;
@@ -160,6 +162,7 @@ class CassSetEntityByOrganizationResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].organizationId").value(hasItem(cassSetEntityByOrganization.getOrganizationId().toString())))
+
             .andExpect(jsonPath("$.[*].tags").exists());
     }
 
@@ -175,6 +178,7 @@ class CassSetEntityByOrganizationResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.organizationId").value(cassSetEntityByOrganization.getOrganizationId().toString()))
+
             .andExpect(jsonPath("$.tags").exists());
     }
 

@@ -3,7 +3,6 @@ package com.saathratri.developer.psql.blog.repository;
 import com.saathratri.developer.psql.blog.domain.PsqlTag;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
@@ -34,7 +33,7 @@ public class PsqlTagRepositoryWithBagRelationshipsImpl implements PsqlTagReposit
 
     @Override
     public List<PsqlTag> fetchBagRelationships(List<PsqlTag> psqlTags) {
-        return Optional.of(psqlTags).map(this::fetchPosts).orElse(Collections.emptyList());
+        return Optional.of(psqlTags).map(this::fetchPosts).orElse(List.of());
     }
 
     PsqlTag fetchPosts(PsqlTag result) {
@@ -51,7 +50,7 @@ public class PsqlTagRepositoryWithBagRelationshipsImpl implements PsqlTagReposit
             .createQuery("select psqlTag from PsqlTag psqlTag left join fetch psqlTag.posts where psqlTag in :psqlTags", PsqlTag.class)
             .setParameter(PSQLTAGS_PARAMETER, psqlTags)
             .getResultList();
-        Collections.sort(result, (o1, o2) -> Integer.compare(order.get(o1.getId()), order.get(o2.getId())));
+        result.sort((o1, o2) -> Integer.compare(order.get(o1.getId()), order.get(o2.getId())));
         return result;
     }
 }

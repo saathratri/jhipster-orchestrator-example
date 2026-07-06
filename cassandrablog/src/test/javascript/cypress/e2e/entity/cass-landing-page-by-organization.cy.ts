@@ -61,6 +61,14 @@ describe('CassLandingPageByOrganization e2e test', () => {
   });
 
   describe('CassLandingPageByOrganization page', () => {
+    it('should have translated page title', () => {
+      cy.visit(cassLandingPageByOrganizationPageUrl);
+      cy.getEntityHeading('CassLandingPageByOrganization').should(
+        'not.contain',
+        'cassandrablogApp.cassandrablogCassLandingPageByOrganization.home.title',
+      );
+    });
+
     describe('create button click', () => {
       beforeEach(() => {
         cy.visit(cassLandingPageByOrganizationPageUrl);

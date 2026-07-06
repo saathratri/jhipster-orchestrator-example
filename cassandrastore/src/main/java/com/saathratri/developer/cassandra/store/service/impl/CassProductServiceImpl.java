@@ -62,6 +62,7 @@ public class CassProductServiceImpl implements CassProductService {
 
                 return existingCassProduct;
             })
+
             .map(cassProductRepository::save)
             .map(cassProductMapper::toDto);
     }

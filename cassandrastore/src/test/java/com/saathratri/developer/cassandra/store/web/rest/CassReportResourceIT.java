@@ -78,6 +78,7 @@ class CassReportResourceIT {
      */
     public static CassReport createEntity() {
         CassReport cassReport = new CassReport()
+
             .id(DEFAULT_ID)
             .fileName(DEFAULT_FILE_NAME)
             .fileExtension(DEFAULT_FILE_EXTENSION)
@@ -96,6 +97,7 @@ class CassReportResourceIT {
      */
     public static CassReport createUpdatedEntity() {
         CassReport cassReport = new CassReport()
+
             .id(UPDATED_ID)
             .fileName(UPDATED_FILE_NAME)
             .fileExtension(UPDATED_FILE_EXTENSION)
@@ -212,11 +214,16 @@ class CassReportResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(cassReport.getId().toString())))
+
             .andExpect(jsonPath("$.[*].fileName").value(hasItem(DEFAULT_FILE_NAME)))
+
             .andExpect(jsonPath("$.[*].fileExtension").value(hasItem(DEFAULT_FILE_EXTENSION)))
+
             .andExpect(jsonPath("$.[*].createDate").value(hasItem(DEFAULT_CREATE_DATE.intValue())))
             .andExpect(jsonPath("$.[*].fileContentType").value(hasItem(DEFAULT_FILE_CONTENT_TYPE)))
+
             .andExpect(jsonPath("$.[*].file").value(hasItem(Base64.getEncoder().encodeToString(DEFAULT_FILE.array()))))
+
             .andExpect(jsonPath("$.[*].approved").value(hasItem(DEFAULT_APPROVED.booleanValue())));
     }
 
@@ -232,11 +239,16 @@ class CassReportResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(cassReport.getId().toString()))
+
             .andExpect(jsonPath("$.fileName").value(DEFAULT_FILE_NAME))
+
             .andExpect(jsonPath("$.fileExtension").value(DEFAULT_FILE_EXTENSION))
+
             .andExpect(jsonPath("$.createDate").value(DEFAULT_CREATE_DATE.intValue()))
             .andExpect(jsonPath("$.fileContentType").value(DEFAULT_FILE_CONTENT_TYPE))
+
             .andExpect(jsonPath("$.file").value(Base64.getEncoder().encodeToString(DEFAULT_FILE.array())))
+
             .andExpect(jsonPath("$.approved").value(DEFAULT_APPROVED.booleanValue()));
     }
 
@@ -257,11 +269,16 @@ class CassReportResourceIT {
         // Update the cassReport
         CassReport updatedCassReport = cassReportRepository.findById(cassReport.getId()).orElseThrow();
         updatedCassReport
+
             .fileName(UPDATED_FILE_NAME)
+
             .fileExtension(UPDATED_FILE_EXTENSION)
+
             .createDate(UPDATED_CREATE_DATE)
+
             .file(UPDATED_FILE)
             .fileContentType(UPDATED_FILE_CONTENT_TYPE)
+
             .approved(UPDATED_APPROVED);
         CassReportDTO cassReportDTO = cassReportMapper.toDto(updatedCassReport);
 
@@ -352,11 +369,16 @@ class CassReportResourceIT {
         partialUpdatedCassReport.setId(cassReport.getId());
 
         partialUpdatedCassReport
+
             .fileName(UPDATED_FILE_NAME)
+
             .fileExtension(UPDATED_FILE_EXTENSION)
+
             .createDate(UPDATED_CREATE_DATE)
+
             .file(UPDATED_FILE)
             .fileContentType(UPDATED_FILE_CONTENT_TYPE)
+
             .approved(UPDATED_APPROVED);
 
         restCassReportMockMvc
@@ -390,11 +412,16 @@ class CassReportResourceIT {
         partialUpdatedCassReport.setId(cassReport.getId());
 
         partialUpdatedCassReport
+
             .fileName(UPDATED_FILE_NAME)
+
             .fileExtension(UPDATED_FILE_EXTENSION)
+
             .createDate(UPDATED_CREATE_DATE)
+
             .file(UPDATED_FILE)
             .fileContentType(UPDATED_FILE_CONTENT_TYPE)
+
             .approved(UPDATED_APPROVED);
 
         restCassReportMockMvc

@@ -68,6 +68,11 @@ describe('CassSaathratriEntity2 e2e test', () => {
   });
 
   describe('CassSaathratriEntity2 page', () => {
+    it('should have translated page title', () => {
+      cy.visit(cassSaathratriEntity2PageUrl);
+      cy.getEntityHeading('CassSaathratriEntity2').should('not.contain', 'cassandrablogApp.cassandrablogCassSaathratriEntity2.home.title');
+    });
+
     describe('create button click', () => {
       beforeEach(() => {
         cy.visit(cassSaathratriEntity2PageUrl);

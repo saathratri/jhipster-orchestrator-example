@@ -9,10 +9,10 @@ import { ICassAddOnsSelectedByOrganization } from '../cass-add-ons-selected-by-o
 import { CassAddOnsSelectedByOrganizationService } from '../service/cass-add-ons-selected-by-organization.service';
 
 const cassAddOnsSelectedByOrganizationResolve = (route: ActivatedRouteSnapshot): Observable<null | ICassAddOnsSelectedByOrganization> => {
-  const organizationId = route.params.organizationId;
-  const arrivalDate = route.params.arrivalDate;
-  const accountNumber = route.params.accountNumber;
-  const createdTimeId = route.params.createdTimeId;
+  const { organizationId } = route.params;
+  const { arrivalDate } = route.params;
+  const { accountNumber } = route.params;
+  const { createdTimeId } = route.params;
 
   if (organizationId && arrivalDate && accountNumber && createdTimeId) {
     return inject(CassAddOnsSelectedByOrganizationService)

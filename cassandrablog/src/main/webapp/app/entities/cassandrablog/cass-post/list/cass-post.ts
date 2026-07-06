@@ -394,7 +394,7 @@ export class CassPostComponent implements OnInit {
   }
 
   private getCompositeKey(item: ICassPost): string {
-    const compositeId = item.compositeId;
+    const { compositeId } = item;
     return [compositeId.createdDate, compositeId.addedDateTime, compositeId.postId].join('|');
   }
 

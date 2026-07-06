@@ -45,7 +45,7 @@ export class PsqlTajUserFormService {
   }
 
   getPsqlTajUser(form: PsqlTajUserFormGroup): IPsqlTajUser | NewPsqlTajUser {
-    return form.getRawValue() as IPsqlTajUser | NewPsqlTajUser;
+    return form.getRawValue();
   }
 
   resetForm(form: PsqlTajUserFormGroup, psqlTajUser: PsqlTajUserFormGroupInput): void {

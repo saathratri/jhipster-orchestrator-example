@@ -54,8 +54,7 @@ public class CassBlogDTOId implements Serializable {
       Objects.equals(
         this.category,
         cassBlogDTO.getCompositeId().getCategory()
-      ) &&
-      Objects.equals(this.blogId, cassBlogDTO.getCompositeId().getBlogId())
+      ) && Objects.equals(this.blogId, cassBlogDTO.getCompositeId().getBlogId())
     );
   }
 

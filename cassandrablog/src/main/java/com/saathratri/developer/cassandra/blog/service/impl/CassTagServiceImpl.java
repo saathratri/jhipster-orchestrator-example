@@ -154,6 +154,7 @@ public class CassTagServiceImpl implements CassTagService {
                 }
                 return existingCassTag;
             })
+
             .map(cassTagRepository::save)
             .map(cassTagMapper::toDto);
     }

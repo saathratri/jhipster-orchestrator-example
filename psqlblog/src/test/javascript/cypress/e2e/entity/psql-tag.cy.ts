@@ -61,6 +61,11 @@ describe('PsqlTag e2e test', () => {
   });
 
   describe('PsqlTag page', () => {
+    it('should have translated page title', () => {
+      cy.visit(psqlTagPageUrl);
+      cy.getEntityHeading('PsqlTag').should('not.contain', 'psqlblogApp.psqlblogPsqlTag.home.title');
+    });
+
     describe('create button click', () => {
       beforeEach(() => {
         cy.visit(psqlTagPageUrl);
@@ -184,6 +189,63 @@ describe('PsqlTag e2e test', () => {
         expect(response?.statusCode).to.equal(200);
       });
       cy.url().should('match', psqlTagPageUrlPattern);
+    });
+  });
+
+  it('should run an AI semantic search', () => {
+    cy.intercept('GET', /\/api\/psql-tags\/ai-search/).as('aiSearchRequest');
+    cy.visit('/');
+    cy.clickOnEntityMenuItem('psqlblog/psql-tag');
+    cy.wait('@entitiesRequest', { timeout: 30000 });
+    cy.get('[data-cy="aiSearchInput"]').type('semantic query');
+    cy.get('[data-cy="aiSearchButton"]').click();
+    cy.wait('@aiSearchRequest', { timeout: 30000 }).its('response.statusCode').should('eq', 200);
+  });
+
+  it('should generate embeddings on create and regenerate on update (fake embedding model)', function () {
+    cy.env(['fakeEmbeddings']).then(({ fakeEmbeddings }) => {
+      if (!fakeEmbeddings) this.skip();
+    });
+    const createdText = `cypress embed ${Date.now()}`;
+    const updatedText = `cypress reembed ${Date.now()}`;
+    cy.authenticatedRequest({
+      method: 'POST',
+      url: '/services/psqlblog/api/psql-tags',
+      body: { ...psqlTagSample, name: createdText },
+    }).then(({ body }) => {
+      psqlTag = body;
+      cy.visit('/');
+      cy.clickOnEntityMenuItem('psqlblog/psql-tag');
+      cy.wait('@entitiesRequest', { timeout: 30000 });
+      // Embedding created on insert: AI search finds the new row by its exact text.
+      cy.intercept('GET', /\/api\/psql-tags\/ai-search/).as('aiSearchCreated');
+      cy.get('[data-cy="aiSearchInput"]').clear().type(createdText);
+      cy.get('[data-cy="aiSearchButton"]').click();
+      cy.wait('@aiSearchCreated', { timeout: 30000 }).then(({ response }) => {
+        expect(response.statusCode).to.eq(200);
+        expect(response.body.map(row => row.id)).to.include(psqlTag.id);
+      });
+      // Update the source text through the API; the stored vector must be regenerated.
+      cy.authenticatedRequest({
+        method: 'PUT',
+        url: `/services/psqlblog/api/psql-tags/${psqlTag.id}`,
+        body: { ...psqlTag, name: updatedText },
+      });
+      cy.intercept('GET', /\/api\/psql-tags\/ai-search/).as('aiSearchUpdated');
+      cy.get('[data-cy="aiSearchInput"]').clear().type(updatedText);
+      cy.get('[data-cy="aiSearchButton"]').click();
+      cy.wait('@aiSearchUpdated', { timeout: 30000 }).then(({ response }) => {
+        expect(response.statusCode).to.eq(200);
+        expect(response.body.map(row => row.id)).to.include(psqlTag.id);
+      });
+      // The OLD text must no longer match: proves the vector was replaced, not kept.
+      cy.intercept('GET', /\/api\/psql-tags\/ai-search/).as('aiSearchStale');
+      cy.get('[data-cy="aiSearchInput"]').clear().type(createdText);
+      cy.get('[data-cy="aiSearchButton"]').click();
+      cy.wait('@aiSearchStale', { timeout: 30000 }).then(({ response }) => {
+        expect(response.statusCode).to.eq(200);
+        expect(response.body.map(row => row.id)).to.not.include(psqlTag.id);
+      });
     });
   });
 });

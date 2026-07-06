@@ -62,6 +62,7 @@ public class CassTajUserServiceImpl implements CassTajUserService {
 
                 return existingCassTajUser;
             })
+
             .map(cassTajUserRepository::save)
             .map(cassTajUserMapper::toDto);
     }

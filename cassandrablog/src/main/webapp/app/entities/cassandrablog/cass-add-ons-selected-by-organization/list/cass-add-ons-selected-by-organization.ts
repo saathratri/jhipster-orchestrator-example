@@ -395,7 +395,7 @@ export class CassAddOnsSelectedByOrganizationComponent implements OnInit {
   }
 
   private getCompositeKey(item: ICassAddOnsSelectedByOrganization): string {
-    const compositeId = item.compositeId;
+    const { compositeId } = item;
     return [compositeId.organizationId, compositeId.arrivalDate, compositeId.accountNumber, compositeId.createdTimeId].join('|');
   }
 

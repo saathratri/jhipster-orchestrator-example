@@ -9,8 +9,8 @@ import { ICassSaathratriEntity4 } from '../cass-saathratri-entity-4.model';
 import { CassSaathratriEntity4Service } from '../service/cass-saathratri-entity-4.service';
 
 const cassSaathratriEntity4Resolve = (route: ActivatedRouteSnapshot): Observable<null | ICassSaathratriEntity4> => {
-  const organizationId = route.params.organizationId;
-  const attributeKey = route.params.attributeKey;
+  const { organizationId } = route.params;
+  const { attributeKey } = route.params;
 
   if (organizationId && attributeKey) {
     return inject(CassSaathratriEntity4Service)

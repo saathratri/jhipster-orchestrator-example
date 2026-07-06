@@ -82,6 +82,7 @@ public class CassAddOnsAvailableByOrganizationServiceImpl implements CassAddOnsA
 
                 return existingCassAddOnsAvailableByOrganization;
             })
+
             .map(cassAddOnsAvailableByOrganizationRepository::save)
             .map(cassAddOnsAvailableByOrganizationMapper::toDto);
     }

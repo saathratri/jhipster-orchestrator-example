@@ -63,6 +63,7 @@ public class CassBlogServiceImpl implements CassBlogService {
 
                 return existingCassBlog;
             })
+
             .map(cassBlogRepository::save)
             .map(cassBlogMapper::toDto);
     }
