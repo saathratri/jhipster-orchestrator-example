@@ -239,7 +239,7 @@ It runs, in order:
    from the Cassandra base repo into the orchestrator generator, renames namespaces, and applies the
    DTO-copy needles) then runs
    `jhipster --blueprints orchestrator jdl saathratri-apps-orchestrator-mf.jdl --skip-jhipster-dependencies --skip-install --force`.
-3. **`copy-files.sh custom-files .`** — overlay the hand-maintained custom files onto the generated tree.
+3. **`saathratri-copy-files.sh custom-files .`** — overlay the hand-maintained custom files onto the generated tree.
 
 When complete you should see:
 
@@ -417,8 +417,13 @@ and
 | `saathratri-generate-code-dev-orchestrator-mf.sh` | Assemble the blueprint and run the JDL generation |
 | `saathratri-generator-code-prepare.sh` | Copy `sql-*` / `cassandra-*` from the base repos into the orchestrator and rename namespaces |
 | `saathratri-cleanup-dev-main.sh` | Remove previous generated output (apps, DTO modules, root build artifacts) |
-| `copy-files.sh <src> <dst>` | Overlay `custom-files/` onto the generated tree |
+| `saathratri-copy-files.sh <src> <dst>` | Overlay `custom-files/` onto the generated tree |
+| `saathratri-deploy.sh` | Deploy the full stack locally: Keycloak (gated) + Registry, per-app DBs, all 5 apps in terminal tabs |
 | `saathratri-run-all-tests.sh` | One-shot full test gamut across all 5 apps (`--regen`, `--no-e2e`, `--skip-backend`, `--skip-frontend`) |
+
+Every script has a Windows `.bat` companion with the same name (run e.g. `.\saathratri-deploy.bat`).
+The `.sh` versions target macOS/Linux (`saathratri-deploy.sh` uses `ttab`); the `.bat` versions use
+Windows Terminal tabs or run the `.sh` under Git Bash.
 
 ## Switch Identity Providers
 
