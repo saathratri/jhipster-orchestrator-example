@@ -61,7 +61,7 @@ spring:
     compression: LZ4
     keyspace-name: cassandrastore
     local-datacenter: datacenter1
-    port: 9242
+    port: 9042
     connection:
       connect-timeout: 5000 # Connection timeout in milliseconds
       request-timeout: 10000 # Query timeout in milliseconds

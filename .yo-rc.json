@@ -15,8 +15,6 @@
       }
     ],
     "defaultCommand": "workspaces",
-    "deploymentType": "none",
-    "directoryPath": "./",
-    "jhipsterVersion": "8.10.0"
+    "deploymentType": "none"
   }
 }

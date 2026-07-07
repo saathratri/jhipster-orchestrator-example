@@ -51,3 +51,9 @@ sh saathratri-generator-code-replace.sh "$(npm root -g)/generator-jhipster-orche
                         renameTo: `../../../../../../${this.appname}dto/src/main/java/${this.jhipsterConfig.packageFolder}/service/dto/${entity.dtoClass}.java`,\
                     },\
 '
+# The copy + string-replacement steps above emit code that doesn't match the orchestrator
+# repo's prettier style (the committed generators ARE prettier-formatted, and its npm-test
+# CI gates on prettier-check). Format the assembled output so every prepare run leaves the
+# generator repo clean instead of re-introducing style churn.
+echo "Formatting assembled generators with prettier..."
+( cd "$(npm root -g)/generator-jhipster-orchestrator" && npx prettier --write "generators/**/*.js" --log-level warn )

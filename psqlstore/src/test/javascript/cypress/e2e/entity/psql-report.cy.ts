@@ -18,7 +18,7 @@ describe('PsqlReport e2e test', () => {
   const psqlReportSample = {
     fileName: 'after whisper',
     fileExtension: 'publicize',
-    createDate: '2026-05-30T02:58:46.405Z',
+    createDate: '2026-07-06T17:52:01.405Z',
     file: 'Li4vZmFrZS1kYXRhL2Jsb2IvaGlwc3Rlci5wbmc=',
     fileContentType: 'unknown',
   };
@@ -180,9 +180,9 @@ describe('PsqlReport e2e test', () => {
       cy.get(`[data-cy="fileExtension"]`).type('upside-dow');
       cy.get(`[data-cy="fileExtension"]`).should('have.value', 'upside-dow');
 
-      cy.get(`[data-cy="createDate"]`).type('2026-05-30T02:59');
+      cy.get(`[data-cy="createDate"]`).type('2026-07-06T17:52');
       cy.get(`[data-cy="createDate"]`).blur();
-      cy.get(`[data-cy="createDate"]`).should('have.value', '2026-05-30T02:59');
+      cy.get(`[data-cy="createDate"]`).should('have.value', '2026-07-06T17:52');
 
       cy.setFieldImageAsBytesOfEntity('file', 'integration-test.png', 'image/png');
 

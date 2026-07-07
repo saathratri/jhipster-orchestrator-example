@@ -18,7 +18,7 @@ describe('PsqlPost e2e test', () => {
   const psqlPostSample = {
     title: 'incidentally meh yearly',
     content: 'Li4vZmFrZS1kYXRhL2Jsb2IvaGlwc3Rlci50eHQ=',
-    date: '2026-05-30T08:14:27.520Z',
+    date: '2026-07-06T23:07:42.520Z',
   };
 
   let psqlPost;
@@ -181,9 +181,9 @@ describe('PsqlPost e2e test', () => {
       cy.get(`[data-cy="content"]`).type('../fake-data/blob/hipster.txt');
       cy.get(`[data-cy="content"]`).invoke('val').should('match', new RegExp('../fake-data/blob/hipster.txt'));
 
-      cy.get(`[data-cy="date"]`).type('2026-05-30T11:03');
+      cy.get(`[data-cy="date"]`).type('2026-07-07T01:56');
       cy.get(`[data-cy="date"]`).blur();
-      cy.get(`[data-cy="date"]`).should('have.value', '2026-05-30T11:03');
+      cy.get(`[data-cy="date"]`).should('have.value', '2026-07-07T01:56');
 
       cy.get(entityCreateSaveButtonSelector).click();
 

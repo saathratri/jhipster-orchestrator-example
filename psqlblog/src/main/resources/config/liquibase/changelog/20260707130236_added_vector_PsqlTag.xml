@@ -10,7 +10,7 @@
         Added vector column and index for PsqlTag.
         This changeset adds pgvector support for semantic search.
     -->
-    <changeSet id="20260706152821-add-vector-column-nameEmbedding" author="jhipster">
+    <changeSet id="20260707130236-add-vector-column-nameEmbedding" author="jhipster">
         <preConditions onFail="MARK_RAN">
             <not>
                 <columnExists tableName="psql_tag" columnName="name_embedding"/>
@@ -23,7 +23,7 @@
         </addColumn>
     </changeSet>
 
-    <changeSet id="20260706152821-add-vector-index-nameEmbedding" author="jhipster">
+    <changeSet id="20260707130236-add-vector-index-nameEmbedding" author="jhipster">
         <preConditions onFail="MARK_RAN">
             <not>
                 <indexExists indexName="idx_psql_tag_name_embedding"/>
@@ -39,7 +39,7 @@
         </rollback>
     </changeSet>
 
-    <changeSet id="20260706152821-add-vector-column-descriptionEmbedding" author="jhipster">
+    <changeSet id="20260707130236-add-vector-column-descriptionEmbedding" author="jhipster">
         <preConditions onFail="MARK_RAN">
             <not>
                 <columnExists tableName="psql_tag" columnName="description_embedding"/>
@@ -52,7 +52,7 @@
         </addColumn>
     </changeSet>
 
-    <changeSet id="20260706152821-add-vector-index-descriptionEmbedding" author="jhipster">
+    <changeSet id="20260707130236-add-vector-index-descriptionEmbedding" author="jhipster">
         <preConditions onFail="MARK_RAN">
             <not>
                 <indexExists indexName="idx_psql_tag_description_embedding"/>

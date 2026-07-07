@@ -13,15 +13,15 @@
 
     <include file="config/liquibase/changelog/00000000000001_added_vector_extension.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/00000000000000_initial_schema.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20260531021017_added_entity_PsqlBlog.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20260531021117_added_entity_PsqlPost.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20260531021217_added_entity_PsqlTag.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20260531021317_added_entity_PsqlTajUser.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20260707170332_added_entity_PsqlBlog.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20260707170432_added_entity_PsqlPost.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20260707170532_added_entity_PsqlTag.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20260707170632_added_entity_PsqlTajUser.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
-    <include file="config/liquibase/changelog/20260531021017_added_entity_constraints_PsqlBlog.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20260531021117_added_entity_constraints_PsqlPost.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20260707170332_added_entity_constraints_PsqlBlog.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20260707170432_added_entity_constraints_PsqlPost.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
     <!-- jhipster-needle-liquibase-add-incremental-changelog - JHipster will add incremental liquibase changelogs here -->
-        <include file="config/liquibase/changelog/20260706153123_added_vector_PsqlTag.xml" relativeToChangelogFile="false"/>
+        <include file="config/liquibase/changelog/20260707130236_added_vector_PsqlTag.xml" relativeToChangelogFile="false"/>
     <!-- saathratri-needle-liquibase-add-vector-changelog - Saathratri will add vector column changelogs here -->
 </databaseChangeLog>

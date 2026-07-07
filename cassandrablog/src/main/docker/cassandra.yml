@@ -12,11 +12,11 @@ services:
     # If you want to expose these ports outside your dev PC,
     # remove the "127.0.0.1:" prefix
     ports:
-      - 127.0.0.1:7300:7000
-      - 127.0.0.1:7301:7001
-      - 127.0.0.1:7499:7199
-      - 127.0.0.1:9342:9042
-      - 127.0.0.1:9460:9160
+      - 127.0.0.1:7100:7000
+      - 127.0.0.1:7101:7001
+      - 127.0.0.1:7299:7199
+      - 127.0.0.1:9142:9042
+      - 127.0.0.1:9260:9160
     healthcheck:
       test: ['CMD', 'cqlsh', '-e', 'describe keyspaces']
       interval: 5s
