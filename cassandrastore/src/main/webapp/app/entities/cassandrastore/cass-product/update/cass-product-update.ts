@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2026 Saathratri, LLC. All rights reserved.
+ * SPDX-License-Identifier: LicenseRef-Saathratri-Proprietary
+ * Proprietary and confidential - see LICENSE in the repository root.
+ */
+
 import { HttpResponse } from '@angular/common/http';
 import { Component, ElementRef, OnInit, inject } from '@angular/core';
 import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
