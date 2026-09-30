@@ -239,7 +239,6 @@ It runs, in order:
    from the Cassandra base repo into the orchestrator generator, renames namespaces, and applies the
    DTO-copy needles) then runs
    `jhipster --blueprints orchestrator jdl saathratri-apps-orchestrator-mf.jdl --skip-jhipster-dependencies --skip-install --force`.
-3. **`saathratri-copy-files.sh custom-files .`** — overlay the hand-maintained custom files onto the generated tree.
 
 When complete you should see:
 
@@ -413,11 +412,10 @@ and
 
 | Script | Purpose |
 | --- | --- |
-| `saathratri-generate-code-dev-orchestrator.sh` | Full regen: cleanup → assemble + generate → sync custom files |
+| `saathratri-generate-code-dev-orchestrator.sh` | Full regen: cleanup → assemble + generate |
 | `saathratri-generate-code-dev-orchestrator-mf.sh` | Assemble the blueprint and run the JDL generation |
 | `saathratri-generator-code-prepare.sh` | Copy `sql-*` / `cassandra-*` from the base repos into the orchestrator and rename namespaces |
 | `saathratri-cleanup-dev-main.sh` | Remove previous generated output (apps, DTO modules, root build artifacts) |
-| `saathratri-copy-files.sh <src> <dst>` | Overlay `custom-files/` onto the generated tree |
 | `saathratri-deploy.sh` | Deploy the full stack locally: Keycloak (gated) + Registry, per-app DBs, all 5 apps in terminal tabs |
 | `saathratri-run-all-tests.sh` | One-shot full test gamut across all 5 apps (`--regen`, `--no-e2e`, `--skip-backend`, `--skip-frontend`) |
 
